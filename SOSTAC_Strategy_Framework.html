@@ -305,7 +305,7 @@
       <h3>1.1 Campaign Background</h3>
       <p class="hint">Describe the fundraising cause, the organization behind it, and the overall context.</p>
       <div class="form-row"><div class="form-label">Fundraising cause / project</div><div class="form-input"><textarea id="s_cause" placeholder="What is the cause you are raising money for?"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Organization / initiative</div><div class="form-input"><input id="s_org" placeholder="Name of the organization or student initiative"/></div></div>
+      <div class="form-row"><div class="form-label">Organization / initiative</div><div class="form-input"><textarea id="s_org" placeholder="Name of the organization or student initiative"></textarea></div></div>
       <div class="form-row"><div class="form-label">Why is this campaign needed?</div><div class="form-input"><textarea id="s_why" placeholder="What problem does this address? Why now?"></textarea></div></div>
       <div class="form-row"><div class="form-label">Fundraising target amount (€)</div><div class="form-input"><input id="s_target" placeholder="e.g. € 5,000"/></div></div>
       <div class="form-row"><div class="form-label">Campaign duration (start – end)</div><div class="form-input"><input id="s_duration" placeholder="e.g. 01.05.2026 – 30.06.2026"/></div></div>
@@ -363,8 +363,8 @@
       <h3>2.1 Fundraising Goal</h3>
       <p class="hint">Set your overall fundraising goal for this campaign.</p>
       <div class="form-row"><div class="form-label">Total fundraising target (€)</div><div class="form-input"><input id="o_total" placeholder="e.g. € 5,000"/></div></div>
-      <div class="form-row"><div class="form-label">Campaign start date</div><div class="form-input"><input id="o_start" type="date"/></div></div>
-      <div class="form-row"><div class="form-label">Campaign end date</div><div class="form-input"><input id="o_end" type="date"/></div></div>
+      <div class="form-row"><div class="form-label">Campaign start date</div><div class="form-input"><textarea id="o_start"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Campaign end date</div><div class="form-input"><textarea id="o_end"></textarea></div></div>
       <div class="form-row"><div class="form-label">Donation platform / link</div><div class="form-input"><input id="o_platform" value="betterplace.org" placeholder="e.g. betterplace.org/..."/></div></div>
       <div class="form-row"><div class="form-label">Average donation amount expected (€)</div><div class="form-input"><input id="o_avg" placeholder="e.g. € 25"/></div></div>
       <div class="form-row"><div class="form-label">Number of donors needed</div><div class="form-input"><input id="o_donors" placeholder="= Target / Average donation"/></div></div>
@@ -406,7 +406,7 @@
         <div class="persona-card-header">👤 PRIMARY PERSONA – Main Donor Persona</div>
         <div class="form-row"><div class="form-label">Persona name (fictional)</div><div class="form-input"><input id="p1_name" placeholder="e.g. Anna, 34"/></div></div>
         <div class="form-row"><div class="form-label">Age / Gender</div><div class="form-input"><input id="p1_age" placeholder="e.g. 34, female"/></div></div>
-        <div class="form-row"><div class="form-label">Occupation / Background</div><div class="form-input"><input id="p1_occ" placeholder="e.g. Marketing Manager, urban, environmentally conscious"/></div></div>
+        <div class="form-row"><div class="form-label">Occupation / Background</div><div class="form-input"><textarea id="p1_occ" placeholder="e.g. Marketing Manager, urban, environmentally conscious"></textarea></div></div>
         <div class="form-row"><div class="form-label">Main social media platforms</div><div class="form-input"><input id="p1_sm" placeholder="e.g. Instagram, LinkedIn"/></div></div>
         <div class="form-row"><div class="form-label">Time spent online per day</div><div class="form-input"><input id="p1_time" placeholder="e.g. ~2h, evenings"/></div></div>
         <div class="form-row"><div class="form-label">Key interests / values</div><div class="form-input"><textarea id="p1_values" placeholder="Sustainability, community, education..."></textarea></div></div>
@@ -418,7 +418,7 @@
         <div class="persona-card-header secondary">👥 SECONDARY PERSONA – Supporting Persona (optional)</div>
         <div class="form-row"><div class="form-label">Persona name (fictional)</div><div class="form-input"><input id="p2_name" placeholder="e.g. Tom, 22"/></div></div>
         <div class="form-row"><div class="form-label">Age / Gender</div><div class="form-input"><input id="p2_age"/></div></div>
-        <div class="form-row"><div class="form-label">Occupation / Background</div><div class="form-input"><input id="p2_occ"/></div></div>
+        <div class="form-row"><div class="form-label">Occupation / Background</div><div class="form-input"><textarea id="p2_occ"></textarea></div></div>
         <div class="form-row"><div class="form-label">Main social media platforms</div><div class="form-input"><input id="p2_sm"/></div></div>
         <div class="form-row"><div class="form-label">Time spent online per day</div><div class="form-input"><input id="p2_time"/></div></div>
         <div class="form-row"><div class="form-label">Key interests / values</div><div class="form-input"><textarea id="p2_values"></textarea></div></div>
@@ -446,16 +446,16 @@
     <div class="subsection">
       <h3>3.3 Campaign Theme & Messaging</h3>
       <p class="hint">Define the creative concept that will run through all your content. Consistency is key.</p>
-      <div class="form-row"><div class="form-label">Campaign name</div><div class="form-input"><input placeholder="e.g. #HelpHeilbronn"/></div></div>
-      <div class="form-row"><div class="form-label">Primary campaign hashtag</div><div class="form-input"><input placeholder="e.g. #HelpHeilbronn"/></div></div>
-      <div class="form-row"><div class="form-label">Secondary hashtags</div><div class="form-input"><input placeholder="e.g. #HHNhilft #Fundraising #SocialGood"/></div></div>
+      <div class="form-row"><div class="form-label">Campaign name</div><div class="form-input"><textarea placeholder="e.g. #HelpHeilbronn"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Primary campaign hashtag</div><div class="form-input"><textarea placeholder="e.g. #HelpHeilbronn"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Secondary hashtags</div><div class="form-input"><textarea placeholder="e.g. #HHNhilft #Fundraising #SocialGood"></textarea></div></div>
       <div class="form-row"><div class="form-label">Core message (max. 2 sentences)</div><div class="form-input"><textarea placeholder="What is the ONE message your campaign communicates?"></textarea></div></div>
       <div class="form-row"><div class="form-label">Emotional hook / storytelling angle</div><div class="form-input"><textarea placeholder="What story will move your audience?"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Tone of voice</div><div class="form-input"><input placeholder="e.g. Warm, authentic, motivating, urgent"/></div></div>
+      <div class="form-row"><div class="form-label">Tone of voice</div><div class="form-input"><textarea placeholder="e.g. Warm, authentic, motivating, urgent"></textarea></div></div>
       <div class="form-row"><div class="form-label">Do's – Language & style to use</div><div class="form-input"><textarea placeholder="e.g. Personal stories, first-person, inclusive language..."></textarea></div></div>
       <div class="form-row"><div class="form-label">Don'ts – Language & style to avoid</div><div class="form-input"><textarea placeholder="e.g. Guilt-tripping, corporate language..."></textarea></div></div>
       <div class="form-row"><div class="form-label">Visual identity (colors, fonts, style)</div><div class="form-input"><textarea placeholder="e.g. HHN blue + warm orange, clean sans-serif..."></textarea></div></div>
-      <div class="form-row"><div class="form-label">Key visual formats</div><div class="form-input"><input placeholder="e.g. Reels, Carousels, Static Images, Stories, GFX"/></div></div>
+      <div class="form-row"><div class="form-label">Key visual formats</div><div class="form-input"><textarea placeholder="e.g. Reels, Carousels, Static Images, Stories, GFX"></textarea></div></div>
     </div>
     <div class="subsection">
       <h3>3.4 Campaign Phases & Objectives per Phase</h3>
@@ -511,49 +511,49 @@
         <div class="persona-card" style="margin-bottom:10px">
           <div class="persona-card-header" style="background:#C13584">📷 Instagram</div>
           <div class="form-row"><div class="form-label">Use this platform?</div><div class="form-input"><select><option>Yes</option><option>No</option></select></div></div>
-          <div class="form-row"><div class="form-label">Profile optimization needed?</div><div class="form-input"><input placeholder="Yes / No – what changes?"/></div></div>
-          <div class="form-row"><div class="form-label">Primary content types</div><div class="form-input"><input placeholder="Reels, Stories, Carousels..."/></div></div>
-          <div class="form-row"><div class="form-label">Posting frequency per week</div><div class="form-input"><input placeholder="e.g. 5x Feed + 7x Stories"/></div></div>
-          <div class="form-row"><div class="form-label">Best posting times</div><div class="form-input"><input placeholder="e.g. Mo–Fr 18:00–21:00"/></div></div>
+          <div class="form-row"><div class="form-label">Profile optimization needed?</div><div class="form-input"><textarea placeholder="Yes / No – what changes?"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Primary content types</div><div class="form-input"><textarea placeholder="Reels, Stories, Carousels..."></textarea></div></div>
+          <div class="form-row"><div class="form-label">Posting frequency per week</div><div class="form-input"><textarea placeholder="e.g. 5x Feed + 7x Stories"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Best posting times</div><div class="form-input"><textarea placeholder="e.g. Mo–Fr 18:00–21:00"></textarea></div></div>
           <div class="form-row"><div class="form-label">Hashtag strategy (5–10 hashtags)</div><div class="form-input"><textarea placeholder="#HHNhilft #Fundraising #DoGood ..."></textarea></div></div>
-          <div class="form-row"><div class="form-label">Call-to-Action (CTA) per post</div><div class="form-input"><input placeholder="e.g. 'Click the link in bio to donate'"/></div></div>
+          <div class="form-row"><div class="form-label">Call-to-Action (CTA) per post</div><div class="form-input"><textarea placeholder="e.g. 'Click the link in bio to donate'"></textarea></div></div>
           <div class="form-row"><div class="form-label">Story / Short-video strategy</div><div class="form-input"><textarea placeholder="Daily updates, countdown, polls, swipe-up..."></textarea></div></div>
           <div class="form-row"><div class="form-label">Community engagement approach</div><div class="form-input"><textarea placeholder="Reply to comments within 2h, use polls, Q&A stickers..."></textarea></div></div>
         </div>
         <div class="persona-card" style="margin-bottom:10px">
           <div class="persona-card-header" style="background:#010101">🎵 TikTok</div>
           <div class="form-row"><div class="form-label">Use this platform?</div><div class="form-input"><select><option>Yes</option><option>No</option></select></div></div>
-          <div class="form-row"><div class="form-label">Primary content types</div><div class="form-input"><input/></div></div>
-          <div class="form-row"><div class="form-label">Posting frequency per week</div><div class="form-input"><input/></div></div>
-          <div class="form-row"><div class="form-label">Best posting times</div><div class="form-input"><input/></div></div>
+          <div class="form-row"><div class="form-label">Primary content types</div><div class="form-input"><textarea></textarea></div></div>
+          <div class="form-row"><div class="form-label">Posting frequency per week</div><div class="form-input"><textarea></textarea></div></div>
+          <div class="form-row"><div class="form-label">Best posting times</div><div class="form-input"><textarea></textarea></div></div>
           <div class="form-row"><div class="form-label">Hashtag strategy</div><div class="form-input"><textarea></textarea></div></div>
-          <div class="form-row"><div class="form-label">CTA per post</div><div class="form-input"><input/></div></div>
+          <div class="form-row"><div class="form-label">CTA per post</div><div class="form-input"><textarea></textarea></div></div>
           <div class="form-row"><div class="form-label">Community engagement approach</div><div class="form-input"><textarea></textarea></div></div>
         </div>
         <div class="persona-card" style="margin-bottom:10px">
           <div class="persona-card-header" style="background:#0A66C2">💼 LinkedIn</div>
           <div class="form-row"><div class="form-label">Use this platform?</div><div class="form-input"><select><option>Yes</option><option>No</option></select></div></div>
-          <div class="form-row"><div class="form-label">Primary content types</div><div class="form-input"><input/></div></div>
-          <div class="form-row"><div class="form-label">Posting frequency per week</div><div class="form-input"><input/></div></div>
+          <div class="form-row"><div class="form-label">Primary content types</div><div class="form-input"><textarea></textarea></div></div>
+          <div class="form-row"><div class="form-label">Posting frequency per week</div><div class="form-input"><textarea></textarea></div></div>
           <div class="form-row"><div class="form-label">Hashtag strategy</div><div class="form-input"><textarea></textarea></div></div>
-          <div class="form-row"><div class="form-label">CTA per post</div><div class="form-input"><input/></div></div>
+          <div class="form-row"><div class="form-label">CTA per post</div><div class="form-input"><textarea></textarea></div></div>
           <div class="form-row"><div class="form-label">Community engagement approach</div><div class="form-input"><textarea></textarea></div></div>
         </div>
         <div class="persona-card" style="margin-bottom:10px">
           <div class="persona-card-header" style="background:#1877F2">👥 Facebook</div>
           <div class="form-row"><div class="form-label">Use this platform?</div><div class="form-input"><select><option>Yes</option><option>No</option></select></div></div>
-          <div class="form-row"><div class="form-label">Primary content types</div><div class="form-input"><input/></div></div>
-          <div class="form-row"><div class="form-label">Posting frequency per week</div><div class="form-input"><input/></div></div>
-          <div class="form-row"><div class="form-label">CTA per post</div><div class="form-input"><input/></div></div>
+          <div class="form-row"><div class="form-label">Primary content types</div><div class="form-input"><textarea></textarea></div></div>
+          <div class="form-row"><div class="form-label">Posting frequency per week</div><div class="form-input"><textarea></textarea></div></div>
+          <div class="form-row"><div class="form-label">CTA per post</div><div class="form-input"><textarea></textarea></div></div>
           <div class="form-row"><div class="form-label">Community engagement approach</div><div class="form-input"><textarea></textarea></div></div>
         </div>
         <div class="persona-card">
           <div class="persona-card-header" style="background:#555">🌐 Other Platform</div>
-          <div class="form-row"><div class="form-label">Platform name</div><div class="form-input"><input placeholder="e.g. YouTube, Snapchat, WhatsApp Channel"/></div></div>
+          <div class="form-row"><div class="form-label">Platform name</div><div class="form-input"><textarea placeholder="e.g. YouTube, Snapchat, WhatsApp Channel"></textarea></div></div>
           <div class="form-row"><div class="form-label">Use this platform?</div><div class="form-input"><select><option>Yes</option><option>No</option></select></div></div>
-          <div class="form-row"><div class="form-label">Primary content types</div><div class="form-input"><input/></div></div>
+          <div class="form-row"><div class="form-label">Primary content types</div><div class="form-input"><textarea></textarea></div></div>
           <div class="form-row"><div class="form-label">Posting frequency / approach</div><div class="form-input"><textarea></textarea></div></div>
-          <div class="form-row"><div class="form-label">CTA per post</div><div class="form-input"><input/></div></div>
+          <div class="form-row"><div class="form-label">CTA per post</div><div class="form-input"><textarea></textarea></div></div>
         </div>
       </div>
     </div>
@@ -623,16 +623,16 @@
       <p class="hint">List the tools your team will use for each area of the campaign.</p>
       <div class="tools-grid">
         <div>
-          <div class="form-row"><div class="form-label">Content creation (design / video)</div><div class="form-input"><input placeholder="e.g. Canva, CapCut, Adobe Express"/></div></div>
-          <div class="form-row"><div class="form-label">Caption writing / AI tools</div><div class="form-input"><input placeholder="e.g. Claude, ChatGPT"/></div></div>
-          <div class="form-row"><div class="form-label">Scheduling & publishing</div><div class="form-input"><input value="Socialhub.io"/></div></div>
-          <div class="form-row"><div class="form-label">Analytics & insights</div><div class="form-input"><input placeholder="e.g. Meta Insights, TikTok Analytics"/></div></div>
+          <div class="form-row"><div class="form-label">Content creation (design / video)</div><div class="form-input"><textarea placeholder="e.g. Canva, CapCut, Adobe Express"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Caption writing / AI tools</div><div class="form-input"><textarea placeholder="e.g. Claude, ChatGPT"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Scheduling & publishing</div><div class="form-input"><textarea>Socialhub.io</textarea></div></div>
+          <div class="form-row"><div class="form-label">Analytics & insights</div><div class="form-input"><textarea placeholder="e.g. Meta Insights, TikTok Analytics"></textarea></div></div>
         </div>
         <div>
-          <div class="form-row"><div class="form-label">Team communication / project mgmt</div><div class="form-input"><input placeholder="e.g. Notion, WhatsApp, MS Teams"/></div></div>
-          <div class="form-row"><div class="form-label">Donation / fundraising platform</div><div class="form-input"><input value="Betterplace.org"/></div></div>
-          <div class="form-row"><div class="form-label">Link-in-bio tool</div><div class="form-input"><input placeholder="e.g. Linktree, bio.site"/></div></div>
-          <div class="form-row"><div class="form-label">Hashtag research tool</div><div class="form-input"><input placeholder="e.g. Flick, Later, native search"/></div></div>
+          <div class="form-row"><div class="form-label">Team communication / project mgmt</div><div class="form-input"><textarea placeholder="e.g. Notion, WhatsApp, MS Teams"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Donation / fundraising platform</div><div class="form-input"><textarea>Betterplace.org</textarea></div></div>
+          <div class="form-row"><div class="form-label">Link-in-bio tool</div><div class="form-input"><textarea placeholder="e.g. Linktree, bio.site"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Hashtag research tool</div><div class="form-input"><textarea placeholder="e.g. Flick, Later, native search"></textarea></div></div>
         </div>
       </div>
     </div>
@@ -670,11 +670,11 @@
     <div class="subsection">
       <h3>6.2 Monitoring & Reporting</h3>
       <p class="hint">Define your monitoring routine and reporting structure.</p>
-      <div class="form-row"><div class="form-label">Who is responsible for analytics tracking?</div><div class="form-input"><input placeholder="Name(s) from your team"/></div></div>
+      <div class="form-row"><div class="form-label">Who is responsible for analytics tracking?</div><div class="form-input"><textarea placeholder="Name(s) from your team"></textarea></div></div>
       <div class="form-row"><div class="form-label">Reporting frequency</div><div class="form-input"><select><option value="">–</option><option>Daily</option><option>Weekly</option><option>Bi-weekly</option><option>Monthly</option></select></div></div>
       <div class="form-row"><div class="form-label">Analytics tools used</div><div class="form-input"><textarea placeholder="e.g. Meta Business Suite, TikTok Analytics, Socialhub.io Reports..."></textarea></div></div>
-      <div class="form-row"><div class="form-label">Where are reports stored / shared?</div><div class="form-input"><input placeholder="e.g. Shared Google Drive folder, Notion page..."/></div></div>
-      <div class="form-row"><div class="form-label">Reporting format</div><div class="form-input"><input placeholder="e.g. Google Sheet + PDF summary"/></div></div>
+      <div class="form-row"><div class="form-label">Where are reports stored / shared?</div><div class="form-input"><textarea placeholder="e.g. Shared Google Drive folder, Notion page..."></textarea></div></div>
+      <div class="form-row"><div class="form-label">Reporting format</div><div class="form-input"><textarea placeholder="e.g. Google Sheet + PDF summary"></textarea></div></div>
     </div>
   </div>
   <div class="bottom-nav">
