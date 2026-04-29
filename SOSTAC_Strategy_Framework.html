@@ -258,6 +258,7 @@
     transform: rotate(-90deg);
   }
   .subsection h3:hover { color: var(--hhn-mid); }
+  .subsection h3.is-collapsed { margin-bottom: 0; }
   .subsection-body.is-collapsed { display: none; }
 
   /* ===== COLLAPSIBLE PERSONA / PLATFORM CARDS ===== */
@@ -301,7 +302,7 @@
 <div id="syncBar" style="display:none">
   <span><span class="sync-dot"></span><span id="syncMsg">Verbunden · Daten werden automatisch gespeichert</span></span>
   <span style="display:flex;align-items:center;gap:10px;">
-    <button id="testConnBtn" onclick="manualSave()">💾 Save now</button>
+    <button id="saveNowBtn" onclick="manualSave()">💾 Save now</button>
     <button id="testConnBtn" onclick="runConnectionTest()">🔌 Test Connection</button>
     <span id="syncGroup" style="font-weight:700;color:var(--hhn-blue)"></span>
   </span>
@@ -532,16 +533,16 @@
     <div class="subsection">
       <h3>3.3 Campaign Theme & Messaging</h3>
       <p class="hint">Define the creative concept that will run through all your content. Consistency is key.</p>
-      <div class="form-row"><div class="form-label">Campaign name</div><div class="form-input"><textarea placeholder="e.g. #HelpHeilbronn"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Primary campaign hashtag</div><div class="form-input"><textarea placeholder="e.g. #HelpHeilbronn"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Secondary hashtags</div><div class="form-input"><textarea placeholder="e.g. #HHNhilft #Fundraising #SocialGood"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Core message (max. 2 sentences)</div><div class="form-input"><textarea placeholder="What is the ONE message your campaign communicates?"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Emotional hook / storytelling angle</div><div class="form-input"><textarea placeholder="What story will move your audience?"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Tone of voice</div><div class="form-input"><textarea placeholder="e.g. Warm, authentic, motivating, urgent"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Do's – Language & style to use</div><div class="form-input"><textarea placeholder="e.g. Personal stories, first-person, inclusive language..."></textarea></div></div>
-      <div class="form-row"><div class="form-label">Don'ts – Language & style to avoid</div><div class="form-input"><textarea placeholder="e.g. Guilt-tripping, corporate language..."></textarea></div></div>
-      <div class="form-row"><div class="form-label">Visual identity (colors, fonts, style)</div><div class="form-input"><textarea placeholder="e.g. HHN blue + warm orange, clean sans-serif..."></textarea></div></div>
-      <div class="form-row"><div class="form-label">Key visual formats</div><div class="form-input"><textarea placeholder="e.g. Reels, Carousels, Static Images, Stories, GFX"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Campaign name</div><div class="form-input"><textarea id="st_name" placeholder="e.g. #HelpHeilbronn"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Primary campaign hashtag</div><div class="form-input"><textarea id="st_hashtag1" placeholder="e.g. #HelpHeilbronn"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Secondary hashtags</div><div class="form-input"><textarea id="st_hashtag2" placeholder="e.g. #HHNhilft #Fundraising #SocialGood"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Core message (max. 2 sentences)</div><div class="form-input"><textarea id="st_core_msg" placeholder="What is the ONE message your campaign communicates?"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Emotional hook / storytelling angle</div><div class="form-input"><textarea id="st_emotion" placeholder="What story will move your audience?"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Tone of voice</div><div class="form-input"><textarea id="st_tone" placeholder="e.g. Warm, authentic, motivating, urgent"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Do's – Language & style to use</div><div class="form-input"><textarea id="st_dos" placeholder="e.g. Personal stories, first-person, inclusive language..."></textarea></div></div>
+      <div class="form-row"><div class="form-label">Don'ts – Language & style to avoid</div><div class="form-input"><textarea id="st_donts" placeholder="e.g. Guilt-tripping, corporate language..."></textarea></div></div>
+      <div class="form-row"><div class="form-label">Visual identity (colors, fonts, style)</div><div class="form-input"><textarea id="st_visual" placeholder="e.g. HHN blue + warm orange, clean sans-serif..."></textarea></div></div>
+      <div class="form-row"><div class="form-label">Key visual formats</div><div class="form-input"><textarea id="st_formats" placeholder="e.g. Reels, Carousels, Static Images, Stories, GFX"></textarea></div></div>
     </div>
     <div class="subsection">
       <h3>3.4 Campaign Phases & Objectives per Phase</h3>
@@ -596,58 +597,58 @@
       <div id="platformTactics">
         <div class="persona-card" style="margin-bottom:10px">
           <div class="persona-card-header" style="background:#C13584">📷 Instagram</div>
-          <div class="form-row"><div class="form-label">Use this platform?</div><div class="form-input"><select><option>Yes</option><option>No</option></select></div></div>
-          <div class="form-row"><div class="form-label">Profile optimization needed?</div><div class="form-input"><textarea placeholder="Yes / No – what changes?"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Primary content types</div><div class="form-input"><textarea placeholder="Reels, Stories, Carousels..."></textarea></div></div>
-          <div class="form-row"><div class="form-label">Posting frequency per week</div><div class="form-input"><textarea placeholder="e.g. 5x Feed + 7x Stories"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Best posting times</div><div class="form-input"><textarea placeholder="e.g. Mo–Fr 18:00–21:00"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Hashtag strategy (5–10 hashtags)</div><div class="form-input"><textarea placeholder="#HHNhilft #Fundraising #DoGood ..."></textarea></div></div>
-          <div class="form-row"><div class="form-label">Call-to-Action (CTA) per post</div><div class="form-input"><textarea placeholder="e.g. 'Click the link in bio to donate'"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Story / Short-video strategy</div><div class="form-input"><textarea placeholder="Daily updates, countdown, polls, swipe-up..."></textarea></div></div>
-          <div class="form-row"><div class="form-label">Community engagement approach</div><div class="form-input"><textarea placeholder="Reply to comments within 2h, use polls, Q&A stickers..."></textarea></div></div>
+          <div class="form-row"><div class="form-label">Use this platform?</div><div class="form-input"><select id="ig_use"><option>Yes</option><option>No</option></select></div></div>
+          <div class="form-row"><div class="form-label">Profile optimization needed?</div><div class="form-input"><textarea id="ig_profile" placeholder="Yes / No – what changes?"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Primary content types</div><div class="form-input"><textarea id="ig_content" placeholder="Reels, Stories, Carousels..."></textarea></div></div>
+          <div class="form-row"><div class="form-label">Posting frequency per week</div><div class="form-input"><textarea id="ig_freq" placeholder="e.g. 5x Feed + 7x Stories"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Best posting times</div><div class="form-input"><textarea id="ig_times" placeholder="e.g. Mo–Fr 18:00–21:00"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Hashtag strategy (5–10 hashtags)</div><div class="form-input"><textarea id="ig_hashtags" placeholder="#HHNhilft #Fundraising #DoGood ..."></textarea></div></div>
+          <div class="form-row"><div class="form-label">Call-to-Action (CTA) per post</div><div class="form-input"><textarea id="ig_cta" placeholder="e.g. 'Click the link in bio to donate'"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Story / Short-video strategy</div><div class="form-input"><textarea id="ig_stories" placeholder="Daily updates, countdown, polls, swipe-up..."></textarea></div></div>
+          <div class="form-row"><div class="form-label">Community engagement approach</div><div class="form-input"><textarea id="ig_community" placeholder="Reply to comments within 2h, use polls, Q&A stickers..."></textarea></div></div>
         </div>
         <div class="persona-card" style="margin-bottom:10px">
           <div class="persona-card-header" style="background:#010101">🎵 TikTok</div>
-          <div class="form-row"><div class="form-label">Use this platform?</div><div class="form-input"><select><option>Yes</option><option>No</option></select></div></div>
-          <div class="form-row"><div class="form-label">Primary content types</div><div class="form-input"><textarea></textarea></div></div>
-          <div class="form-row"><div class="form-label">Posting frequency per week</div><div class="form-input"><textarea></textarea></div></div>
-          <div class="form-row"><div class="form-label">Best posting times</div><div class="form-input"><textarea></textarea></div></div>
-          <div class="form-row"><div class="form-label">Hashtag strategy</div><div class="form-input"><textarea></textarea></div></div>
-          <div class="form-row"><div class="form-label">CTA per post</div><div class="form-input"><textarea></textarea></div></div>
-          <div class="form-row"><div class="form-label">Community engagement approach</div><div class="form-input"><textarea></textarea></div></div>
+          <div class="form-row"><div class="form-label">Use this platform?</div><div class="form-input"><select id="tt_use"><option>Yes</option><option>No</option></select></div></div>
+          <div class="form-row"><div class="form-label">Primary content types</div><div class="form-input"><textarea id="tt_content"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Posting frequency per week</div><div class="form-input"><textarea id="tt_freq"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Best posting times</div><div class="form-input"><textarea id="tt_times"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Hashtag strategy</div><div class="form-input"><textarea id="tt_hashtags"></textarea></div></div>
+          <div class="form-row"><div class="form-label">CTA per post</div><div class="form-input"><textarea id="tt_cta"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Community engagement approach</div><div class="form-input"><textarea id="tt_community"></textarea></div></div>
         </div>
         <div class="persona-card" style="margin-bottom:10px">
           <div class="persona-card-header" style="background:#0A66C2">💼 LinkedIn</div>
-          <div class="form-row"><div class="form-label">Use this platform?</div><div class="form-input"><select><option>Yes</option><option>No</option></select></div></div>
-          <div class="form-row"><div class="form-label">Primary content types</div><div class="form-input"><textarea></textarea></div></div>
-          <div class="form-row"><div class="form-label">Posting frequency per week</div><div class="form-input"><textarea></textarea></div></div>
-          <div class="form-row"><div class="form-label">Hashtag strategy</div><div class="form-input"><textarea></textarea></div></div>
-          <div class="form-row"><div class="form-label">CTA per post</div><div class="form-input"><textarea></textarea></div></div>
-          <div class="form-row"><div class="form-label">Community engagement approach</div><div class="form-input"><textarea></textarea></div></div>
+          <div class="form-row"><div class="form-label">Use this platform?</div><div class="form-input"><select id="li_use"><option>Yes</option><option>No</option></select></div></div>
+          <div class="form-row"><div class="form-label">Primary content types</div><div class="form-input"><textarea id="li_content"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Posting frequency per week</div><div class="form-input"><textarea id="li_freq"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Hashtag strategy</div><div class="form-input"><textarea id="li_hashtags"></textarea></div></div>
+          <div class="form-row"><div class="form-label">CTA per post</div><div class="form-input"><textarea id="li_cta"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Community engagement approach</div><div class="form-input"><textarea id="li_community"></textarea></div></div>
         </div>
         <div class="persona-card" style="margin-bottom:10px">
           <div class="persona-card-header" style="background:#1877F2">👥 Facebook</div>
-          <div class="form-row"><div class="form-label">Use this platform?</div><div class="form-input"><select><option>Yes</option><option>No</option></select></div></div>
-          <div class="form-row"><div class="form-label">Primary content types</div><div class="form-input"><textarea></textarea></div></div>
-          <div class="form-row"><div class="form-label">Posting frequency per week</div><div class="form-input"><textarea></textarea></div></div>
-          <div class="form-row"><div class="form-label">CTA per post</div><div class="form-input"><textarea></textarea></div></div>
-          <div class="form-row"><div class="form-label">Community engagement approach</div><div class="form-input"><textarea></textarea></div></div>
+          <div class="form-row"><div class="form-label">Use this platform?</div><div class="form-input"><select id="fb_use"><option>Yes</option><option>No</option></select></div></div>
+          <div class="form-row"><div class="form-label">Primary content types</div><div class="form-input"><textarea id="fb_content"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Posting frequency per week</div><div class="form-input"><textarea id="fb_freq"></textarea></div></div>
+          <div class="form-row"><div class="form-label">CTA per post</div><div class="form-input"><textarea id="fb_cta"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Community engagement approach</div><div class="form-input"><textarea id="fb_community"></textarea></div></div>
         </div>
         <div class="persona-card">
           <div class="persona-card-header" style="background:#555">🌐 Other Platform</div>
-          <div class="form-row"><div class="form-label">Platform name</div><div class="form-input"><textarea placeholder="e.g. YouTube, Snapchat, WhatsApp Channel"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Use this platform?</div><div class="form-input"><select><option>Yes</option><option>No</option></select></div></div>
-          <div class="form-row"><div class="form-label">Primary content types</div><div class="form-input"><textarea></textarea></div></div>
-          <div class="form-row"><div class="form-label">Posting frequency / approach</div><div class="form-input"><textarea></textarea></div></div>
-          <div class="form-row"><div class="form-label">CTA per post</div><div class="form-input"><textarea></textarea></div></div>
+          <div class="form-row"><div class="form-label">Platform name</div><div class="form-input"><textarea id="ot_name" placeholder="e.g. YouTube, Snapchat, WhatsApp Channel"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Use this platform?</div><div class="form-input"><select id="ot_use"><option>Yes</option><option>No</option></select></div></div>
+          <div class="form-row"><div class="form-label">Primary content types</div><div class="form-input"><textarea id="ot_content"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Posting frequency / approach</div><div class="form-input"><textarea id="ot_freq"></textarea></div></div>
+          <div class="form-row"><div class="form-label">CTA per post</div><div class="form-input"><textarea id="ot_cta"></textarea></div></div>
         </div>
       </div>
     </div>
     <div class="subsection">
       <h3>4.3 Influencer & Ambassador Strategy</h3>
       <p class="hint">Will you partner with influencers, student ambassadors, or community figures to amplify your campaign?</p>
-      <div class="form-row"><div class="form-label">Use influencers / ambassadors?</div><div class="form-input"><select><option value="">–</option><option>Yes</option><option>No</option></select></div></div>
-      <div class="form-row"><div class="form-label">Why / Why not?</div><div class="form-input"><textarea placeholder="Justify your decision..."></textarea></div></div>
+      <div class="form-row"><div class="form-label">Use influencers / ambassadors?</div><div class="form-input"><select id="inf_use"><option value="">–</option><option>Yes</option><option>No</option></select></div></div>
+      <div class="form-row"><div class="form-label">Why / Why not?</div><div class="form-input"><textarea id="inf_why" placeholder="Justify your decision..."></textarea></div></div>
       <br>
       <table>
         <thead><tr><th>Name / Profile</th><th>Platform</th><th>Follower Count</th><th>Relevance to Cause</th><th>Agreed Deliverables</th></tr></thead>
@@ -709,16 +710,16 @@
       <p class="hint">List the tools your team will use for each area of the campaign.</p>
       <div class="tools-grid">
         <div>
-          <div class="form-row"><div class="form-label">Content creation (design / video)</div><div class="form-input"><textarea placeholder="e.g. Canva, CapCut, Adobe Express"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Caption writing / AI tools</div><div class="form-input"><textarea placeholder="e.g. Claude, ChatGPT"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Scheduling & publishing</div><div class="form-input"><textarea>Socialhub.io</textarea></div></div>
-          <div class="form-row"><div class="form-label">Analytics & insights</div><div class="form-input"><textarea placeholder="e.g. Meta Insights, TikTok Analytics"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Content creation (design / video)</div><div class="form-input"><textarea id="tool_design" placeholder="e.g. Canva, CapCut, Adobe Express"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Caption writing / AI tools</div><div class="form-input"><textarea id="tool_ai" placeholder="e.g. Claude, ChatGPT"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Scheduling & publishing</div><div class="form-input"><textarea id="tool_schedule">Socialhub.io</textarea></div></div>
+          <div class="form-row"><div class="form-label">Analytics & insights</div><div class="form-input"><textarea id="tool_analytics" placeholder="e.g. Meta Insights, TikTok Analytics"></textarea></div></div>
         </div>
         <div>
-          <div class="form-row"><div class="form-label">Team communication / project mgmt</div><div class="form-input"><textarea placeholder="e.g. Notion, WhatsApp, MS Teams"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Donation / fundraising platform</div><div class="form-input"><textarea>Betterplace.org</textarea></div></div>
-          <div class="form-row"><div class="form-label">Link-in-bio tool</div><div class="form-input"><textarea placeholder="e.g. Linktree, bio.site"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Hashtag research tool</div><div class="form-input"><textarea placeholder="e.g. Flick, Later, native search"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Team communication / project mgmt</div><div class="form-input"><textarea id="tool_team" placeholder="e.g. Notion, WhatsApp, MS Teams"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Donation / fundraising platform</div><div class="form-input"><textarea id="tool_donation">Betterplace.org</textarea></div></div>
+          <div class="form-row"><div class="form-label">Link-in-bio tool</div><div class="form-input"><textarea id="tool_linkinbio" placeholder="e.g. Linktree, bio.site"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Hashtag research tool</div><div class="form-input"><textarea id="tool_hashtags" placeholder="e.g. Flick, Later, native search"></textarea></div></div>
         </div>
       </div>
     </div>
@@ -756,11 +757,11 @@
     <div class="subsection">
       <h3>6.2 Monitoring & Reporting</h3>
       <p class="hint">Define your monitoring routine and reporting structure.</p>
-      <div class="form-row"><div class="form-label">Who is responsible for analytics tracking?</div><div class="form-input"><textarea placeholder="Name(s) from your team"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Reporting frequency</div><div class="form-input"><select><option value="">–</option><option>Daily</option><option>Weekly</option><option>Bi-weekly</option><option>Monthly</option></select></div></div>
-      <div class="form-row"><div class="form-label">Analytics tools used</div><div class="form-input"><textarea placeholder="e.g. Meta Business Suite, TikTok Analytics, Socialhub.io Reports..."></textarea></div></div>
-      <div class="form-row"><div class="form-label">Where are reports stored / shared?</div><div class="form-input"><textarea placeholder="e.g. Shared Google Drive folder, Notion page..."></textarea></div></div>
-      <div class="form-row"><div class="form-label">Reporting format</div><div class="form-input"><textarea placeholder="e.g. Google Sheet + PDF summary"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Who is responsible for analytics tracking?</div><div class="form-input"><textarea id="ctrl_who" placeholder="Name(s) from your team"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Reporting frequency</div><div class="form-input"><select id="ctrl_freq"><option value="">–</option><option>Daily</option><option>Weekly</option><option>Bi-weekly</option><option>Monthly</option></select></div></div>
+      <div class="form-row"><div class="form-label">Analytics tools used</div><div class="form-input"><textarea id="ctrl_tools" placeholder="e.g. Meta Business Suite, TikTok Analytics, Socialhub.io Reports..."></textarea></div></div>
+      <div class="form-row"><div class="form-label">Where are reports stored / shared?</div><div class="form-input"><textarea id="ctrl_storage" placeholder="e.g. Shared Google Drive folder, Notion page..."></textarea></div></div>
+      <div class="form-row"><div class="form-label">Reporting format</div><div class="form-input"><textarea id="ctrl_format" placeholder="e.g. Google Sheet + PDF summary"></textarea></div></div>
     </div>
   </div>
   <div class="bottom-nav">
@@ -782,21 +783,21 @@
     <div class="arch-box">OBJECTIVES / VISION<br><textarea id="arch_vision" style="width:100%;border:none;background:transparent;text-align:center;font-size:12px;font-family:inherit;font-weight:400;margin-top:4px;resize:none;min-height:40px" placeholder="State your overarching campaign vision and main fundraising goal here..."></textarea></div>
     <div class="arch-level-label">Level 1 – Target Groups</div>
     <div class="arch-grid">
-      <div class="arch-tg"><div class="arch-tg-header">TARGET GROUP 1</div><textarea placeholder="Name & describe TG1&#10;• Goal 1&#10;• Goal 2"></textarea></div>
-      <div class="arch-tg"><div class="arch-tg-header">TARGET GROUP 2</div><textarea placeholder="Name & describe TG2&#10;• Goal 1&#10;• Goal 2"></textarea></div>
-      <div class="arch-tg"><div class="arch-tg-header">TARGET GROUP 3</div><textarea placeholder="Name & describe TG3&#10;• Goal 1&#10;• Goal 2"></textarea></div>
+      <div class="arch-tg"><div class="arch-tg-header">TARGET GROUP 1</div><textarea id="arch_tg1" placeholder="Name & describe TG1&#10;• Goal 1&#10;• Goal 2"></textarea></div>
+      <div class="arch-tg"><div class="arch-tg-header">TARGET GROUP 2</div><textarea id="arch_tg2" placeholder="Name & describe TG2&#10;• Goal 1&#10;• Goal 2"></textarea></div>
+      <div class="arch-tg"><div class="arch-tg-header">TARGET GROUP 3</div><textarea id="arch_tg3" placeholder="Name & describe TG3&#10;• Goal 1&#10;• Goal 2"></textarea></div>
     </div>
     <div class="arch-level-label">Level 2 – Selection of Channels</div>
     <div class="arch-grid">
-      <div class="arch-tg"><div class="arch-tg-header" style="background:#4a7fa8">CHANNELS for TG1</div><textarea placeholder="Channel 1:&#10;Channel 2:"></textarea></div>
-      <div class="arch-tg"><div class="arch-tg-header" style="background:#4a7fa8">CHANNELS for TG2</div><textarea placeholder="Channel 1:&#10;Channel 2:"></textarea></div>
-      <div class="arch-tg"><div class="arch-tg-header" style="background:#4a7fa8">CHANNELS for TG3</div><textarea placeholder="Channel 1:&#10;Channel 2:"></textarea></div>
+      <div class="arch-tg"><div class="arch-tg-header" style="background:#4a7fa8">CHANNELS for TG1</div><textarea id="arch_ch1" placeholder="Channel 1:&#10;Channel 2:"></textarea></div>
+      <div class="arch-tg"><div class="arch-tg-header" style="background:#4a7fa8">CHANNELS for TG2</div><textarea id="arch_ch2" placeholder="Channel 1:&#10;Channel 2:"></textarea></div>
+      <div class="arch-tg"><div class="arch-tg-header" style="background:#4a7fa8">CHANNELS for TG3</div><textarea id="arch_ch3" placeholder="Channel 1:&#10;Channel 2:"></textarea></div>
     </div>
     <div class="arch-level-label">Level 3 – Operationalisation per Channel</div>
     <div class="arch-grid">
-      <div class="arch-tg"><div class="arch-tg-header" style="background:#27ae60">DETAILS TG1</div><textarea placeholder="• Targets per channel&#10;• Content per channel&#10;• Resources&#10;• Linking with other TGs"></textarea></div>
-      <div class="arch-tg"><div class="arch-tg-header" style="background:#27ae60">DETAILS TG2</div><textarea placeholder="• Targets per channel&#10;• Content per channel&#10;• Resources&#10;• Linking with other TGs"></textarea></div>
-      <div class="arch-tg"><div class="arch-tg-header" style="background:#27ae60">DETAILS TG3</div><textarea placeholder="• Targets per channel&#10;• Content per channel&#10;• Resources&#10;• Linking with other TGs"></textarea></div>
+      <div class="arch-tg"><div class="arch-tg-header" style="background:#27ae60">DETAILS TG1</div><textarea id="arch_det1" placeholder="• Targets per channel&#10;• Content per channel&#10;• Resources&#10;• Linking with other TGs"></textarea></div>
+      <div class="arch-tg"><div class="arch-tg-header" style="background:#27ae60">DETAILS TG2</div><textarea id="arch_det2" placeholder="• Targets per channel&#10;• Content per channel&#10;• Resources&#10;• Linking with other TGs"></textarea></div>
+      <div class="arch-tg"><div class="arch-tg-header" style="background:#27ae60">DETAILS TG3</div><textarea id="arch_det3" placeholder="• Targets per channel&#10;• Content per channel&#10;• Resources&#10;• Linking with other TGs"></textarea></div>
     </div>
     <div style="margin-top:22px;padding:14px;background:#e8f5e9;border-radius:6px;border-left:4px solid #2e7d32;">
       <strong style="color:#1b5e20;font-size:13px">🎉 Your SOSTAC® Plan is complete!</strong>
@@ -965,11 +966,14 @@ async function savePlan(groupId, data) {
 }
 
 // =================== DATA SERIALIZATION ===================
+// IDs that belong to the UI shell, not the plan data
+const EXCLUDED_IDS = new Set(['groupIdInput', 'saveNowBtn', 'testConnBtn', 'syncMsg', 'syncGroup', 'diagRows', 'diagDetail', 'progressBar']);
+
 function collectData() {
   const data = { fields: {}, tables: {} };
-  // Named fields
+  // Named fields (exclude UI shell elements)
   document.querySelectorAll('input[id], textarea[id], select[id]').forEach(el => {
-    data.fields[el.id] = el.value;
+    if (!EXCLUDED_IDS.has(el.id)) data.fields[el.id] = el.value;
   });
   // All inputs/textareas/selects by position within each table tbody
   document.querySelectorAll('tbody').forEach((tbody, ti) => {
@@ -1047,6 +1051,165 @@ function setSyncStatus(state, msg) {
   document.getElementById('syncMsg').textContent = msg;
 }
 
+// =================== WORD DOCUMENT DEFAULTS ===================
+// Pre-filled data migrated from the Word template (01_SOSTAC_Social_Media_Template.docx).
+// Injected automatically for new groups so they start with the example content.
+const WORD_DATA = {
+  fields: {
+    si_group:      "Rajan Aziz, Sinem Sönmez, Miewan Ali, Lavin Mohammad, Lara Abay, Dariana Barkov",
+    si_course:     "Social Media Management",
+    si_semester:   "6",
+    si_campaign:   "Gemeinsam für geflüchtete Kinder in der Autonomen Region Kurdistan",
+    s_cause:       "Spendensammlung für geflüchtete Kinder in der autonomen Region Kurdistan. Die Spenden unterstützen Bildung, medizinische Versorgung, Nahrung, Kleidung und sichere Lebensbedingungen.",
+    s_org:         "https://www.betterplace.org/de/fundraising-events/56123-gemeinsam-fuer-gefluechtete-kinder-in-der-autonomen-region-kurdistan?utm_campaign=&utm_medium=&utm_source=Link",
+    s_why:         "Viele geflüchtete Kinder leben unter schwierigen Bedingungen und haben nur eingeschränkten Zugang zu Schule, Gesundheitsversorgung und sicheren Lebensräumen. Bereits kleine Spenden können ihre Lebenssituation deutlich verbessern.",
+    s_target:      "10.000€",
+    s_duration:    "03.2026 – 06.2026",
+    s_primary:     "Studierende, junge Berufstätige, sozial engagierte Erwachsene in Deutschland",
+    s_age:         "18–35 Jahre",
+    s_interests:   "Soziale Gerechtigkeit, Menschenrechte, Hilfe für Kinder, Nachhaltigkeit, Solidarität, globale Verantwortung",
+    s_platforms:   "Tägliche Nutzung von Instagram, Facebook und LinkedIn. Hohe Reaktion auf kurze Videos, Storytelling, emotionale Inhalte und transparente Spendenaktionen.",
+    s_motivation:  "Kindern helfen, direkte Wirkung sehen, Mitgefühl, kleine Beträge helfen sofort, Hoffnung schenken",
+    s_barriers:    "Misstrauen gegenüber Organisation, geringe finanzielle Mittel, fehlende Transparenz",
+    s_secondary:   "Eltern (35–55 Jahre), lokale Unternehmen, Hochschulmitarbeitende, Vereine",
+    swot_s:        "Emotionales und relevantes Thema\nVertrauenswürdige Spendenplattform\nKreatives Team mit 6 Personen",
+    swot_w:        "Neue Reichweite muss aufgebaut werden\nBegrenzte Produktionsressourcen\nAbhängigkeit von organischer Reichweite\nKurze Kampagnenlaufzeit",
+    swot_o:        "Viralität durch Reels/TikTok\nUnterstützung durch Influencer\nNutzung von Hochschulnetzwerken\nWachsende Online-Spendenbereitschaft",
+    swot_t:        "Viele konkurrierende Spendenaktionen\nAlgorithmusänderungen\nSkepsis gegenüber Online-Spenden",
+    o_total:       "10.000€",
+    o_start:       "03.2026",
+    o_end:         "06.2026",
+    o_platform:    "https://www.betterplace.org/de/fundraising-events/56123-gemeinsam-fuer-gefluechtete-kinder-in-der-autonomen-region-kurdistan?utm_campaign=&utm_medium=&utm_source=Link",
+    o_avg:         "20€",
+    o_donors:      "500",
+    p1_name:       "Lisa Müller",
+    p1_age:        "24 / weiblich",
+    p1_occ:        "Studentin, Bachelorstudium",
+    p1_sm:         "Instagram, LinkedIn",
+    p1_time:       "3–4 Stunden",
+    p1_values:     "Nachhaltigkeit, Gleichberechtigung, soziale Themen",
+    p1_rel:        "Möchte helfen und gesellschaftlich etwas bewegen",
+    p1_mot:        "Bereits kleine Beträge können helfen",
+    p1_fmt:        "Reels, Storys, kurze emotionale Videos",
+    p2_name:       "Markus Schneider",
+    p2_age:        "42 / männlich",
+    p2_occ:        "Angestellter, Familienvater",
+    p2_sm:         "Facebook, LinkedIn",
+    p2_time:       "1–2 Stunden",
+    p2_values:     "Familie, Sicherheit, Verantwortung",
+    p2_rel:        "Kinder in Not unterstützen",
+    p2_mot:        "Transparente und seriöse Projekte",
+    p2_fmt:        "Fakten, Bilder, Erfolgsgeschichten",
+    st_name:       "Gemeinsam für geflüchtete Kinder in der Autonomen Region Kurdistan",
+    st_hashtag1:   "#Kurdistan",
+    st_hashtag2:   "#KinderDerSonne, #SupportKurdistan, #HHNhilft",
+    st_core_msg:   "Jede Spende hilft geflüchteten Kindern in Kurdistan direkt und nachhaltig. Gemeinsam können wir Zukunft schenken.",
+    st_emotion:    "Zeigen, wie Kinder trotz schwieriger Umstände Hoffnung, Bildung und Sicherheit verdienen.",
+    st_tone:       "Emotional, authentisch, vertrauenswürdig, motivierend",
+    st_dos:        "Positive Sprache, klare Message, echte Geschichten, Transparenz, Dankbarkeit",
+    st_donts:      "Schockbilder, Schuldgefühle erzeugen, aggressive Sprache, politische Debatten",
+    st_visual:     "Warme Farben, Blau für Vertrauen, moderne serifenlose Schrift, klare Bildsprache",
+    st_formats:    "",
+    inf_use:       "Yes",
+    inf_why:       "Influencer/Botschafter erhöhen Reichweite, Glaubwürdigkeit und Vertrauen. Vor allem jemand, der sich schon mit solchen Themen beschäftigt.",
+    tool_design:   "Canva, CapCut",
+    tool_ai:       "ChatGPT, Perplexity",
+    tool_schedule: "Socialhub.io",
+    tool_analytics:"Socialhub.io",
+    tool_team:     "WhatsApp",
+    tool_donation: "Betterplace.org",
+    tool_linkinbio:"",
+    tool_hashtags: "Social Media Plattformen: Instagram, Facebook, LinkedIn"
+  },
+  rowCounts: { contentBody: 8, calendarBody: 3, kpiBody: 8 },
+  tables: {
+    // tbody[0] — 1.3 Competitor & Benchmark (3 rows × 4 cols)
+    0: [
+      ["UNICEF",            "Instagram, Facebook",  "Emotionales Storytelling, starke Bilder",              "Vertrauen + Emotion erzeugen Spendenbereitschaft"],
+      ["Save the Children", "Instagram, TikTok",    "Videos, Testimonials, klare Handlungsaufforderung",    "CTA erhöht Klicks und Spenden"],
+      ["Betterplace.org",   "Website, Social Media","Einfache Spendenlinks, Transparenz",                   "Niedrige Hürden steigern Conversion"]
+    ],
+    // tbody[1] — 2.2 SMART Objectives (5 rows × 4 cols — # col has no input)
+    1: [
+      ["Reichweite aufbauen",                 "Erreichte Accounts", "50.000",   "30.06.2026"],
+      ["Interaktion steigern",                "Engagement-Rate",    "10%",      "30.06.2026"],
+      ["Traffic auf Spendenseite lenken",     "Link-Klicks",        "2.000",    "30.06.2026"],
+      ["Community aufbauen",                  "Neue Follower",      "+1.000",   "30.06.2026"],
+      ["Spenden generieren",                  "Spendensumme",       "10.000€",  "30.06.2026"]
+    ],
+    // tbody[2] — 3.2 Platform Strategy (7 rows; rows 0-5 have 4 inputs, row 6 has 5)
+    2: [
+      ["18–35",          "Reels, Storys, Fakten",  "1x/Woche", "Primary"],   // Instagram
+      ["",               "",                        "",         ""],           // TikTok
+      ["30+",            "Fakten, Bilder, Links",   "1x/Woche", "Primary"],   // Facebook
+      ["Berufstätige",   "Carousel, Fakten",        "1x/Woche", "Primary"],   // LinkedIn
+      ["",               "",                        "",         ""],           // YouTube
+      ["",               "",                        "",         ""],           // X (Twitter)
+      ["",               "",                        "",         "", ""]        // Other (5 inputs)
+    ],
+    // tbody[3] — 3.4 Campaign Phases (8 rows; header rows have no inputs)
+    3: [
+      [],                                                                              // Phase 1 header
+      ["Monat 1",   "", "Problem erklären, Reichweite aufbauen"],                     // Awareness data
+      [],                                                                              // Phase 2 header
+      ["Monat 2-3", "", "Umfragen, Storys, Shares"],                                  // Engagement data
+      [],                                                                              // Phase 3 header
+      ["Monat 4",   "", "CTA-Posts"],                                                  // Conversion data
+      [],                                                                              // Phase 4 header
+      ["Monat 4-5", "", "Ergebnisse zeigen, Danke sagen"]                             // Thank you data
+    ],
+    // tbody[4] — 4.1 Content Formats (8 rows × 5 cols; delete button not collected)
+    4: [
+      ["Intro-Post",              "Instagram, Facebook, LinkedIn", "Team vorstellen",          "1x pro Woche", "Gruppenfoto mit Vorstellung des Teams und was wir machen wollen"],
+      ["Bild-Post",               "Instagram, Facebook, LinkedIn", "Aufmerksamkeit erzeugen",  "1x pro Woche", "Foto mit Botschaft: \"Jede Spende schenkt Hoffnung...\""],
+      ["Carousel-Post",           "Instagram, Facebook, LinkedIn", "Informationen vermitteln", "1x pro Woche", "Slide 1: Problem – Slide 2: Fakten – Slide 3: Lösung – Slide 4: Spendenaufruf"],
+      ["Reel / Kurzvideo",        "Instagram, Facebook, LinkedIn", "Reichweite & Emotionen",   "1x pro Woche", "20-Sekunden-Video mit emotionaler Musik und CTA"],
+      ["Live-Video",              "Instagram, Facebook, LinkedIn", "Vertrauen schaffen",        "1x pro Woche", "Live-Session zur Kampagne und Wirkung der Spenden"],
+      ["Infografik / Data Visual","Instagram, Facebook, LinkedIn", "Transparenz zeigen",        "1x pro Woche", "\"20 € finanzieren Schulmaterial für ein Kind\""],
+      ["Spenden-Countdown",       "Instagram, Facebook, LinkedIn", "Conversion steigern",       "1x pro Woche", "\"Noch 7 Tage – hilf jetzt!\""],
+      ["Danke-Post",              "Instagram, Facebook, LinkedIn", "Bindung & Vertrauen",       "1x pro Woche", "\"Danke! Gemeinsam schon ...€ erreicht.\""]
+    ],
+    // tbody[5] — 4.3 Influencer table (3 rows × 5 cols)
+    5: [
+      ["Tobias Huch", "Instagram", "116.000", "Sozial engagiert, schafft Reichweite und Vertrauen", ""],
+      ["Komciwan",    "Instagram", "1.000",   "Sozial engagiert, schafft direkten Zugang",           ""],
+      ["",            "",          "",         "",                                                    ""]
+    ],
+    // tbody[6] — 5.1 Editorial Calendar (3 rows × 7 cols; type=date needs YYYY-MM-DD)
+    6: [
+      ["2026-04-15", "Awareness", "Instagram, Facebook, LinkedIn", "Bild",
+       "Sechs Studentinnen, ein gemeinsames Ziel und ein Projekt mit Bedeutung.\n\nWir sind Rajan, Lara, Lavin, Yeliz, Dari und Miewan und studieren Wirtschaftsinformatik an der Hochschule Heilbronn. Im Rahmen unseres Studiums haben wir gemeinsam mit HHN hilft eine Fundraising-Kampagne für geflüchtete Kinder in der Autonomen Region Kurdistan gestartet. ☀️\n\nFür uns ist dieses Projekt mehr als eine Aufgabe im Studium. Es ist eine Chance, gemeinsam Verantwortung zu übernehmen und etwas zu bewegen.\n\nIn den nächsten Wochen geben wir euch Einblicke in unser Projekt und zeigen, wie ihr uns unterstützen könnt. 🩵",
+       "Mehr erfahren", ""],
+      ["2026-04-17", "Awareness", "Instagram, Facebook, LinkedIn", "Bild",
+       "☀️ Kinder der Sonne – und doch ohne Licht...\n\nStell dir vor, du bist ein Kind und dein Zuhause ist ein Zelt. Du hast deine Heimat verloren. Deine Schule. Deine Sicherheit. Vielleicht sogar Menschen, die du liebst.\n\nGenau so leben viele geflüchtete Kinder in der Autonomen Region Kurdistan – jeden Tag.\n\nUnd trotzdem werden sie „Kinder der Sonne“ genannt. Weil sie Hoffnung tragen. Stärke. Und den Wunsch nach einer besseren Zukunft.\n\nWir wollen ihnen genau das zurückgeben. Mit unserer Spendenaktion helfen wir dabei, Nahrung, Kleidung, medizinische Versorgung und Bildung zu ermöglichen.\n\n💛 Ein kleiner Beitrag kann für diese Kinder alles verändern.\n\n👉 Unterstütze jetzt unsere Aktion:\nhttps://www.betterplace.org/de/fundraising-events/56123-gemeinsam-fuer-gefluechtete-kinder-in-der-autonomen-region-kurdistan\n\nGemeinsam können wir Hoffnung schenken.\n\n#Kurdistan #SupportKurdistan #KurdishChildren #Helpkurdistan #GeflüchteteKinder #Spendenaktion #Spendenaufruf #KinderDerSonne",
+       "Jetzt unterstützen", ""],
+      ["", "Awareness", "", "", "", "", ""]
+    ],
+    // tbody[7] — 5.2 Roles & Responsibilities (8 rows; rows 0-6 have 3 inputs, row 7 has 4)
+    7: [
+      ["Alle Teammitglieder", "", ""],   // Content creation
+      ["Miewan",              "", ""],   // Copywriting
+      ["Rajan & Dariana",     "", ""],   // Scheduling & posting
+      ["Lavin",               "", ""],   // Community management
+      ["Lara",                "", ""],   // Analytics tracking
+      ["Sinem",               "", ""],   // Influencer coordination
+      ["Alle Teammitglieder", "", ""],   // Overall coordination
+      ["",                    "", "", ""] // Additional task row (4 inputs)
+    ],
+    // tbody[8] — 6.1 KPI Tracking (8 rows × 7 cols)
+    8: [
+      ["Reichweite",      "50.000",   "", "", "", "", ""],
+      ["Impressionen",    "50.000",   "", "", "", "", ""],
+      ["Engagement-Rate", "10%",      "", "", "", "", ""],
+      ["Link-Klicks",     "2.000",    "", "", "", "", ""],
+      ["Neue Follower",   "1.000",    "", "", "", "", ""],
+      ["Anzahl Spenden",  "500",      "", "", "", "", ""],
+      ["Spendensumme",    "10.000€",  "", "", "", "", ""],
+      ["Shares",          "500",      "", "", "", "", ""]
+    ]
+  }
+};
+
 // =================== GROUP LOGIN ===================
 async function initGroup() {
   const raw = document.getElementById('groupIdInput').value.trim().toLowerCase().replace(/\s+/g,'-');
@@ -1067,7 +1230,9 @@ async function initGroup() {
       applyData(existing);
       setSyncStatus('ok', `Daten geladen · Gruppe: ${raw}`);
     } else {
-      setSyncStatus('ok', `Neuer Plan erstellt · Gruppe: ${raw}`);
+      // New group: pre-fill with Word document template data
+      applyData(WORD_DATA);
+      setSyncStatus('ok', `Neuer Plan erstellt · Gruppe: ${raw} · Vorlage geladen`);
     }
 
     // Attach auto-save to all fields
@@ -1205,7 +1370,7 @@ function initCollapsibles() {
 }
 
 // Script is at bottom of <body> — DOM is fully available, call directly
-initCollapsibles();
+try { initCollapsibles(); } catch(e) { console.error('initCollapsibles failed:', e); }
 </script>
 </body>
 </html>
