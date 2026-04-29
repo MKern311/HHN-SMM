@@ -50,7 +50,7 @@
   #syncBar {
     background: #e8f5e9; border-bottom: 1px solid #a5d6a7;
     padding: 5px 20px; font-size: 11px; color: #2e7d32;
-    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
   }
   #syncBar.saving { background: #fff8e1; border-color: #ffe082; color: #8a6000; }
   #syncBar.error { background: #fdecea; border-color: #ef9a9a; color: #b71c1c; }
@@ -58,6 +58,32 @@
   #syncBar.saving .sync-dot { background: #f9a825; animation: pulse .8s infinite; }
   #syncBar.error .sync-dot { background: #c62828; }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+  #testConnBtn {
+    background: none; border: 1px solid currentColor; border-radius: 3px;
+    padding: 2px 8px; font-size: 10px; cursor: pointer; font-family: inherit;
+    color: inherit; opacity: .8; white-space: nowrap;
+  }
+  #testConnBtn:hover { opacity: 1; }
+  /* DIAGNOSTIC MODAL */
+  #diagModal {
+    display: none; position: fixed; inset: 0; background: rgba(0,30,70,.7);
+    z-index: 20000; align-items: center; justify-content: center;
+  }
+  #diagModal.open { display: flex; }
+  .diag-box {
+    background: #fff; border-radius: 8px; padding: 24px 28px; max-width: 540px; width: 92%;
+    font-size: 12px; font-family: inherit; box-shadow: 0 8px 40px rgba(0,0,0,.25);
+  }
+  .diag-box h3 { color: var(--hhn-blue); font-size: 14px; margin-bottom: 14px; }
+  .diag-row { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid #eee; padding: 6px 0; gap: 12px; }
+  .diag-row:last-of-type { border-bottom: none; }
+  .diag-label { font-weight: 600; color: #555; flex-shrink: 0; width: 160px; }
+  .diag-val { word-break: break-all; }
+  .diag-ok { color: #2e7d32; font-weight: 700; }
+  .diag-err { color: #b71c1c; font-weight: 700; }
+  .diag-detail { margin-top: 12px; background: #f5f5f5; border-radius: 4px; padding: 8px 10px; font-size: 11px; color: #333; white-space: pre-wrap; word-break: break-all; max-height: 160px; overflow-y: auto; }
+  .diag-actions { margin-top: 16px; display: flex; gap: 8px; justify-content: flex-end; }
+  .diag-close { background: var(--hhn-blue); color: #fff; border: none; border-radius: 4px; padding: 7px 18px; cursor: pointer; font-size: 12px; font-weight: 600; }
 
   /* HEADER */
   .header { background: var(--hhn-blue); color: #fff; padding: 18px 28px 14px; display: flex; align-items: flex-start; justify-content: space-between; }
@@ -210,6 +236,50 @@
     .tools-grid { grid-template-columns: 1fr; }
     .info-grid { grid-template-columns: 1fr; }
   }
+
+  /* ===== COLLAPSIBLE SUBSECTIONS ===== */
+  .subsection h3 {
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 4px;
+  }
+  .subsection h3 .toggle-arrow {
+    font-size: 13px;
+    color: var(--hhn-mid);
+    transition: transform .22s ease;
+    flex-shrink: 0;
+    margin-left: 8px;
+    display: inline-block;
+  }
+  .subsection h3.is-collapsed .toggle-arrow {
+    transform: rotate(-90deg);
+  }
+  .subsection h3:hover { color: var(--hhn-mid); }
+  .subsection-body.is-collapsed { display: none; }
+
+  /* ===== COLLAPSIBLE PERSONA / PLATFORM CARDS ===== */
+  .persona-card-header {
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .persona-card-header .toggle-arrow {
+    font-size: 13px;
+    opacity: .85;
+    transition: transform .22s ease;
+    flex-shrink: 0;
+    margin-left: 8px;
+    display: inline-block;
+  }
+  .persona-card-header.is-collapsed .toggle-arrow {
+    transform: rotate(-90deg);
+  }
+  .persona-card-body.is-collapsed { display: none; }
 </style>
 </head>
 <body>
@@ -230,7 +300,23 @@
 <!-- =================== SYNC BAR =================== -->
 <div id="syncBar" style="display:none">
   <span><span class="sync-dot"></span><span id="syncMsg">Verbunden · Daten werden automatisch gespeichert</span></span>
-  <span id="syncGroup" style="font-weight:700;color:var(--hhn-blue)"></span>
+  <span style="display:flex;align-items:center;gap:10px;">
+    <button id="testConnBtn" onclick="manualSave()">💾 Save now</button>
+    <button id="testConnBtn" onclick="runConnectionTest()">🔌 Test Connection</button>
+    <span id="syncGroup" style="font-weight:700;color:var(--hhn-blue)"></span>
+  </span>
+</div>
+
+<!-- =================== DIAGNOSTIC MODAL =================== -->
+<div id="diagModal">
+  <div class="diag-box">
+    <h3>🔌 Supabase Connection Diagnostics</h3>
+    <div id="diagRows"></div>
+    <div class="diag-detail" id="diagDetail" style="display:none"></div>
+    <div class="diag-actions">
+      <button class="diag-close" onclick="document.getElementById('diagModal').classList.remove('open')">Close</button>
+    </div>
+  </div>
 </div>
 
 <div class="header">
@@ -747,10 +833,122 @@ async function sbFetch(method, path, body) {
     body: body ? JSON.stringify(body) : undefined
   });
   if (!res.ok) {
-    const err = await res.text();
-    throw new Error(err);
+    const errText = await res.text();
+    const e = new Error(errText);
+    e.status = res.status;
+    e.detail = errText;
+    throw e;
   }
   return res.status === 204 ? null : res.json();
+}
+
+// =================== MANUAL SAVE ===================
+async function manualSave() {
+  if (!currentGroupId) return;
+  setSyncStatus('saving', 'Speichert...');
+  try {
+    await savePlan(currentGroupId, collectData());
+    setSyncStatus('ok', `Gespeichert · Gruppe: ${currentGroupId}`);
+  } catch(e) {
+    const statusHint = e.status ? ` (HTTP ${e.status})` : '';
+    setSyncStatus('error', `Speichern fehlgeschlagen${statusHint} – Klicke "Test Connection"`);
+    console.error('Manual save failed:', e);
+  }
+}
+
+// =================== CONNECTION TEST ===================
+async function runConnectionTest() {
+  const modal = document.getElementById('diagModal');
+  const rows  = document.getElementById('diagRows');
+  const detail = document.getElementById('diagDetail');
+  rows.innerHTML = '<div style="color:#555;font-style:italic">Running tests…</div>';
+  detail.style.display = 'none';
+  modal.classList.add('open');
+
+  const results = [];
+  let rawDetail = '';
+
+  // --- Test 1: Network reachability ---
+  let networkOk = false;
+  try {
+    const t0 = Date.now();
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+    });
+    const ms = Date.now() - t0;
+    networkOk = true;
+    results.push({ label: 'Network / Host', val: `Reachable (${ms} ms)`, ok: true });
+    results.push({ label: 'HTTP Status (base)', val: r.status + ' ' + r.statusText, ok: r.status < 400 });
+  } catch(e) {
+    results.push({ label: 'Network / Host', val: 'UNREACHABLE — ' + e.message, ok: false });
+    rawDetail += 'Network error:\n' + e.message + '\n\n';
+  }
+
+  // --- Test 2: Auth / API key ---
+  if (networkOk) {
+    try {
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?select=group_id&limit=1`, {
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+      });
+      const body = await r.text();
+      if (r.status === 200) {
+        results.push({ label: 'API Key / Auth', val: 'Valid ✓', ok: true });
+        results.push({ label: 'Table access (SELECT)', val: 'OK — ' + (JSON.parse(body).length) + ' row(s) visible', ok: true });
+      } else if (r.status === 401 || r.status === 403) {
+        results.push({ label: 'API Key / Auth', val: `FAILED (HTTP ${r.status})`, ok: false });
+        results.push({ label: 'Table access (SELECT)', val: 'Blocked — check RLS policies', ok: false });
+        rawDetail += `Auth error (${r.status}):\n${body}\n\n`;
+      } else if (r.status === 404) {
+        results.push({ label: 'API Key / Auth', val: 'Key accepted', ok: true });
+        results.push({ label: `Table "${TABLE}"`, val: 'NOT FOUND (404) — table may not exist', ok: false });
+        rawDetail += `Table 404:\n${body}\n\n`;
+      } else {
+        results.push({ label: 'API Key / Auth', val: `HTTP ${r.status}`, ok: false });
+        rawDetail += `Unexpected status ${r.status}:\n${body}\n\n`;
+      }
+    } catch(e) {
+      results.push({ label: 'API Key / Auth', val: 'Error: ' + e.message, ok: false });
+      rawDetail += 'Auth fetch error:\n' + e.message + '\n\n';
+    }
+  }
+
+  // --- Test 3: Write (INSERT/UPSERT) ---
+  if (networkOk) {
+    try {
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?on_conflict=group_id`, {
+        method: 'POST',
+        headers: {
+          'apikey': SUPABASE_KEY,
+          'Authorization': `Bearer ${SUPABASE_KEY}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'resolution=merge-duplicates,return=representation'
+        },
+        body: JSON.stringify({ group_id: '__diag_test__', data: {}, last_saved: new Date().toISOString() })
+      });
+      const body = await r.text();
+      if (r.status === 200 || r.status === 201) {
+        results.push({ label: 'Write (UPSERT)', val: 'OK ✓', ok: true });
+      } else {
+        results.push({ label: 'Write (UPSERT)', val: `FAILED (HTTP ${r.status})`, ok: false });
+        rawDetail += `Upsert error (${r.status}):\n${body}\n\n`;
+      }
+    } catch(e) {
+      results.push({ label: 'Write (UPSERT)', val: 'Error: ' + e.message, ok: false });
+      rawDetail += 'Write fetch error:\n' + e.message + '\n\n';
+    }
+  }
+
+  // --- Render results ---
+  rows.innerHTML = results.map(r => `
+    <div class="diag-row">
+      <span class="diag-label">${r.label}</span>
+      <span class="diag-val ${r.ok ? 'diag-ok' : 'diag-err'}">${r.val}</span>
+    </div>`).join('');
+
+  if (rawDetail) {
+    detail.textContent = rawDetail.trim();
+    detail.style.display = 'block';
+  }
 }
 
 async function loadPlan(groupId) {
@@ -759,7 +957,7 @@ async function loadPlan(groupId) {
 }
 
 async function savePlan(groupId, data) {
-  await sbFetch('POST', TABLE, {
+  await sbFetch('POST', `${TABLE}?on_conflict=group_id`, {
     group_id: groupId,
     data: data,
     last_saved: new Date().toISOString()
@@ -837,7 +1035,8 @@ function scheduleAutoSave() {
       await savePlan(currentGroupId, collectData());
       setSyncStatus('ok', `Gespeichert · Gruppe: ${currentGroupId}`);
     } catch(e) {
-      setSyncStatus('error', 'Speichern fehlgeschlagen – Verbindung prüfen');
+      const statusHint = e.status ? ` (HTTP ${e.status})` : '';
+      setSyncStatus('error', `Speichern fehlgeschlagen${statusHint} – Klicke "Test Connection"`);
     }
   }, 1200);
 }
@@ -941,6 +1140,72 @@ function addKpiRow() {
   tr.innerHTML = `<td><input/></td><td><input/></td><td><input/></td><td><input/></td><td><input/></td><td><input/></td><td><input/></td><td><button class="del-btn" onclick="delRow(this)">✕</button></td>`;
   tb.appendChild(tr);
 }
+
+// =================== COLLAPSIBLES ===================
+function initCollapsibles() {
+  // --- Subsections: wrap everything after h3 in a .subsection-body div ---
+  document.querySelectorAll('.subsection').forEach(sec => {
+    const h3 = sec.querySelector('h3');
+    if (!h3) return;
+
+    // Add arrow indicator
+    const arrow = document.createElement('span');
+    arrow.className = 'toggle-arrow';
+    arrow.innerHTML = '&#9660;'; // ▼
+    h3.appendChild(arrow);
+
+    // Collect all sibling nodes after h3 and wrap them
+    const body = document.createElement('div');
+    body.className = 'subsection-body';
+    const siblings = [];
+    let node = h3.nextSibling;
+    while (node) {
+      siblings.push(node);
+      node = node.nextSibling;
+    }
+    siblings.forEach(s => body.appendChild(s));
+    sec.appendChild(body);
+
+    // Toggle on click
+    h3.addEventListener('click', () => {
+      const collapsed = body.classList.toggle('is-collapsed');
+      h3.classList.toggle('is-collapsed', collapsed);
+    });
+  });
+
+  // --- Persona / platform cards: wrap everything after header div ---
+  document.querySelectorAll('.persona-card').forEach(card => {
+    const header = card.querySelector('.persona-card-header');
+    if (!header) return;
+
+    // Add arrow indicator
+    const arrow = document.createElement('span');
+    arrow.className = 'toggle-arrow';
+    arrow.innerHTML = '&#9660;'; // ▼
+    header.appendChild(arrow);
+
+    // Collect all sibling nodes after header and wrap them
+    const body = document.createElement('div');
+    body.className = 'persona-card-body';
+    const siblings = [];
+    let node = header.nextSibling;
+    while (node) {
+      siblings.push(node);
+      node = node.nextSibling;
+    }
+    siblings.forEach(s => body.appendChild(s));
+    card.appendChild(body);
+
+    // Toggle on click
+    header.addEventListener('click', () => {
+      const collapsed = body.classList.toggle('is-collapsed');
+      header.classList.toggle('is-collapsed', collapsed);
+    });
+  });
+}
+
+// Script is at bottom of <body> — DOM is fully available, call directly
+initCollapsibles();
 </script>
 </body>
 </html>
