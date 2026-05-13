@@ -1230,9 +1230,7 @@ async function initGroup() {
       applyData(existing);
       setSyncStatus('ok', `Daten geladen · Gruppe: ${raw}`);
     } else {
-      // New group: pre-fill with Word document template data
-      applyData(WORD_DATA);
-      setSyncStatus('ok', `Neuer Plan erstellt · Gruppe: ${raw} · Vorlage geladen`);
+      setSyncStatus('ok', `Neuer Plan erstellt · Gruppe: ${raw}`);
     }
 
     // Attach auto-save to all fields
