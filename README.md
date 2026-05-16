@@ -1,2 +1,2 @@
-# Lecture Repo
-Repo for different lectures in my courses
+# SMM Lecture Repo
+Repo for SMM lecture at HHN 
