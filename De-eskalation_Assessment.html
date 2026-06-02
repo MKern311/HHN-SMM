@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Glasl-Eskalationsstufen – Übungstool</title>
+<title>Glasl Escalation Stages – Exercise Tool</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -36,7 +36,6 @@
   }
   .wrap { max-width: 1180px; margin: 0 auto; padding: 26px 20px 64px; }
 
-  /* Header */
   header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 6px; }
   .titleblock { max-width: 720px; }
   .eyebrow { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--hhn); font-weight: 600; margin: 0 0 6px; }
@@ -44,7 +43,6 @@
   .sub { color: var(--muted); margin: 8px 0 0; font-size: 15px; }
   .bar { height: 5px; width: 64px; background: var(--hhn); border-radius: 4px; margin: 16px 0 22px; }
 
-  /* Controls */
   .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 20px; }
   .modes { display: inline-flex; background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 4px; box-shadow: var(--shadow); }
   .modes button { border: 0; background: transparent; font: inherit; font-weight: 600; color: var(--muted); padding: 8px 16px; border-radius: 999px; cursor: pointer; transition: .15s; }
@@ -60,7 +58,6 @@
   .hint { font-size: 13.5px; color: var(--muted); margin: -6px 0 18px; }
   .hint b { color: var(--ink); }
 
-  /* Layout */
   .board { display: grid; grid-template-columns: 1fr 1.18fr; gap: 22px; align-items: start; }
   @media (max-width: 860px) { .board { grid-template-columns: 1fr; } }
 
@@ -68,12 +65,10 @@
   .panel-head { padding: 14px 16px; border-bottom: 1px solid var(--line); font-family: "Archivo", sans-serif; font-weight: 700; font-size: 14px; letter-spacing: .02em; color: var(--hhn); display: flex; justify-content: space-between; align-items: center; }
   .panel-head .small { font-family: "IBM Plex Sans"; font-weight: 500; color: var(--muted); font-size: 12.5px; }
 
-  /* Pool */
   #pool { padding: 12px; min-height: 120px; display: flex; flex-direction: column; gap: 10px; }
   #pool.dropping { background: var(--hhn-soft); }
   #pool .empty { color: var(--muted); font-size: 13.5px; text-align: center; padding: 22px 8px; }
 
-  /* Cards */
   .card { background: #fff; border: 1px solid var(--line); border-left: 4px solid var(--hhn); border-radius: 10px; padding: 11px 13px; font-size: 14px; cursor: grab; box-shadow: 0 1px 1px rgba(16,24,64,.05); transition: transform .12s, box-shadow .12s, border-color .12s; user-select: none; }
   .card:hover { box-shadow: var(--shadow); transform: translateY(-1px); }
   .card:active { cursor: grabbing; }
@@ -84,7 +79,6 @@
   .card.correct .verdict { display: block; color: var(--ok); }
   .card.wrong .verdict { display: block; color: var(--bad); }
 
-  /* Stage slots grouped by phase */
   #stages { padding: 12px; display: flex; flex-direction: column; gap: 16px; }
   .phase { border: 1px solid; border-radius: var(--radius); padding: 10px 10px 12px; }
   .phase.p-win { background: var(--win-bg); border-color: var(--win-line); }
@@ -109,7 +103,6 @@
   .drop.has .stagename { display: none; }
   .drop .card { cursor: grab; }
 
-  /* Result banner */
   .result { margin-top: 22px; border-radius: var(--radius); padding: 16px 18px; font-size: 14.5px; display: none; box-shadow: var(--shadow); }
   .result.show { display: block; }
   .result.win { background: #eaf7ef; border: 1px solid #bfe6cd; color: #14502f; }
@@ -123,90 +116,87 @@
 <div class="wrap">
   <header>
     <div class="titleblock">
-      <p class="eyebrow">Konfliktmanagement · nach Friedrich Glasl</p>
-      <h1>Die 9 Eskalationsstufen</h1>
-      <p class="sub">Ziehe jede Aussage auf die Stufe, zu der sie passt. Auf dem Smartphone: erst die Karte antippen, dann die Stufe.</p>
+      <p class="eyebrow">Conflict management · after Friedrich Glasl</p>
+      <h1>The 9 escalation stages</h1>
+      <p class="sub">Drag each statement onto the stage it matches. On a phone: tap the card first, then the stage.</p>
     </div>
-    <div class="score" id="score">0 / 9 zugeordnet</div>
+    <div class="score" id="score">0 / 9 placed</div>
   </header>
   <div class="bar"></div>
 
   <div class="controls">
-    <div class="modes" role="tablist" aria-label="Modus">
-      <button id="m-general" class="active" type="button">Allgemeiner Konflikt</button>
-      <button id="m-storm" type="button">Shitstorm-Fall</button>
+    <div class="modes" role="tablist" aria-label="Mode">
+      <button id="m-general" class="active" type="button">General conflict</button>
+      <button id="m-storm" type="button">Shitstorm case</button>
     </div>
-    <button class="btn" id="check" type="button">Auswerten</button>
-    <button class="btn ghost" id="solve" type="button">Lösung zeigen</button>
-    <button class="btn ghost" id="reset" type="button">Neu mischen</button>
+    <button class="btn" id="check" type="button">Check</button>
+    <button class="btn ghost" id="solve" type="button">Show solution</button>
+    <button class="btn ghost" id="reset" type="button">Reshuffle</button>
   </div>
-  <p class="hint" id="hint"><b>Win-Win</b> (1–3) · <b>Win-Lose</b> (4–6) · <b>Lose-Lose</b> (7–9). Die Phasen helfen beim Einordnen.</p>
+  <p class="hint" id="hint"><b>Win-Win</b> (1–3) · <b>Win-Lose</b> (4–6) · <b>Lose-Lose</b> (7–9). The phases help you sort.</p>
 
   <div class="board">
     <div class="panel">
-      <div class="panel-head">Aussagen <span class="small" id="poolcount"></span></div>
+      <div class="panel-head">Statements <span class="small" id="poolcount"></span></div>
       <div id="pool"></div>
     </div>
     <div class="panel">
-      <div class="panel-head">Eskalationsstufen <span class="small">Win-Win → Win-Lose → Lose-Lose</span></div>
+      <div class="panel-head">Escalation stages <span class="small">Win-Win → Win-Lose → Lose-Lose</span></div>
       <div id="stages"></div>
     </div>
   </div>
 
   <div class="result" id="result"></div>
 
-  <footer>Social Media Marketing &amp; Management · Prof. Dr. Manuel Kern · nach Glasl, F. (1980): Konfliktmanagement.</footer>
+  <footer>Social Media Marketing &amp; Management · Prof. Dr. Manuel Kern · after Glasl, F. (1980): Conflict Management.</footer>
 </div>
 
 <script>
 (function () {
-  // ── Stufen ────────────────────────────────────────────────────────────────
   const STAGES = [
-    { n: 1, name: "Verhärtung",               phase: "win" },
-    { n: 2, name: "Debatte & Polemik",        phase: "win" },
-    { n: 3, name: "Taten statt Worte",        phase: "win" },
-    { n: 4, name: "Images & Koalitionen",     phase: "wl"  },
-    { n: 5, name: "Gesichtsverlust",          phase: "wl"  },
-    { n: 6, name: "Drohstrategien",           phase: "wl"  },
-    { n: 7, name: "Begrenzte Vernichtung",    phase: "ll"  },
-    { n: 8, name: "Zersplitterung",           phase: "ll"  },
-    { n: 9, name: "Gemeinsam in den Abgrund", phase: "ll"  },
+    { n: 1, name: "Hardening",              phase: "win" },
+    { n: 2, name: "Debate & Polemics",      phase: "win" },
+    { n: 3, name: "Actions, not Words",     phase: "win" },
+    { n: 4, name: "Images & Coalitions",    phase: "wl"  },
+    { n: 5, name: "Loss of Face",           phase: "wl"  },
+    { n: 6, name: "Threat Strategies",      phase: "wl"  },
+    { n: 7, name: "Limited Destruction",    phase: "ll"  },
+    { n: 8, name: "Fragmentation",          phase: "ll"  },
+    { n: 9, name: "Together into the Abyss",phase: "ll"  },
   ];
   const PHASES = [
-    { key: "win", label: "Win-Win",   tag: "beide können noch gewinnen · Selbsthilfe", stages: [1,2,3] },
-    { key: "wl",  label: "Win-Lose",  tag: "einer soll verlieren · Dritte nötig",      stages: [4,5,6] },
-    { key: "ll",  label: "Lose-Lose", tag: "beide verlieren · Machteingriff",          stages: [7,8,9] },
+    { key: "win", label: "Win-Win",   tag: "both can still win · self-help",        stages: [1,2,3] },
+    { key: "wl",  label: "Win-Lose",  tag: "one must lose · third party needed",    stages: [4,5,6] },
+    { key: "ll",  label: "Lose-Lose", tag: "both lose · power intervention",        stages: [7,8,9] },
   ];
 
-  // ── Karten je Modus ─────────────────────────────────────────────────────────
   const DECKS = {
     general: [
-      { s:1, t:"Die Standpunkte verhärten sich, aber man ist noch überzeugt, dass ein Gespräch die Sache löst." },
-      { s:2, t:"Hitzige Wortgefechte – jede Seite will mit Argumenten Überlegenheit demonstrieren." },
-      { s:3, t:"Reden bringt nichts mehr – man schafft Fakten und stellt die andere Seite vor vollendete Tatsachen." },
-      { s:4, t:"Es bilden sich zwei Lager; man wirbt um Verbündete, über die Gegenseite kursieren Gerüchte und Stereotype." },
-      { s:5, t:"Die Gegenseite wird öffentlich bloßgestellt und „entlarvt“." },
-      { s:6, t:"Es werden Ultimaten und Drohungen ausgesprochen, um Druck aufzubauen." },
-      { s:7, t:"Der Gegner wird nicht mehr als Mensch gesehen; ihm zu schaden gilt bereits als Gewinn." },
-      { s:8, t:"Ziel ist es, die gesamte Unterstützer- und Machtbasis des Gegners zu zerstören." },
-      { s:9, t:"Man nimmt die eigene Niederlage billigend in Kauf, Hauptsache die Gegenseite geht mit unter." },
+      { s:1, t:"Positions harden, but the parties still believe a conversation can solve it." },
+      { s:2, t:"Heated verbal battles – each side wants to prove its superiority with arguments." },
+      { s:3, t:"Talking no longer helps – the parties create facts and present the other with faits accomplis." },
+      { s:4, t:"Two camps form; people court allies, and rumours and stereotypes about the other side spread." },
+      { s:5, t:"The other side is publicly exposed and 'unmasked'." },
+      { s:6, t:"Ultimatums and threats are issued to build pressure." },
+      { s:7, t:"The opponent is no longer seen as human; harming them already counts as a win." },
+      { s:8, t:"The goal is to destroy the opponent's entire support and power base." },
+      { s:9, t:"One accepts one's own defeat, as long as the other side goes down too." },
     ],
     storm: [
-      { s:1, t:"Erste kritische Kommentare unter dem Werbepost – noch zivil. Das Team denkt, ein kurzer Hinweis klärt das." },
-      { s:2, t:"Das Team antwortet floskelhaft; in den Kommentaren entbrennen Wortgefechte, jede Seite will Recht behalten." },
-      { s:3, t:"Kritiker posten Screenshots der Verpackung, 1-Stern-Bewertungen und setzen den Vorwurf unter jeden Beitrag." },
-      { s:4, t:"Der Hashtag #VitaFake entsteht, ein reichweitenstarker Account greift es auf, zwei Lager formieren sich." },
-      { s:5, t:"Ein altes, widersprüchliches Marken-Statement wird ausgegraben und mit Heuchelei-Memes breit geteilt." },
-      { s:6, t:"Boykottaufrufe und ein Ultimatum: „Entschuldigung bis Freitag – sonst Presse & Verbraucherschutz.“" },
-      { s:7, t:"Bewertungsbomben auf allen Plattformen und gezielte Angriffe auf einzelne Mitarbeitende – Fakten egal." },
-      { s:8, t:"Druck auf Handels- und Werbepartner, sich zu distanzieren; das Ökosystem der Marke soll zerstört werden." },
-      { s:9, t:"Doxxing und Bedrohungen; der Mob verselbstständigt sich, das berechtigte Anliegen diskreditiert sich selbst." },
+      { s:1, t:"First critical comments under the ad post – still civil. The team thinks a quick note will clear it up." },
+      { s:2, t:"The team replies with platitudes; verbal battles erupt in the comments, each side wants to be right." },
+      { s:3, t:"Critics post screenshots of the packaging, 1-star reviews, and put the accusation under every new post." },
+      { s:4, t:"The hashtag #VitaFake emerges, a high-reach account picks it up, two camps form." },
+      { s:5, t:"An old, contradictory brand statement is dug up and shared widely with hypocrisy memes." },
+      { s:6, t:"Boycott calls and an ultimatum: 'Apologise by Friday – or it goes to the press & consumer protection.'" },
+      { s:7, t:"Review-bombing across all platforms and targeted attacks on individual employees – facts no longer matter." },
+      { s:8, t:"Pressure on retail and ad partners to distance themselves; the brand's ecosystem is to be destroyed." },
+      { s:9, t:"Doxxing and threats; the mob takes on a life of its own, and the legitimate concern discredits itself." },
     ],
   };
 
-  // ── State ─────────────────────────────────────────────────────────────────
   let mode = "general";
-  let cards = [];          // {id, t, s, placedAt|null}
+  let cards = [];
   let selectedId = null;
   let evaluated = false;
 
@@ -237,7 +227,7 @@
         slot.className = "slot";
         slot.innerHTML = `<div class="num">${n}</div>
           <div class="drop" data-stage="${n}">
-            <div class="stagename">${st.name} <span>· Stufe ${n}</span></div>
+            <div class="stagename">${st.name} <span>· Stage ${n}</span></div>
           </div>`;
         box.appendChild(slot);
       });
@@ -254,18 +244,16 @@
     if (evaluated && c.placedAt!=null){
       const ok = c.placedAt === c.s;
       el.classList.add(ok ? "correct" : "wrong");
-      el.querySelector(".verdict").textContent = ok ? "✓ richtig" : "✗ richtig wäre Stufe " + c.s;
+      el.querySelector(".verdict").textContent = ok ? "✓ correct" : "✗ correct: stage " + c.s;
     }
     return el;
   }
 
   function render(){
-    // pool
     const inPool = cards.filter(c=>c.placedAt==null);
     poolEl.innerHTML = "";
-    if (inPool.length===0){ poolEl.innerHTML = `<div class="empty">Alle Karten zugeordnet. Jetzt auf <b>Auswerten</b> tippen.</div>`; }
+    if (inPool.length===0){ poolEl.innerHTML = `<div class="empty">All cards placed. Now tap <b>Check</b>.</div>`; }
     inPool.forEach(c=> poolEl.appendChild(cardHTML(c)));
-    // slots
     document.querySelectorAll(".drop").forEach(d=>{
       const stage = +d.dataset.stage;
       d.classList.remove("has");
@@ -273,27 +261,25 @@
       const c = cards.find(x=>x.placedAt===stage);
       if (c){ d.classList.add("has"); d.appendChild(cardHTML(c)); }
     });
-    // score
     const placed = cards.filter(c=>c.placedAt!=null).length;
     const sc = $("score");
     if (evaluated){
       const right = cards.filter(c=>c.placedAt===c.s).length;
-      sc.textContent = right + " / 9 richtig";
+      sc.textContent = right + " / 9 correct";
       sc.className = "score " + (right===9 ? "win" : "partial");
     } else {
-      sc.textContent = placed + " / 9 zugeordnet";
+      sc.textContent = placed + " / 9 placed";
       sc.className = "score";
     }
-    $("poolcount").textContent = inPool.length ? inPool.length + " offen" : "fertig";
+    $("poolcount").textContent = inPool.length ? inPool.length + " open" : "done";
     attachDrag();
   }
 
-  // ── Platzieren ──────────────────────────────────────────────────────────────
-  function place(cardId, stage){ // stage = number or null (=> pool)
+  function place(cardId, stage){
     const c = cards.find(x=>x.id===cardId); if(!c) return;
     if (stage!=null){
       const occ = cards.find(x=>x.placedAt===stage && x.id!==cardId);
-      if (occ) occ.placedAt = null; // verdrängte Karte zurück in den Pool
+      if (occ) occ.placedAt = null;
     }
     c.placedAt = stage;
     if (evaluated){ evaluated=false; $("result").className="result"; }
@@ -301,7 +287,6 @@
     render();
   }
 
-  // ── Drag & Drop (Maus) + Tap-Fallback (Touch) ───────────────────────────────
   function attachDrag(){
     document.querySelectorAll(".card").forEach(el=>{
       el.addEventListener("dragstart", e=>{ e.dataTransfer.setData("text/plain", el.dataset.id); el.style.opacity=".4"; });
@@ -326,10 +311,9 @@
     });
   }
 
-  // ── Aktionen ──────────────────────────────────────────────────────────────
   function evaluate(){
     if (cards.some(c=>c.placedAt==null)){
-      flash("Bitte erst alle 9 Karten zuordnen.");
+      flash("Please place all 9 cards first.");
       return;
     }
     evaluated = true; render();
@@ -337,10 +321,10 @@
     const r = $("result");
     if (right===9){
       r.className = "result show win";
-      r.innerHTML = "<b>Perfekt – 9 / 9.</b> Du hast jede Aussage der richtigen Eskalationsstufe zugeordnet. Achte im Fall besonders auf die beiden Schwellen 3 → 4 und 6 → 7.";
+      r.innerHTML = "<b>Perfect – 9 / 9.</b> You matched every statement to the right escalation stage. In the case, watch the two thresholds 3 → 4 and 6 → 7 in particular.";
     } else {
       r.className = "result show partial";
-      r.innerHTML = `<b>${right} / 9 richtig.</b> Die rot markierten Karten zeigen, welche Stufe gemeint war. Tipp: Frag dich, ob noch <i>verhandelt</i> wird (Win-Win), ob es ums <i>Gewinnen über den anderen</i> geht (Win-Lose) oder ob nur noch <i>Schaden</i> zählt (Lose-Lose).`;
+      r.innerHTML = `<b>${right} / 9 correct.</b> The cards marked red show which stage was meant. Tip: ask yourself whether the parties are still <i>negotiating</i> (Win-Win), whether it is about <i>winning over the other</i> (Win-Lose), or whether only <i>damage</i> counts (Lose-Lose).`;
     }
     r.scrollIntoView({behavior:"smooth", block:"nearest"});
   }
@@ -349,7 +333,7 @@
     evaluated = true; render();
     const r = $("result");
     r.className = "result show win";
-    r.innerHTML = "<b>Lösung eingeblendet.</b> Alle Aussagen stehen jetzt auf ihrer korrekten Stufe.";
+    r.innerHTML = "<b>Solution shown.</b> All statements are now on their correct stage.";
   }
   let flashTO;
   function flash(msg){
@@ -358,9 +342,7 @@
     clearTimeout(flashTO); flashTO = setTimeout(()=>{ if(!evaluated) r.className="result"; }, 2600);
   }
 
-  // ── Init ────────────────────────────────────────────────────────────────────
   setupDropZone(poolEl, null);
-  // delegate drop setup to slots after build:
   const obs = new MutationObserver(()=>{
     document.querySelectorAll(".drop").forEach(d=>{
       if (!d.dataset.bound){ d.dataset.bound="1"; setupDropZone(d, +d.dataset.stage); }
@@ -369,8 +351,8 @@
   obs.observe(stagesEl, {childList:true, subtree:true});
 
   document.body.addEventListener("click", ()=>{ if(selectedId){ selectedId=null; render(); } });
-  $("m-general").onclick = ()=>{ $("m-general").classList.add("active"); $("m-storm").classList.remove("active"); $("hint").innerHTML='<b>Win-Win</b> (1–3) · <b>Win-Lose</b> (4–6) · <b>Lose-Lose</b> (7–9). Die Phasen helfen beim Einordnen.'; load("general"); };
-  $("m-storm").onclick   = ()=>{ $("m-storm").classList.add("active"); $("m-general").classList.remove("active"); $("hint").innerHTML='Fall <b>„VitaFresh wird klimaneutral“</b> – ein Greenwashing-Shitstorm. Ordne die 9 Beats den Stufen zu.'; load("storm"); };
+  $("m-general").onclick = ()=>{ $("m-general").classList.add("active"); $("m-storm").classList.remove("active"); $("hint").innerHTML="<b>Win-Win</b> (1–3) · <b>Win-Lose</b> (4–6) · <b>Lose-Lose</b> (7–9). The phases help you sort."; load("general"); };
+  $("m-storm").onclick   = ()=>{ $("m-storm").classList.add("active"); $("m-general").classList.remove("active"); $("hint").innerHTML="Case <b>'VitaFresh goes climate-neutral'</b> – a greenwashing shitstorm. Match the 9 beats to the stages."; load("storm"); };
   $("check").onclick = evaluate;
   $("solve").onclick = solve;
   $("reset").onclick = ()=> load(mode);
