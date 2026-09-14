@@ -230,6 +230,16 @@
                        padding: 5px 12px; font-size: 11px; font-weight: 700; cursor: pointer;
                        font-family: Arial, sans-serif; }
 
+  /* ─── CONCURRENT-EDIT GUARD ───────────────────────────────── */
+  #conflictWarn { display: none; background: #FFF8E1; border-bottom: 1px solid #FFCC80; color: #6B4A00;
+                  padding: 10px 20px; font-size: 11.5px; line-height: 1.7; }
+  #conflictWarn strong { color: #8A4B00; }
+  #conflictWarn .cw-actions { margin-top: 7px; display: flex; gap: 8px; flex-wrap: wrap; }
+  #conflictWarn button { border: none; border-radius: 3px; padding: 6px 13px; font-size: 11px;
+                         font-weight: 700; cursor: pointer; font-family: Arial, sans-serif; }
+  #conflictWarn .cw-take { background: var(--mk-navy); color: #fff; }
+  #conflictWarn .cw-keep { background: #fff; color: #8A4B00; border: 1px solid #FFCC80; }
+
   /* ─── DIAGNOSTICS ─────────────────────────────────────────── */
   #diagModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 10001;
                align-items: center; justify-content: center; padding: 20px; }
@@ -249,7 +259,7 @@
                          font-family: Arial, sans-serif; }
 
   @media print {
-    #loginOverlay, #syncBar, #diagModal, #legacyWarn { display: none !important; }
+    #loginOverlay, #syncBar, #diagModal, #legacyWarn, #conflictWarn { display: none !important; }
   }
 
   /* ─── CAMPAIGN CARDS ──────────────────────────────────────── */
@@ -613,6 +623,17 @@
   <button onclick="startFreshPlan()">Start a new plan under this code</button>
 </div>
 
+<!-- ===== CONCURRENT-EDIT GUARD ===== -->
+<div id="conflictWarn">
+  <strong>This plan has changed on the server since you opened it.</strong>
+  Somebody else in your group has saved in the meantime. To protect their work, saving is paused —
+  nothing you do here is being stored right now. Choose what should happen:
+  <div class="cw-actions">
+    <button class="cw-take" onclick="loadNewerVersion()">Load their version (discards your changes in this tab)</button>
+    <button class="cw-keep" onclick="overwriteWithMine()">Keep mine (overwrites their changes)</button>
+  </div>
+</div>
+
 <!-- ===== CONNECTION DIAGNOSTICS ===== -->
 <div id="diagModal">
   <div class="diag-box">
@@ -680,6 +701,8 @@
       <li>Use <strong>Group Notes</strong> for your own definitions, learnings and open questions.</li>
       <li>Your entries are saved automatically to your group's shared storage — everyone with your
           group code sees the same plan. <strong>Export file</strong> creates a local backup copy.</li>
+      <li>If two of you work on the plan at the same time, the tool stops and asks instead of
+          overwriting — but it is far easier if one person edits at a time.</li>
       <li>Empty fields are hidden when printing — an unanswered field costs you nothing.</li>
     </ul>
   </div>
@@ -2646,15 +2669,7 @@ function importJSON(input) {
     if (!confirm('Import will replace everything currently in this browser. Continue?')) {
       input.value = ''; return;
     }
-    Object.keys(data).filter(k => k.startsWith('__table__')).forEach(k => {
-      const el = document.getElementById(k.replace('__table__', ''));
-      if (el) el.innerHTML = data[k];
-    });
-    Object.entries(data).forEach(([id, val]) => {
-      if (id.startsWith('__table__') || id === '__meta__') return;
-      const el = document.getElementById(id);
-      if (el) el.value = val;
-    });
+    applyPlanData(data);
     input.value = '';
     renumberMembers();
     saveAll();
@@ -2730,15 +2745,23 @@ let currentGroupId = null;
 let cloudTimer = null;
 let applyingCloud = false;   // suppress saves while data is being written into the form
 let legacyLocked = false;    // a previous-version plan sits under this code
+let conflictLocked = false;  // somebody else saved since we loaded — saving is paused
+let dirty = false;           // this tab holds edits that are not on the server yet
+/**
+ * The last_saved value we believe the server row carries, exactly as the server
+ * spelled it. null means "no row existed when we looked". Every write is
+ * conditional on this value, so a stale tab can never silently overwrite.
+ */
+let knownSaved = null;
 
-async function sbFetch(method, path, body) {
+async function sbFetch(method, path, body, prefer) {
   const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
     method,
     headers: {
       'apikey': SUPABASE_KEY,
       'Authorization': `Bearer ${SUPABASE_KEY}`,
       'Content-Type': 'application/json',
-      'Prefer': method === 'POST' ? 'resolution=merge-duplicates,return=representation' : 'return=representation'
+      'Prefer': prefer || 'return=representation'
     },
     body: body ? JSON.stringify(body) : undefined
   });
@@ -2750,17 +2773,64 @@ async function sbFetch(method, path, body) {
   return res.status === 204 ? null : res.json();
 }
 
+/** @returns {{data: object, last_saved: string}|null} the whole row, or null. */
 async function loadPlan(groupId) {
-  const rows = await sbFetch('GET', `${TABLE}?group_id=eq.${encodeURIComponent(groupId)}&select=data`);
-  return rows && rows.length ? rows[0].data : null;
+  const rows = await sbFetch('GET',
+    `${TABLE}?group_id=eq.${encodeURIComponent(groupId)}&select=data,last_saved`);
+  return rows && rows.length ? rows[0] : null;
 }
 
-async function savePlan(groupId, data) {
-  await sbFetch('POST', `${TABLE}?on_conflict=group_id`, {
-    group_id: groupId,
-    data: data,
-    last_saved: new Date().toISOString()
-  });
+/** When was this plan last written? null if there is no row yet. */
+async function serverStamp(groupId) {
+  const rows = await sbFetch('GET',
+    `${TABLE}?group_id=eq.${encodeURIComponent(groupId)}&select=last_saved`);
+  return rows && rows.length ? rows[0].last_saved : null;
+}
+
+function conflictError() {
+  const e = new Error('This plan was changed by someone else.');
+  e.conflict = true;
+  return e;
+}
+
+/**
+ * Write the plan — but only over the exact version we loaded.
+ *
+ * The condition lives in the request, not in a read-then-write pair, so two
+ * group members saving in the same second cannot both succeed: PostgREST
+ * filters the UPDATE, and a row somebody else has touched no longer matches.
+ *
+ * @param force skip the condition and overwrite whatever is there.
+ * @returns the new last_saved value, to be kept as knownSaved.
+ * @throws an error with .conflict = true when the row has moved on.
+ */
+async function savePlan(groupId, data, force) {
+  const body = { group_id: groupId, data: data, last_saved: new Date().toISOString() };
+
+  if (knownSaved && !force) {
+    const rows = await sbFetch('PATCH',
+      `${TABLE}?group_id=eq.${encodeURIComponent(groupId)}` +
+      `&last_saved=eq.${encodeURIComponent(knownSaved)}`, body);
+    if (!rows || !rows.length) throw conflictError();   // nothing matched: somebody was faster
+    return rows[0].last_saved;
+  }
+
+  if (force) {
+    const rows = await sbFetch('POST', `${TABLE}?on_conflict=group_id`, body,
+      'resolution=merge-duplicates,return=representation');
+    return (rows && rows.length) ? rows[0].last_saved : body.last_saved;
+  }
+
+  // No row existed when we looked, so a plain insert is right — and if someone
+  // created one in the meantime the duplicate key tells us, instead of us
+  // quietly replacing their plan.
+  try {
+    const rows = await sbFetch('POST', TABLE, body);
+    return (rows && rows.length) ? rows[0].last_saved : body.last_saved;
+  } catch (e) {
+    if (e.status === 409) throw conflictError();
+    throw e;
+  }
 }
 
 /** Is this row a plan written by THIS version of the tool? */
@@ -2778,17 +2848,21 @@ function setSyncStatus(state, msg) {
 
 function scheduleCloudSave() {
   if (!currentGroupId || applyingCloud || legacyLocked) return;
+  dirty = true;
+  if (conflictLocked) return;   // banner is up: decide first, then we save again
   clearTimeout(cloudTimer);
   setSyncStatus('saving', 'Saving…');
   cloudTimer = setTimeout(pushToCloud, 1200);
 }
 
 async function pushToCloud() {
-  if (!currentGroupId || legacyLocked) return;
+  if (!currentGroupId || legacyLocked || conflictLocked) return;
   try {
-    await savePlan(currentGroupId, collectData());
+    knownSaved = await savePlan(currentGroupId, collectData());
+    dirty = false;
     setSyncStatus('ok', 'All changes saved');
   } catch (e) {
+    if (e.conflict) { enterConflict(); return; }
     const code = e.status ? ` (HTTP ${e.status})` : '';
     setSyncStatus('error', `Could not save${code} — your work is kept in this browser. Use "Test connection".`);
     console.error('Cloud save failed:', e);
@@ -2796,12 +2870,88 @@ async function pushToCloud() {
 }
 
 async function manualSave() {
-  if (legacyLocked) return;
-  if (!currentGroupId) return;
+  if (legacyLocked || conflictLocked || !currentGroupId) return;
   clearTimeout(cloudTimer);
   saveAll();
   await pushToCloud();
 }
+
+// ─── CONCURRENT EDITS ────────────────────────────────────────────────────
+function enterConflict() {
+  if (conflictLocked) return;
+  conflictLocked = true;
+  clearTimeout(cloudTimer);
+  const box = document.getElementById('conflictWarn');
+  if (box) box.style.display = 'block';
+  setSyncStatus('error', 'Saving paused — this plan was changed by someone else');
+}
+
+function leaveConflict(msg) {
+  conflictLocked = false;
+  const box = document.getElementById('conflictWarn');
+  if (box) box.style.display = 'none';
+  setSyncStatus('ok', msg);
+}
+
+/** Take the server's version; whatever this tab changed since is dropped. */
+async function loadNewerVersion() {
+  if (!confirm('Load the version saved by your team-mate?\n\nChanges you made in this tab since then are lost.')) return;
+  try {
+    const row = await loadPlan(currentGroupId);
+    if (!row || !isOwnFormat(row.data)) { showToast('No readable plan on the server'); return; }
+    knownSaved = row.last_saved;
+    applyPlanData(row.data);
+    refreshAfterLoad();
+    dirty = false;
+    saveLocalOnly();
+    leaveConflict('Loaded the newer version — saving is on again');
+  } catch (e) {
+    setSyncStatus('error', 'Could not load the newer version — check your connection');
+    console.error('Conflict reload failed:', e);
+  }
+}
+
+/** Keep what is on screen and replace the server's version with it. */
+async function overwriteWithMine() {
+  if (!confirm('Overwrite the saved version with what you see here?\n\nYour team-mate\u2019s changes are lost.')) return;
+  try {
+    knownSaved = await savePlan(currentGroupId, collectData(), true);
+    dirty = false;
+    leaveConflict('Your version is now the saved one');
+  } catch (e) {
+    setSyncStatus('error', 'Could not save — check your connection, then try again');
+    console.error('Forced save failed:', e);
+  }
+}
+
+/**
+ * Whenever this tab comes back to the front, check whether the plan moved on.
+ * This is the case that actually costs work: a tab left open for hours, then
+ * one keystroke overwrites everything the others did in the meantime.
+ */
+async function checkForRemoteChanges() {
+  if (!currentGroupId || legacyLocked || conflictLocked || document.hidden) return;
+  let stamp;
+  try { stamp = await serverStamp(currentGroupId); }
+  catch (e) { return; }                       // offline — nothing useful to say
+  if (!stamp || stamp === knownSaved) return;
+
+  if (dirty) { enterConflict(); return; }     // both sides changed: let the user decide
+
+  // Nothing unsaved here, so quietly catch up with the others.
+  try {
+    const row = await loadPlan(currentGroupId);
+    if (!row || !isOwnFormat(row.data)) return;
+    knownSaved = row.last_saved;
+    applyPlanData(row.data);
+    refreshAfterLoad();
+    saveLocalOnly();
+    setSyncStatus('ok', 'Updated — a team-mate saved a newer version');
+  } catch (e) { console.error('Refresh failed:', e); }
+}
+
+document.addEventListener('visibilitychange', checkForRemoteChanges);
+window.addEventListener('focus', checkForRemoteChanges);
 
 // ─── APPLYING A LOADED PLAN ──────────────────────────────────────────────
 function applyPlanData(data) {
@@ -2810,10 +2960,13 @@ function applyPlanData(data) {
     const el = document.getElementById(k.replace('__table__', ''));
     if (el) el.innerHTML = data[k];
   });
-  Object.entries(data).forEach(([id, val]) => {
-    if (id.startsWith('__table__') || id === '__meta__') return;
-    const el = document.getElementById(id);
-    if (el) el.value = val;
+  // Every field is written, including the ones the payload does not mention:
+  // this replaces a plan wholesale, so a field that is empty in the loaded
+  // version must not keep whatever was standing here before.
+  document.querySelectorAll('[id]').forEach(el => {
+    if (!['INPUT', 'TEXTAREA', 'SELECT'].includes(el.tagName)) return;
+    if (el.id === 'groupIdInput' || el.type === 'file') return;   // not part of the plan
+    el.value = Object.prototype.hasOwnProperty.call(data, el.id) ? data[el.id] : '';
   });
   applyingCloud = false;
 }
@@ -2828,11 +2981,15 @@ async function initGroup() {
   if (!raw) { err.textContent = 'Please enter a group code.'; return; }
 
   btn.textContent = 'Loading…'; btn.disabled = true;
-  let existing = null, offline = false;
+  let row = null, existing = null, offline = false;
   try {
-    existing = await loadPlan(raw);
+    row = await loadPlan(raw);
+    existing = row ? row.data : null;
+    knownSaved = row ? row.last_saved : null;
   } catch (e) {
     // No connection: fall back to whatever this browser has for that code.
+    // knownSaved stays null, so the first write is an insert — if a row does
+    // exist we get a conflict rather than flattening it.
     offline = true;
     console.error('Load failed:', e);
   }
@@ -2900,7 +3057,11 @@ async function runConnectionTest() {
   }
 
   try {
-    await savePlan('__diag_test__', { __meta__: { app: 'sostac-smm-hhn', version: 2, diag: true } });
+    await sbFetch('POST', `${TABLE}?on_conflict=group_id`, {
+      group_id: '__diag_test__',
+      data: { __meta__: { app: 'sostac-smm-hhn', version: 2, diag: true } },
+      last_saved: new Date().toISOString()
+    }, 'resolution=merge-duplicates,return=representation');
     results.push(['Write access', 'OK', true]);
   } catch (e) {
     results.push(['Write access', `FAILED${e.status ? ' (HTTP ' + e.status + ')' : ''}`, false]);
@@ -2979,10 +3140,9 @@ function seedDefaults() {
  * @param cloudData plan loaded from Supabase, or null to fall back to this
  *                  browser's cache for the same group code.
  */
-function bootPlan(cloudData) {
+/** Rebuild every derived view after form values were replaced wholesale. */
+function refreshAfterLoad() {
   applyingCloud = true;
-  if (!cloudData) loadAll();          // offline or new group: use the local cache
-  seedDefaults();
   renumberMembers();
   migrateCalendarRows();
   setFunnelModel((document.getElementById('funnel-model') || {}).value || 'AICPURA');
@@ -2999,10 +3159,28 @@ function bootPlan(cloudData) {
   runChecks();
   updateCounters();
   estimatePages();
+}
+
+/** Cache in this browser without touching the shared copy. */
+function saveLocalOnly() {
+  const was = applyingCloud;
+  applyingCloud = true;
+  saveAll();
+  applyingCloud = was;
+}
+
+function bootPlan(cloudData) {
+  applyingCloud = true;
+  if (!cloudData) loadAll();          // offline or new group: use the local cache
+  seedDefaults();
+  applyingCloud = false;
+
+  refreshAfterLoad();
   if (!STORAGE_OK) warnNoStorage();
 
-  // Keep a local copy immediately, so a dropped connection costs nothing.
-  saveAll();
+  // Local copy only. Merely opening a plan must not bump the server timestamp,
+  // or everyone else's next edit would be reported as a conflict.
+  saveLocalOnly();
 }
 
 // Nothing is loaded until a group code is entered — see initGroup().
