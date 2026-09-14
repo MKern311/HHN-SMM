@@ -406,6 +406,114 @@
   body.sim-print .field-hidden { display: none !important; }
   body.sim-print .pv { display: block; font-size: 8.5pt; padding: 1px 3px; }
 
+
+  /* ═══ RESPONSIVE ══════════════════════════════════════════════
+     Layout rules that affect the inside of a tab panel are held back
+     while body.sim-print is measuring, so the printed result and the
+     page-length estimate are the same whatever device you are on.    */
+
+  .tbl-scroll { max-width: 100%; }
+
+  @media screen and (max-width: 860px) {
+    .header { padding: 0 14px; }
+    .header-title h1 { font-size: 15px; }
+    .header-title p { font-size: 10px; line-height: 1.4; }
+    .mk-logo .logo-main { font-size: 16px; letter-spacing: 3px; }
+    .mk-logo .logo-sub { font-size: 6.5px; letter-spacing: 1.1px; }
+    .nav { padding: 0 6px; }
+    .nav button { padding: 10px 11px; font-size: 11.5px; }
+
+    body:not(.sim-print) .content { padding: 16px 11px 40px; }
+    body:not(.sim-print) .section-body { padding: 15px 12px; }
+    body:not(.sim-print) .overview-grid { grid-template-columns: repeat(3, 1fr); gap: 7px; }
+    body:not(.sim-print) .form-row { grid-template-columns: 150px 1fr; }
+
+    /* ── Wide tables scroll sideways rather than crush their columns ── */
+    body:not(.sim-print) .tbl-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch;
+                                       border: 1px solid var(--border); border-radius: 4px; }
+    body:not(.sim-print) .tbl-scroll > table { min-width: var(--tbl-min, 340px); }
+    body:not(.sim-print) .tbl-scroll[data-wide]::before {
+      content: 'scroll sideways for the remaining columns →';
+      display: block; position: sticky; left: 0; padding: 4px 9px;
+      font-size: 10px; font-style: italic; color: var(--grey); background: var(--mk-light);
+      border-bottom: 1px solid var(--border);
+    }
+  }
+
+  @media screen and (max-width: 680px) {
+    /* ── Label above the field instead of beside it ── */
+    body:not(.sim-print) .form-row { grid-template-columns: 1fr; }
+    body:not(.sim-print) .form-label { border-right: none; border-bottom: 1px solid var(--border);
+                                       padding: 7px 10px; }
+    body:not(.sim-print) .form-input { padding: 6px 2px 10px; }
+
+    /* ── Everything that sat side by side goes into one column ── */
+    body:not(.sim-print) .swot-grid,
+    body:not(.sim-print) .arch-grid,
+    body:not(.sim-print) .tools-grid,
+    body:not(.sim-print) .plat-body,
+    body:not(.sim-print) .decl-grid { grid-template-columns: 1fr; }
+    body:not(.sim-print) .plat-body { padding: 4px 10px 10px; }
+    body:not(.sim-print) .plat-body .form-row { grid-template-columns: 1fr; }
+    body:not(.sim-print) .decl-grid { gap: 30px; margin-top: 24px; }
+    body:not(.sim-print) .overview-grid { grid-template-columns: repeat(2, 1fr); }
+
+    /* ── 16px on every field: anything smaller and iOS zooms in on focus ── */
+    body:not(.sim-print) .form-input input,
+    body:not(.sim-print) .form-input textarea,
+    body:not(.sim-print) .form-input select,
+    body:not(.sim-print) .note-block textarea,
+    body:not(.sim-print) .note-block .note-title,
+    body:not(.sim-print) .swot-cell textarea,
+    body:not(.sim-print) .arch-tg textarea,
+    body:not(.sim-print) .camp-meta input,
+    body:not(.sim-print) .camp-head input,
+    body:not(.sim-print) .pres-meta input,
+    body:not(.sim-print) .plat-head input,
+    body:not(.sim-print) tbody td input,
+    body:not(.sim-print) tbody td textarea,
+    body:not(.sim-print) tbody td select { font-size: 16px; }
+
+    /* ── Fields that were pinned to a pixel width ── */
+    body:not(.sim-print) .camp-meta label,
+    body:not(.sim-print) .pres-meta label { width: 100%; }
+    body:not(.sim-print) .camp-meta label.grow { min-width: 0; }
+    body:not(.sim-print) .camp-meta input,
+    body:not(.sim-print) .pres-meta input { width: 100%; flex: 1; min-width: 0; }
+    body:not(.sim-print) .pres-head { flex-wrap: wrap; gap: 5px; }
+
+
+    /* ── Targets you can actually hit with a thumb ── */
+    body:not(.sim-print) .del-btn { font-size: 17px; padding: 5px 9px; }
+    body:not(.sim-print) .add-row-btn { padding: 9px 14px; }
+    body:not(.sim-print) .bottom-nav { flex-wrap: wrap; gap: 8px; }
+    body:not(.sim-print) .bottom-nav > * { flex: 1 1 100%; }
+    body:not(.sim-print) .bottom-nav .btn { flex: 1 1 130px; padding: 11px 10px; }
+    body:not(.sim-print) .file-actions { gap: 8px; }
+
+    .login-box { padding: 26px 20px; }
+    .login-box input { font-size: 16px; }
+    .diag-box { padding: 18px 16px; }
+    .diag-row { flex-wrap: wrap; gap: 2px; }
+
+    #syncBar { padding: 7px 12px; gap: 8px; }
+    #legacyWarn, #conflictWarn { padding: 10px 12px; }
+    #legacyWarn button { margin-left: 0; margin-top: 7px; width: 100%; }
+    #conflictWarn .cw-actions { flex-direction: column; }
+    #conflictWarn button { width: 100%; }
+    .toast { left: 12px; right: 12px; bottom: 12px; text-align: center; }
+  }
+
+  /* Landscape phones: the login card must not be trapped mid-screen. */
+  @media screen and (max-height: 560px) {
+    #loginOverlay, #diagModal { align-items: flex-start; overflow-y: auto; }
+  }
+
+  /* Measuring happens at a fixed width, so the estimate does not depend
+     on the size of the window it is measured in. */
+  body.sim-print .content { width: 920px; max-width: 920px; }
+  body.sim-print .tbl-scroll { overflow: visible; border: none; }
+
   /* ═══ PRINT ═══════════════════════════════════════════════════ */
   @page { size: A4 portrait; margin: 11mm 12mm 12mm; }
 
@@ -436,6 +544,9 @@
     .nav, .bottom-nav, .toast, .add-row-btn, .del-btn, .btn,
     .progress-bar-wrap, .overview-grid, .rules-box, .status-panel,
     .file-actions, .char-count, .req-badge, .pres-tag { display: none !important; }
+
+    .tbl-scroll { overflow: visible !important; border: none !important; max-width: none !important; }
+    .tbl-scroll::before { content: none !important; }
 
     html, body { background: #fff !important; font-size: 9.5pt; }
     body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -1588,6 +1699,37 @@
 const tabs = document.querySelectorAll('.nav button');
 const panels = document.querySelectorAll('.tab-panel');
 
+/**
+ * A table cannot shrink below its content, so on a narrow screen each one
+ * gets its own sideways scroll area instead of squeezing ten columns into
+ * a few pixels. The wrapper is inert on a wide screen and in print.
+ */
+function wrapTables() {
+  document.querySelectorAll('table').forEach(t => {
+    if (t.classList.contains('print-wrap')) return;      // the print scaffold itself
+    let box = t.parentElement;
+    if (!box || !box.classList.contains('tbl-scroll')) {
+      box = document.createElement('div');
+      box.className = 'tbl-scroll';
+      t.parentNode.insertBefore(box, t);
+      box.appendChild(t);
+    }
+    const cols = t.querySelectorAll('thead th').length || 4;
+    // Up to three columns a table still fits a phone; beyond that it needs
+    // room per column and the reader scrolls sideways.
+    box.style.setProperty('--tbl-min', cols <= 3 ? '0px' : (cols * 96) + 'px');
+    box.toggleAttribute('data-wide', cols >= 5);
+  });
+}
+
+/** Keep the selected tab in view when the nav strip has to scroll. */
+function revealNavButton(btn) {
+  const nav = btn && btn.parentElement;
+  if (!nav || nav.scrollWidth <= nav.clientWidth + 2) return;
+  const target = btn.offsetLeft - (nav.clientWidth - btn.offsetWidth) / 2;
+  nav.scrollTo({ left: Math.max(0, target), behavior: 'smooth' });
+}
+
 function showTab(n) {
   tabs.forEach((b, i) => b.classList.toggle('active', i === n));
   panels.forEach((p, i) => p.classList.toggle('active', i === n));
@@ -1595,6 +1737,7 @@ function showTab(n) {
   if (n === 6) syncSmartToKpis(false);
   if (n === 3 || n === 4) { refreshPersonaSelects(); refreshCampaignSelects(); renderPillarPickers(); }
   updateProgress();
+  revealNavButton(tabs[n]);
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -2722,6 +2865,7 @@ function refresh() {
     refreshPersonaSelects();
     refreshCampaignSelects();
     renderPillarPickers();
+    wrapTables();
     updatePostCounter();
     updateSyncStatus();
     updateReviewStatus();
@@ -3150,6 +3294,7 @@ function refreshAfterLoad() {
   refreshPersonaSelects();
   refreshCampaignSelects();
   renderPillarPickers();
+  wrapTables();
   applyingCloud = false;
 
   updatePostCounter();
