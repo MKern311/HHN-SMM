@@ -111,6 +111,8 @@
   .phase-row-header td { color: #fff; font-weight: 700; font-size: 11px; padding: 6px 8px !important; letter-spacing: .3px; }
 
   .fixed-tbl td.row-head { width: 150px; background: var(--mk-light); color: var(--label); font-weight: 600; font-size: 11.5px; padding: 8px 10px; }
+  .pkg-block { margin-bottom: 8px; }
+  .pkg-head { background: var(--mk-navy); color: #fff; font-weight: 700; font-size: 11.5px; letter-spacing: .4px; text-transform: uppercase; padding: 6px 12px; border-radius: 4px; margin: 6px 0 14px; }
   .smart-num { width: 28px; text-align: center; font-weight: 700; color: var(--mk-mid); }
 
   .persona-card { border: 1px solid var(--border); border-radius: 5px; overflow: hidden; margin-bottom: 14px; }
@@ -940,28 +942,12 @@
 <div class="tab-panel" id="tab-1">
   <div class="section-header">
     <div class="phase-badge">S</div>
-    <div><h2>Situation Analysis — Where are we now?</h2><p>Describe your organisation's social media situation as it is today. Goals and plans follow in Objectives and Strategy.</p></div>
+    <div><h2>Situation Analysis — Where are we now?</h2><p>Describe your organisation's social media situation as it is today, in three packages. Goals and plans follow in Objectives and Strategy.</p></div>
   </div>
   <div class="section-body">
 
-    <div class="subsection">
-      <h3>Social Listening</h3>
-      <p class="hint">What is said about the organisation, its cause and comparable projects? One finding with a link per
-      row, and what it means for your charity project. Keyword queries and the mention log stay in your own spreadsheet.</p>
-      <table class="fixed-tbl">
-        <thead><tr><th style="width:150px">Field</th><th>Finding with link</th><th>What we learn for our charity project</th></tr></thead>
-        <tbody>
-          <tr><td class="row-head">Other projects</td><td><textarea id="lis-projects-find" placeholder="e.g. Two youth-centre projects in our city ask for music equipment (link)"></textarea></td><td><textarea id="lis-projects-learn" placeholder="What follows for your project?"></textarea></td></tr>
-          <tr><td class="row-head">Partner organisations</td><td><textarea id="lis-partners-find"></textarea></td><td><textarea id="lis-partners-learn"></textarea></td></tr>
-          <tr><td class="row-head">“Competitors”</td><td><textarea id="lis-competitors-find"></textarea></td><td><textarea id="lis-competitors-learn"></textarea></td></tr>
-          <tr><td class="row-head">Other stakeholders</td><td><textarea id="lis-stakeholders-find"></textarea></td><td><textarea id="lis-stakeholders-learn"></textarea></td></tr>
-          <tr><td class="row-head">Topics and trends</td><td><textarea id="lis-topics-find"></textarea></td><td><textarea id="lis-topics-learn"></textarea></td></tr>
-          <tr><td class="row-head">Challenges</td><td><textarea id="lis-challenges-find"></textarea></td><td><textarea id="lis-challenges-learn"></textarea></td></tr>
-        </tbody>
-      </table>
-      <div class="form-row" style="margin-top:10px"><div class="form-label">Our approach</div><div class="form-input"><textarea id="lis-approach" placeholder="Approaches used (AI first, then tool, manual or API) and how they compared · time window · number of mentions · limits"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Link to mention log (optional)</div><div class="form-input"><input type="text" id="lis-log" placeholder="Link to your spreadsheet"></div></div>
-    </div>
+    <div class="pkg-block">
+    <div class="pkg-head">Package Organisation · monitoring</div>
 
     <div class="subsection">
       <h3>The Organisation Today</h3>
@@ -972,6 +958,45 @@
       <div class="form-row"><div class="form-label">Current goals with figures</div><div class="form-input"><textarea id="org-goals" placeholder="e.g. betterplace target, amount raised so far, open needs"></textarea></div></div>
       <div class="form-row"><div class="form-label">Guessed social media goals</div><div class="form-input"><textarea id="org-smgoals" placeholder="We assume … because … (channel)"></textarea></div></div>
     </div>
+
+    <div class="subsection">
+      <h3>Current Social Media Presence</h3>
+      <p class="hint">Every channel of the organisation, inactive ones included. Engagement rate: interactions per post ÷
+      followers × 100, last ten posts. Function: information, community or action.</p>
+      <table>
+        <thead><tr><th>Platform</th><th>Handle / URL</th><th>Followers</th><th>Avg. Engagement Rate</th><th>Last Post</th><th>Posts / Week</th><th>Function</th><th>Verdict and Reason</th><th style="width:30px"></th></tr></thead>
+        <tbody id="presence-table">
+          <tr>
+            <td><input type="text" placeholder="Instagram"></td>
+            <td><input type="text" placeholder="@brand"></td>
+            <td><input type="text" placeholder="12,400"></td>
+            <td><input type="text" placeholder="3.2%"></td>
+            <td><input type="text" placeholder="2025-05-10"></td>
+            <td><input type="text" placeholder="2"></td>
+            <td><input type="text" placeholder="community"></td>
+            <td><textarea placeholder="strong, average or weak, because …"></textarea></td>
+            <td><button class="del-btn" onclick="delRow(this)">✕</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <button class="add-row-btn" onclick="addPresenceRow()">+ Add Platform</button>
+      <div class="form-row" style="margin-top:10px"><div class="form-label">Current positioning (one sentence)</div><div class="form-input"><textarea id="sit-positioning" placeholder="How the organisation presents itself today: for whom, what, why this organisation, with which proof"></textarea></div></div>
+    </div>
+
+    <div class="subsection">
+      <h3>Content Audit</h3>
+      <p class="hint">Code the last 20 to 30 posts of the main channel (format, topic, tone, call to action,
+      interactions) and compare the top five with the bottom five.</p>
+      <div class="form-row"><div class="form-label">Posts analysed</div><div class="form-input"><input type="text" id="aud-scope" placeholder="Channel, period, number of posts"></div></div>
+      <div class="form-row"><div class="form-label">Strengths</div><div class="form-input"><textarea id="aud-strengths" placeholder="What works, with an example post"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Weaknesses</div><div class="form-input"><textarea id="aud-weaknesses" placeholder="What fails, with an example post"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Gaps</div><div class="form-input"><textarea id="aud-gaps" placeholder="Underused formats, topics or audiences"></textarea></div></div>
+    </div>
+
+    </div>
+
+    <div class="pkg-block">
+    <div class="pkg-head">Package Audience · listening</div>
 
     <div class="subsection">
       <h3>Current Target Groups</h3>
@@ -1014,37 +1039,47 @@
     </div>
 
     <div class="subsection">
-      <h3>Current Social Media Presence</h3>
-      <p class="hint">Every channel of the organisation, inactive ones included. Engagement rate: interactions per post ÷
-      followers × 100, last ten posts. Function: information, community or action.</p>
-      <table>
-        <thead><tr><th>Platform</th><th>Handle / URL</th><th>Followers</th><th>Avg. Engagement Rate</th><th>Last Post</th><th>Posts / Week</th><th>Function</th><th>Verdict and Reason</th><th style="width:30px"></th></tr></thead>
-        <tbody id="presence-table">
-          <tr>
-            <td><input type="text" placeholder="Instagram"></td>
-            <td><input type="text" placeholder="@brand"></td>
-            <td><input type="text" placeholder="12,400"></td>
-            <td><input type="text" placeholder="3.2%"></td>
-            <td><input type="text" placeholder="2025-05-10"></td>
-            <td><input type="text" placeholder="2"></td>
-            <td><input type="text" placeholder="community"></td>
-            <td><textarea placeholder="strong, average or weak, because …"></textarea></td>
-            <td><button class="del-btn" onclick="delRow(this)">✕</button></td>
-          </tr>
+      <h3>Social Media Experience</h3>
+      <p class="hint">Walk the way to a donation on your phone as one persona sketch: touchpoint, what the supporter does
+      and thinks, and the pain point per phase.</p>
+      <div class="form-row"><div class="form-label">Persona</div><div class="form-input"><input type="text" id="exp-persona" placeholder="Name of the persona sketch"></div></div>
+      <table class="fixed-tbl">
+        <thead><tr><th style="width:150px">Phase</th><th>Touchpoint</th><th>What the supporter does and thinks</th><th>Pain point</th></tr></thead>
+        <tbody>
+          <tr><td class="row-head">Awareness</td><td><textarea id="exp-aw-touch" placeholder="e.g. Reel in the feed"></textarea></td><td><textarea id="exp-aw-do"></textarea></td><td><textarea id="exp-aw-pain"></textarea></td></tr>
+          <tr><td class="row-head">Interest</td><td><textarea id="exp-in-touch"></textarea></td><td><textarea id="exp-in-do"></textarea></td><td><textarea id="exp-in-pain"></textarea></td></tr>
+          <tr><td class="row-head">Consideration</td><td><textarea id="exp-co-touch"></textarea></td><td><textarea id="exp-co-do"></textarea></td><td><textarea id="exp-co-pain"></textarea></td></tr>
+          <tr><td class="row-head">Donation</td><td><textarea id="exp-do-touch"></textarea></td><td><textarea id="exp-do-do"></textarea></td><td><textarea id="exp-do-pain"></textarea></td></tr>
+          <tr><td class="row-head">Retention</td><td><textarea id="exp-re-touch"></textarea></td><td><textarea id="exp-re-do"></textarea></td><td><textarea id="exp-re-pain"></textarea></td></tr>
+          <tr><td class="row-head">Advocacy</td><td><textarea id="exp-ad-touch"></textarea></td><td><textarea id="exp-ad-do"></textarea></td><td><textarea id="exp-ad-pain"></textarea></td></tr>
         </tbody>
       </table>
-      <button class="add-row-btn" onclick="addPresenceRow()">+ Add Platform</button>
-      <div class="form-row" style="margin-top:10px"><div class="form-label">Current positioning (one sentence)</div><div class="form-input"><textarea id="sit-positioning" placeholder="How the organisation presents itself today: for whom, what, why this organisation, with which proof"></textarea></div></div>
+      <div class="persona-divider" style="margin-top:14px">Moment of truth: from a post to the donation form</div>
+      <div class="form-row"><div class="form-label">Clicks to the donation form</div><div class="form-input"><input type="text" id="mot-clicks" placeholder="e.g. 4 clicks from an Instagram post"></div></div>
+      <div class="form-row"><div class="form-label">Trust signals present</div><div class="form-input"><textarea id="mot-trust" placeholder="Photos, updates, progress, organisation details"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Last update on the donation page</div><div class="form-input"><input type="text" id="mot-update" placeholder="Date"></div></div>
     </div>
 
+    </div>
+
+    <div class="pkg-block">
+    <div class="pkg-head">Package Environment · listening</div>
+
     <div class="subsection">
-      <h3>Content Audit</h3>
-      <p class="hint">Code the last 20 to 30 posts of the main channel (format, topic, tone, call to action,
-      interactions) and compare the top five with the bottom five.</p>
-      <div class="form-row"><div class="form-label">Posts analysed</div><div class="form-input"><input type="text" id="aud-scope" placeholder="Channel, period, number of posts"></div></div>
-      <div class="form-row"><div class="form-label">Strengths</div><div class="form-input"><textarea id="aud-strengths" placeholder="What works, with an example post"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Weaknesses</div><div class="form-input"><textarea id="aud-weaknesses" placeholder="What fails, with an example post"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Gaps</div><div class="form-input"><textarea id="aud-gaps" placeholder="Underused formats, topics or audiences"></textarea></div></div>
+      <h3>Social Listening</h3>
+      <p class="hint">What is said about the cause and comparable projects? One finding with a link per row. The team writes
+      the column “What we learn” together in the merge.</p>
+      <table class="fixed-tbl">
+        <thead><tr><th style="width:150px">Field</th><th>Finding with link</th><th>What we learn for our charity project</th></tr></thead>
+        <tbody>
+          <tr><td class="row-head">Other projects</td><td><textarea id="lis-projects-find" placeholder="e.g. Two youth-centre projects in our city ask for music equipment (link)"></textarea></td><td><textarea id="lis-projects-learn" placeholder="What follows for your project?"></textarea></td></tr>
+          <tr><td class="row-head">Partner organisations</td><td><textarea id="lis-partners-find"></textarea></td><td><textarea id="lis-partners-learn"></textarea></td></tr>
+          <tr><td class="row-head">“Competitors”</td><td><textarea id="lis-competitors-find"></textarea></td><td><textarea id="lis-competitors-learn"></textarea></td></tr>
+          <tr><td class="row-head">Other stakeholders</td><td><textarea id="lis-stakeholders-find"></textarea></td><td><textarea id="lis-stakeholders-learn"></textarea></td></tr>
+          <tr><td class="row-head">Topics and trends</td><td><textarea id="lis-topics-find"></textarea></td><td><textarea id="lis-topics-learn"></textarea></td></tr>
+          <tr><td class="row-head">Challenges</td><td><textarea id="lis-challenges-find"></textarea></td><td><textarea id="lis-challenges-learn"></textarea></td></tr>
+        </tbody>
+      </table>
     </div>
 
     <div class="subsection">
@@ -1069,32 +1104,22 @@
       <button class="add-row-btn" onclick="addCompetitorRow()">+ Add Competitor</button>
     </div>
 
+    </div>
+
+    <div class="pkg-block">
+    <div class="pkg-head">Together</div>
+
     <div class="subsection">
-      <h3>Social Media Experience</h3>
-      <p class="hint">Walk the way to a donation on your phone as one persona sketch: touchpoint, what the supporter does
-      and thinks, and the pain point per phase.</p>
-      <div class="form-row"><div class="form-label">Persona</div><div class="form-input"><input type="text" id="exp-persona" placeholder="Name of the persona sketch"></div></div>
-      <table class="fixed-tbl">
-        <thead><tr><th style="width:150px">Phase</th><th>Touchpoint</th><th>What the supporter does and thinks</th><th>Pain point</th></tr></thead>
-        <tbody>
-          <tr><td class="row-head">Awareness</td><td><textarea id="exp-aw-touch" placeholder="e.g. Reel in the feed"></textarea></td><td><textarea id="exp-aw-do"></textarea></td><td><textarea id="exp-aw-pain"></textarea></td></tr>
-          <tr><td class="row-head">Interest</td><td><textarea id="exp-in-touch"></textarea></td><td><textarea id="exp-in-do"></textarea></td><td><textarea id="exp-in-pain"></textarea></td></tr>
-          <tr><td class="row-head">Consideration</td><td><textarea id="exp-co-touch"></textarea></td><td><textarea id="exp-co-do"></textarea></td><td><textarea id="exp-co-pain"></textarea></td></tr>
-          <tr><td class="row-head">Donation</td><td><textarea id="exp-do-touch"></textarea></td><td><textarea id="exp-do-do"></textarea></td><td><textarea id="exp-do-pain"></textarea></td></tr>
-          <tr><td class="row-head">Retention</td><td><textarea id="exp-re-touch"></textarea></td><td><textarea id="exp-re-do"></textarea></td><td><textarea id="exp-re-pain"></textarea></td></tr>
-          <tr><td class="row-head">Advocacy</td><td><textarea id="exp-ad-touch"></textarea></td><td><textarea id="exp-ad-do"></textarea></td><td><textarea id="exp-ad-pain"></textarea></td></tr>
-        </tbody>
-      </table>
-      <div class="persona-divider" style="margin-top:14px">Moment of truth: from a post to the donation form</div>
-      <div class="form-row"><div class="form-label">Clicks to the donation form</div><div class="form-input"><input type="text" id="mot-clicks" placeholder="e.g. 4 clicks from an Instagram post"></div></div>
-      <div class="form-row"><div class="form-label">Trust signals present</div><div class="form-input"><textarea id="mot-trust" placeholder="Photos, updates, progress, organisation details"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Last update on the donation page</div><div class="form-input"><input type="text" id="mot-update" placeholder="Date"></div></div>
+      <h3>Our Approach</h3>
+      <p class="hint">How each package collected its data: the AI approach or the tool you chose, and its limits.</p>
+      <div class="form-row"><div class="form-label">Our approach (one line per package)</div><div class="form-input"><textarea id="lis-approach" placeholder="Organisation: …&#10;Audience: …&#10;Environment: …&#10;(approach or tool, time window, number of mentions, limits)"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Links to your logs (optional)</div><div class="form-input"><input type="text" id="lis-log" placeholder="Mention log, voice log"></div></div>
     </div>
 
     <div class="subsection">
       <h3>SWOT Analysis</h3>
-      <p class="hint">Summarise the sections above. Strengths and weaknesses are internal, opportunities and threats external.
-      Every point carries its evidence (a number, a post, a finding) and the section it comes from.</p>
+      <p class="hint">Write it together. Strengths and weaknesses are internal (mostly Organisation), opportunities and threats
+      external (Audience, Environment). Every point carries its evidence (a number, a post, a finding) and names its package.</p>
       <div class="swot-grid">
         <div class="swot-cell swot-s">
           <div class="swot-cell-header">STRENGTHS — Internal positives</div>
@@ -1120,6 +1145,8 @@
       <div class="form-row"><div class="form-label">Biggest Opportunity</div><div class="form-input"><textarea id="sit-opportunity" placeholder="What is the single biggest opportunity identified?"></textarea></div></div>
       <div class="form-row"><div class="form-label">Biggest Challenge</div><div class="form-input"><textarea id="sit-challenge" placeholder="What is the main obstacle to overcome?"></textarea></div></div>
     </div>
+    </div>
+
   </div>
   <div class="bottom-nav">
     <button class="btn btn-secondary" onclick="showTab(0)">← Back</button>
@@ -2850,6 +2877,7 @@ function prepPrint() {
   document.querySelectorAll('.subsection').forEach(sec => {
     if (!sec.closest(KEEP) && !sec.matches(KEEP) && isEmptyIn(sec)) sec.classList.add('hide-print');
   });
+  document.querySelectorAll('.pkg-block').forEach(b => { if (isEmptyIn(b)) b.classList.add('hide-print'); });
   document.querySelectorAll('.swot-cell, .persona-card').forEach(c => {
     if (isEmptyIn(c)) c.classList.add('hide-print');
   });
