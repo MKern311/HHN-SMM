@@ -921,7 +921,6 @@
     <div class="form-row"><div class="form-label">Campaign Period</div><div class="form-input"><input type="text" id="brief-period" placeholder="e.g. June 1 – August 31, 2025"></div></div>
     <div class="form-row"><div class="form-label">Overall Goal (1 sentence)</div><div class="form-input"><textarea id="brief-goal" placeholder="What is the one main thing this strategy should achieve?"></textarea></div></div>
     <div class="form-row"><div class="form-label">Primary Platform(s)</div><div class="form-input"><input type="text" id="brief-platforms" placeholder="e.g. Instagram, LinkedIn, TikTok"></div></div>
-    <div class="form-row"><div class="form-label">Budget (€)</div><div class="form-input"><input type="text" id="brief-budget" placeholder="e.g. 5,000 €"></div></div>
     <div class="form-row"><div class="form-label">Course / Semester</div><div class="form-input"><input type="text" id="brief-course" placeholder="e.g. Social Media Management, SoSe 2026"></div></div>
   </div>
 
@@ -1573,35 +1572,58 @@
 
     <div class="subsection">
       <h3>Project Timeline / Milestones</h3>
+      <p class="hint">Choose the phase for every milestone: the row then moves under that phase.
+      The five phases follow the campaign arc from the lecture (pre-launch, launch, momentum, final push, thank you).</p>
       <table>
         <thead><tr><th>Phase</th><th>Milestone</th><th>Start</th><th>Deadline</th><th>Owner</th><th>Status</th><th style="width:30px"></th></tr></thead>
         <tbody id="timeline-table">
-          <tr class="phase-row-header"><td colspan="7">Phase 1 — Pre-Launch</td></tr>
+          <tr class="phase-row-header" data-phase="1"><td colspan="7">Phase 1 — Pre-launch: theme, page and posts ready; first donors lined up</td></tr>
           <tr>
-            <td><input type="text" placeholder="Pre-Launch"></td>
-            <td><textarea placeholder="Audit existing channels"></textarea></td>
+            <td><select class="tl-phase" onchange="placeMilestone(this)"><option value="">— phase —</option><option value="1">1 Pre-launch</option><option value="2">2 Launch</option><option value="3">3 Momentum</option><option value="4">4 Final push</option><option value="5">5 Thank you</option></select></td>
+            <td><textarea placeholder="Set up betterplace page and content bank"></textarea></td>
             <td><input type="text" placeholder="Week 1"></td>
-            <td><input type="text" placeholder="Week 1"></td>
-            <td><input type="text" placeholder="SM Manager"></td>
-            <td><select><option>Not Started</option><option>In Progress</option><option>Done</option></select></td>
-            <td><button class="del-btn" onclick="delRow(this)">✕</button></td>
-          </tr>
-          <tr>
-            <td><input type="text" placeholder="Pre-Launch"></td>
-            <td><textarea placeholder="Create content bank (30 posts)"></textarea></td>
             <td><input type="text" placeholder="Week 2"></td>
-            <td><input type="text" placeholder="Week 3"></td>
-            <td><input type="text" placeholder="Content Creator"></td>
+            <td><input type="text" placeholder="Content lead"></td>
             <td><select><option>Not Started</option><option>In Progress</option><option>Done</option></select></td>
             <td><button class="del-btn" onclick="delRow(this)">✕</button></td>
           </tr>
-          <tr class="phase-row-header"><td colspan="7">Phase 2 — Launch</td></tr>
+          <tr class="phase-row-header" data-phase="2"><td colspan="7">Phase 2 — Launch: ask your own network first</td></tr>
           <tr>
-            <td><input type="text" placeholder="Launch"></td>
-            <td><textarea placeholder="Campaign go-live"></textarea></td>
+            <td><select class="tl-phase" onchange="placeMilestone(this)"><option value="">— phase —</option><option value="1">1 Pre-launch</option><option value="2">2 Launch</option><option value="3">3 Momentum</option><option value="4">4 Final push</option><option value="5">5 Thank you</option></select></td>
+            <td><textarea placeholder="Campaign go-live, first ask to own network"></textarea></td>
+            <td><input type="text" placeholder="Week 3"></td>
+            <td><input type="text" placeholder="Week 3"></td>
+            <td><input type="text" placeholder="Team lead"></td>
+            <td><select><option>Not Started</option><option>In Progress</option><option>Done</option></select></td>
+            <td><button class="del-btn" onclick="delRow(this)">✕</button></td>
+          </tr>
+          <tr class="phase-row-header" data-phase="3"><td colspan="7">Phase 3 — Momentum: updates and progress against the mid-campaign dip</td></tr>
+          <tr>
+            <td><select class="tl-phase" onchange="placeMilestone(this)"><option value="">— phase —</option><option value="1">1 Pre-launch</option><option value="2">2 Launch</option><option value="3">3 Momentum</option><option value="4">4 Final push</option><option value="5">5 Thank you</option></select></td>
+            <td><textarea placeholder="Weekly progress update post"></textarea></td>
             <td><input type="text" placeholder="Week 4"></td>
-            <td><input type="text" placeholder="Week 4"></td>
-            <td><input type="text" placeholder="SM Manager"></td>
+            <td><input type="text" placeholder="Week 6"></td>
+            <td><input type="text" placeholder="SM manager"></td>
+            <td><select><option>Not Started</option><option>In Progress</option><option>Done</option></select></td>
+            <td><button class="del-btn" onclick="delRow(this)">✕</button></td>
+          </tr>
+          <tr class="phase-row-header" data-phase="4"><td colspan="7">Phase 4 — Final push: countdown to the deadline</td></tr>
+          <tr>
+            <td><select class="tl-phase" onchange="placeMilestone(this)"><option value="">— phase —</option><option value="1">1 Pre-launch</option><option value="2">2 Launch</option><option value="3">3 Momentum</option><option value="4">4 Final push</option><option value="5">5 Thank you</option></select></td>
+            <td><textarea placeholder="Countdown posts, final call"></textarea></td>
+            <td><input type="text" placeholder="Week 7"></td>
+            <td><input type="text" placeholder="Week 7"></td>
+            <td><input type="text" placeholder="Content lead"></td>
+            <td><select><option>Not Started</option><option>In Progress</option><option>Done</option></select></td>
+            <td><button class="del-btn" onclick="delRow(this)">✕</button></td>
+          </tr>
+          <tr class="phase-row-header" data-phase="5"><td colspan="7">Phase 5 — Thank you: report the result, thank donors in public</td></tr>
+          <tr>
+            <td><select class="tl-phase" onchange="placeMilestone(this)"><option value="">— phase —</option><option value="1">1 Pre-launch</option><option value="2">2 Launch</option><option value="3">3 Momentum</option><option value="4">4 Final push</option><option value="5">5 Thank you</option></select></td>
+            <td><textarea placeholder="Thank-you post with result"></textarea></td>
+            <td><input type="text" placeholder="Week 8"></td>
+            <td><input type="text" placeholder="Week 8"></td>
+            <td><input type="text" placeholder="Team lead"></td>
             <td><select><option>Not Started</option><option>In Progress</option><option>Done</option></select></td>
             <td><button class="del-btn" onclick="delRow(this)">✕</button></td>
           </tr>
@@ -2050,6 +2072,7 @@ const SIT_EXTRA = {
                        '<textarea placeholder="Response"></textarea>'],
 };
 function migrateSituationTables() {
+  migrateTimeline();
   Object.entries(SIT_EXTRA).forEach(([id, extra]) => {
     document.querySelectorAll('#' + id + ' > tr').forEach(tr => {
       const cells = tr.querySelectorAll(':scope > td');
@@ -2113,9 +2136,23 @@ function addTeamRow() {
   </tr>`);
 }
 
+const TL_PHASES = ['1 Pre-launch', '2 Launch', '3 Momentum', '4 Final push', '5 Thank you'];
+const TL_HEADERS = [
+  'Phase 1 — Pre-launch: theme, page and posts ready; first donors lined up',
+  'Phase 2 — Launch: ask your own network first',
+  'Phase 3 — Momentum: updates and progress against the mid-campaign dip',
+  'Phase 4 — Final push: countdown to the deadline',
+  'Phase 5 — Thank you: report the result, thank donors in public'];
+
+function tlPhaseSelectHTML(val) {
+  return '<select class="tl-phase" onchange="placeMilestone(this)"><option value="">— phase —</option>' +
+    TL_PHASES.map((l, i) => `<option value="${i + 1}"${String(i + 1) === String(val) ? ' selected' : ''}>${l}</option>`).join('') +
+    '</select>';
+}
+
 function addTimelineRow() {
   addRow('timeline-table', `<tr>
-    <td><input type="text" placeholder="Phase"></td>
+    <td>${tlPhaseSelectHTML('')}</td>
     <td><textarea placeholder="Milestone"></textarea></td>
     <td><input type="text" placeholder="Start"></td>
     <td><input type="text" placeholder="Deadline"></td>
@@ -2123,6 +2160,70 @@ function addTimelineRow() {
     <td><select><option>Not Started</option><option>In Progress</option><option>Done</option></select></td>
     <td><button class="del-btn" onclick="delRow(this)">✕</button></td>
   </tr>`);
+}
+
+/** Move a milestone under the header of the phase chosen in its first cell. */
+function placeMilestone(sel) {
+  const tr = sel.closest('tr');
+  const tbody = tr.parentElement;
+  const header = tbody.querySelector(`tr.phase-row-header[data-phase="${sel.value}"]`);
+  if (!header) return;
+  // last row of that phase = the row before the next header (or the end)
+  let anchor = header;
+  while (anchor.nextElementSibling && !anchor.nextElementSibling.classList.contains('phase-row-header')) {
+    anchor = anchor.nextElementSibling;
+    if (anchor === tr) break;
+  }
+  if (anchor !== tr) anchor.after(tr);
+  saveAll();
+}
+
+/** Plans saved before October 2026 have two phase headers and a free-text phase
+ *  cell: rebuild the table with five headers and a phase dropdown per row. */
+function migrateTimeline() {
+  const tbody = document.getElementById('timeline-table');
+  if (!tbody) return;
+  const headers = tbody.querySelectorAll('tr.phase-row-header[data-phase]');
+  if (headers.length === TL_PHASES.length && !tbody.querySelector('td:first-child > input')) return;
+  const guess = txt => {
+    const t = (txt || '').toLowerCase();
+    if (/thank|wrap|post-launch|after/.test(t)) return '5';
+    if (/pre|prep|setup|set-up/.test(t)) return '1';
+    if (/final|push|countdown/.test(t)) return '4';
+    if (/moment|sustain|mid/.test(t)) return '3';
+    if (/launch|go-live/.test(t)) return '2';
+    return '';
+  };
+  const groups = { '1': [], '2': [], '3': [], '4': [], '5': [] };
+  let current = '1';
+  [...tbody.children].forEach(tr => {
+    if (tr.classList.contains('phase-row-header')) {
+      current = tr.dataset.phase || guess(tr.textContent) || current;
+      return;
+    }
+    const cell = tr.querySelector('td');
+    const old = cell && cell.querySelector('input');
+    let val = '';
+    if (old) {
+      val = guess(old.value);
+      cell.innerHTML = tlPhaseSelectHTML(val);
+      if (old.value.trim() && !val) {   // keep a free-text phase the guess could not place
+        const ms = tr.querySelector('textarea');
+        if (ms) ms.textContent = ms.value = `[${old.value.trim()}] ` + ms.value;
+      }
+    } else {
+      const sel = cell && cell.querySelector('select');
+      val = sel ? sel.value : '';
+    }
+    groups[val || current].push(tr);
+  });
+  tbody.innerHTML = '';
+  TL_PHASES.forEach((_, i) => {
+    const k = String(i + 1);
+    tbody.insertAdjacentHTML('beforeend',
+      `<tr class="phase-row-header" data-phase="${k}"><td colspan="7">${TL_HEADERS[i]}</td></tr>`);
+    groups[k].forEach(tr => tbody.appendChild(tr));
+  });
 }
 
 
