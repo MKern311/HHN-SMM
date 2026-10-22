@@ -1,0 +1,7 @@
+{
+  "imports": {
+    "@modelcontextprotocol/server": "npm:@modelcontextprotocol/server@2.3.1",
+    "zod": "npm:zod@4.6.7",
+    "node-html-parser": "npm:node-html-parser@9.0.5"
+  }
+}
