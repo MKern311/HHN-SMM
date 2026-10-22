@@ -20,7 +20,11 @@ export const CATALOG: Catalog = {
   "timeline-table",
   "kpi-table",
   "review-table",
-  "coaching-table"
+  "coaching-table",
+  "tools-create",
+  "tools-schedule",
+  "tools-analytics",
+  "tools-community"
  ],
  "sections": [
   {
@@ -1099,8 +1103,40 @@ export const CATALOG: Catalog = {
      "title": "Tools & Technology Stack",
      "area": "",
      "hint": "",
-     "items": [],
-     "unsaved": 16
+     "items": [
+      {
+       "kind": "table",
+       "id": "tools-create",
+       "columns": [
+        "Tool",
+        "Purpose"
+       ]
+      },
+      {
+       "kind": "table",
+       "id": "tools-schedule",
+       "columns": [
+        "Tool",
+        "Purpose"
+       ]
+      },
+      {
+       "kind": "table",
+       "id": "tools-analytics",
+       "columns": [
+        "Tool",
+        "Purpose"
+       ]
+      },
+      {
+       "kind": "table",
+       "id": "tools-community",
+       "columns": [
+        "Tool",
+        "Purpose"
+       ]
+      }
+     ]
     }
    ]
   },
@@ -1380,9 +1416,71 @@ export const CATALOG: Catalog = {
        "label": "OBJECTIVES / VISION",
        "type": "textarea",
        "placeholder": "State your overarching campaign vision and main goal here..."
+      },
+      {
+       "kind": "field",
+       "id": "arch-tg1",
+       "label": "arch-tg1",
+       "type": "textarea",
+       "placeholder": "Name & describe TG1 • Goal 1 • Goal 2"
+      },
+      {
+       "kind": "field",
+       "id": "arch-tg2",
+       "label": "arch-tg2",
+       "type": "textarea",
+       "placeholder": "Name & describe TG2 • Goal 1 • Goal 2"
+      },
+      {
+       "kind": "field",
+       "id": "arch-tg3",
+       "label": "arch-tg3",
+       "type": "textarea",
+       "placeholder": "Name & describe TG3 • Goal 1 • Goal 2"
+      },
+      {
+       "kind": "field",
+       "id": "arch-ch1",
+       "label": "arch-ch1",
+       "type": "textarea",
+       "placeholder": "Channel 1: Channel 2: Rationale:"
+      },
+      {
+       "kind": "field",
+       "id": "arch-ch2",
+       "label": "arch-ch2",
+       "type": "textarea",
+       "placeholder": "Channel 1: Channel 2: Rationale:"
+      },
+      {
+       "kind": "field",
+       "id": "arch-ch3",
+       "label": "arch-ch3",
+       "type": "textarea",
+       "placeholder": "Channel 1: Channel 2: Rationale:"
+      },
+      {
+       "kind": "field",
+       "id": "arch-op1",
+       "label": "arch-op1",
+       "type": "textarea",
+       "placeholder": "• Targets per channel • Content per channel • Organisational anchoring • Resources • Links with other TGs"
+      },
+      {
+       "kind": "field",
+       "id": "arch-op2",
+       "label": "arch-op2",
+       "type": "textarea",
+       "placeholder": "• Targets per channel • Content per channel • Organisational anchoring • Resources • Links with other TGs"
+      },
+      {
+       "kind": "field",
+       "id": "arch-op3",
+       "label": "arch-op3",
+       "type": "textarea",
+       "placeholder": "• Targets per channel • Content per channel • Organisational anchoring • Resources • Links with other TGs"
       }
-     ],
-     "unsaved": 9
+     ]
     }
    ]
   },

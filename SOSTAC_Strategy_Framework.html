@@ -700,6 +700,62 @@
 
     a { color: inherit; text-decoration: none; }
   }
+
+  /* ═══ v8: FIELDS YOU CAN SEE, EXAMPLES YOU CAN TELL APART ═══════════
+     Every field has a visible frame and a clear focus ring; placeholder
+     examples are grey italics, so they never read like an entry. */
+  @media screen {
+  .content { max-width: 1080px; }
+  .form-input input, .form-input textarea, .form-input select,
+  tbody td input, tbody td textarea, tbody td select,
+  .swot-cell textarea, .arch-tg textarea, .note-block textarea, .camp-meta input, .pres-meta input {
+    border: 1px solid #C9CDD8 !important; background: #fff; border-radius: 4px;
+  }
+  .swot-cell textarea, .arch-tg textarea { border-width: 0 !important; border-top-width: 1px !important; border-radius: 0; }
+  .form-input input:focus, .form-input textarea:focus, .form-input select:focus,
+  tbody td input:focus, tbody td textarea:focus, tbody td select:focus,
+  .swot-cell textarea:focus, .arch-tg textarea:focus, .note-block textarea:focus,
+  .camp-meta input:focus, .pres-meta input:focus, .note-block .note-title:focus {
+    outline: 2px solid var(--mk-navy) !important; outline-offset: 0; border-color: var(--mk-navy) !important;
+    background: #F7F9FF;
+  }
+  .content ::placeholder { color: #7A8099; font-style: italic; opacity: 1; }
+  .content ::-webkit-input-placeholder { color: #7A8099; font-style: italic; }
+  .example-note { font-size: 11.5px; color: var(--grey); margin: -8px 0 16px; }
+  .example-note em { color: #7A8099; }
+  /* columns that were too narrow to write in */
+  #influencer-table textarea { min-width: 200px; }
+  #competitor-table textarea { min-width: 150px; }
+  #presence-table textarea { min-width: 170px; }
+  #calendar-table textarea { min-width: 170px; }
+  #review-table textarea { min-width: 190px; }
+  #lis-approach { min-height: 96px; }
+  }
+  @media screen { .tbl-scroll { overflow-x: auto; } }
+
+  /* ─── CLAUDE COACH BUTTON ─────────────────────────────────── */
+  #claudeBtn { display: none; position: fixed; right: 20px; bottom: 20px; z-index: 900;
+               background: var(--mk-navy); color: #fff; border: none; border-radius: 22px;
+               padding: 11px 18px; font: 700 13px Arial, sans-serif; cursor: pointer;
+               box-shadow: 0 6px 18px rgba(0,0,0,.25); }
+  #claudeBtn:hover { background: var(--mk-blue); }
+  #claudeBtn:focus-visible { outline: 3px solid var(--mk-gold); outline-offset: 2px; }
+  body.logged-in #claudeBtn { display: inline-flex; align-items: center; gap: 8px; }
+  .toast { bottom: 76px; }
+  #claudeModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 10002;
+                 align-items: center; justify-content: center; padding: 20px; }
+  #claudeModal.open { display: flex; }
+  #claudeModal .diag-box { max-width: 560px; }
+  #claudeModal p, #claudeModal li { font-size: 13px; line-height: 1.55; margin-bottom: 8px; }
+  #claudeModal ol { margin: 0 0 10px 18px; }
+  #claudeModal code { background: var(--mk-light); padding: 2px 5px; border-radius: 3px; font-size: 12px;
+                      word-break: break-all; }
+  #claudeModal .cm-actions { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; margin-top: 14px; }
+  #claudeModal .cm-actions button { border: 1px solid var(--border); background: var(--mk-light); color: var(--mk-blue);
+                                    border-radius: 4px; padding: 8px 14px; font: 700 12px Arial, sans-serif; cursor: pointer; }
+  #claudeModal .cm-actions .cm-go { background: var(--mk-navy); color: #fff; border-color: var(--mk-navy); }
+  @media print { #claudeBtn, #claudeModal { display: none !important; } }
+  @media screen and (max-width: 680px) { #claudeBtn { right: 12px; bottom: 12px; } .toast { bottom: 70px; } }
 </style>
 </head>
 <body>
@@ -819,6 +875,7 @@
       <li>If two of you work on the plan at the same time, the tool stops and asks instead of
           overwriting — but it is far easier if one person edits at a time.</li>
       <li>Empty fields are hidden when printing — an unanswered field costs you nothing.</li>
+      <li><em style="color:#7A8099">Grey italic text</em> in a field is an example or a prompt, not an entry — it is never saved or printed.</li>
     </ul>
   </div>
 
@@ -883,7 +940,7 @@
       bottom of this page by hand.</p>
       <div class="form-row">
         <div class="form-label">Group Number / Team Name</div>
-        <div class="form-input"><input type="text" id="reg-group" placeholder="e.g. Group 04 — Team Bluebird"></div>
+        <div class="form-input"><input autocomplete="off" type="text" id="reg-group" placeholder="e.g. Group 04 — Team Bluebird"></div>
       </div>
       <table class="reg-table" style="margin-top:12px">
         <thead><tr>
@@ -915,13 +972,13 @@
     <div><h2>Project Brief</h2><p>Define your brand and campaign context</p></div>
   </div>
   <div class="section-body">
-    <div class="form-row"><div class="form-label">Brand / Company Name</div><div class="form-input"><input type="text" id="brief-brand" placeholder="e.g. Nike, Startup XY"></div></div>
-    <div class="form-row"><div class="form-label">Industry / Sector</div><div class="form-input"><input type="text" id="brief-industry" placeholder="e.g. Fashion, SaaS, Food & Beverage"></div></div>
-    <div class="form-row"><div class="form-label">Campaign Name / Theme</div><div class="form-input"><input type="text" id="brief-campaign" placeholder="e.g. Summer Launch 2025"></div></div>
-    <div class="form-row"><div class="form-label">Campaign Period</div><div class="form-input"><input type="text" id="brief-period" placeholder="e.g. June 1 – August 31, 2025"></div></div>
-    <div class="form-row"><div class="form-label">Overall Goal (1 sentence)</div><div class="form-input"><textarea id="brief-goal" placeholder="What is the one main thing this strategy should achieve?"></textarea></div></div>
-    <div class="form-row"><div class="form-label">Primary Platform(s)</div><div class="form-input"><input type="text" id="brief-platforms" placeholder="e.g. Instagram, LinkedIn, TikTok"></div></div>
-    <div class="form-row"><div class="form-label">Course / Semester</div><div class="form-input"><input type="text" id="brief-course" placeholder="e.g. Social Media Management, SoSe 2026"></div></div>
+    <div class="form-row"><div class="form-label">Brand / Company Name</div><div class="form-input"><input autocomplete="off" type="text" id="brief-brand" placeholder="e.g. Nike, Startup XY"></div></div>
+    <div class="form-row"><div class="form-label">Industry / Sector</div><div class="form-input"><input autocomplete="off" type="text" id="brief-industry" placeholder="e.g. Fashion, SaaS, Food & Beverage"></div></div>
+    <div class="form-row"><div class="form-label">Campaign Name / Theme</div><div class="form-input"><input autocomplete="off" type="text" id="brief-campaign" placeholder="e.g. Summer Launch 2025"></div></div>
+    <div class="form-row"><div class="form-label">Campaign Period</div><div class="form-input"><input autocomplete="off" type="text" id="brief-period" placeholder="e.g. June 1 – August 31, 2025"></div></div>
+    <div class="form-row"><div class="form-label">Overall Goal (1 sentence)</div><div class="form-input"><textarea autocomplete="off" id="brief-goal" placeholder="What is the one main thing this strategy should achieve?"></textarea></div></div>
+    <div class="form-row"><div class="form-label">Primary Platform(s)</div><div class="form-input"><input autocomplete="off" type="text" id="brief-platforms" placeholder="e.g. Instagram, LinkedIn, TikTok"></div></div>
+    <div class="form-row"><div class="form-label">Course / Semester</div><div class="form-input"><input autocomplete="off" type="text" id="brief-course" placeholder="e.g. Social Media Management, SoSe 2026"></div></div>
   </div>
 
   <div class="bottom-nav">
@@ -929,7 +986,7 @@
       <button class="btn btn-save" onclick="saveAll()">Save</button>
       <button class="btn btn-secondary" onclick="exportJSON()">↓ Export file</button>
       <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">↑ Import file</button>
-      <input type="file" id="importFile" accept="application/json,.json" style="display:none"
+      <input autocomplete="off" type="file" id="importFile" accept="application/json,.json" style="display:none"
              onchange="importJSON(this)">
       <span class="saved-hint" id="savedHint"></span>
     </div>
@@ -951,10 +1008,10 @@
     <div class="subsection">
       <h3>The Organisation Today</h3>
       <p class="hint">Quote what the organisation says about itself. Add the source and the date. Social media goals are guesses. Start each guess with “We assume”.</p>
-      <div class="form-row"><div class="form-label">Vision (quote, source)</div><div class="form-input"><textarea id="org-vision" placeholder="The big picture the organisation works for"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Mission (quote, source)</div><div class="form-input"><textarea id="org-mission" placeholder="How the organisation gets there"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Current goals with figures</div><div class="form-input"><textarea id="org-goals" placeholder="e.g. betterplace target, amount raised so far, open needs"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Guessed social media goals</div><div class="form-input"><textarea id="org-smgoals" placeholder="We assume … because … (channel)"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Vision (quote, source)</div><div class="form-input"><textarea autocomplete="off" id="org-vision" placeholder="The big picture the organisation works for"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Mission (quote, source)</div><div class="form-input"><textarea autocomplete="off" id="org-mission" placeholder="How the organisation gets there"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Current goals with figures</div><div class="form-input"><textarea autocomplete="off" id="org-goals" placeholder="e.g. betterplace target, amount raised so far, open needs"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Guessed social media goals</div><div class="form-input"><textarea autocomplete="off" id="org-smgoals" placeholder="We assume … because … (channel)"></textarea></div></div>
     </div>
 
     <div class="subsection">
@@ -964,29 +1021,29 @@
         <thead><tr><th>Platform</th><th>Handle / URL</th><th>Followers</th><th>Avg. Engagement Rate</th><th>Last Post</th><th>Posts / Week</th><th>Function</th><th>Verdict and Reason</th><th style="width:30px"></th></tr></thead>
         <tbody id="presence-table">
           <tr>
-            <td><input type="text" placeholder="Instagram"></td>
-            <td><input type="text" placeholder="@brand"></td>
-            <td><input type="text" placeholder="12,400"></td>
-            <td><input type="text" placeholder="3.2%"></td>
-            <td><input type="text" placeholder="2025-05-10"></td>
-            <td><input type="text" placeholder="2"></td>
-            <td><input type="text" placeholder="community"></td>
-            <td><textarea placeholder="strong, average or weak, because …"></textarea></td>
+            <td><input autocomplete="off" type="text" placeholder="Instagram"></td>
+            <td><input autocomplete="off" type="text" placeholder="@brand"></td>
+            <td><input autocomplete="off" type="text" placeholder="12,400"></td>
+            <td><input autocomplete="off" type="text" placeholder="3.2%"></td>
+            <td><input autocomplete="off" type="text" placeholder="2025-05-10"></td>
+            <td><input autocomplete="off" type="text" placeholder="2"></td>
+            <td><input autocomplete="off" type="text" placeholder="community"></td>
+            <td><textarea autocomplete="off" placeholder="strong, average or weak, because …"></textarea></td>
             <td><button class="del-btn" onclick="delRow(this)">✕</button></td>
           </tr>
         </tbody>
       </table>
       <button class="add-row-btn" onclick="addPresenceRow()">+ Add Platform</button>
-      <div class="form-row" style="margin-top:10px"><div class="form-label">Current positioning (one sentence)</div><div class="form-input"><textarea id="sit-positioning" placeholder="How the organisation presents itself today: for whom, what, why this organisation, with which proof"></textarea></div></div>
+      <div class="form-row" style="margin-top:10px"><div class="form-label">Current positioning (one sentence)</div><div class="form-input"><textarea autocomplete="off" id="sit-positioning" placeholder="How the organisation presents itself today: for whom, what, why this organisation, with which proof"></textarea></div></div>
     </div>
 
     <div class="subsection">
       <h3>Content Audit</h3>
       <p class="hint">Analyse the last 20 posts of the main channel. Compare the five best posts with the five weakest posts.</p>
-      <div class="form-row"><div class="form-label">Posts analysed</div><div class="form-input"><input type="text" id="aud-scope" placeholder="Channel, period, number of posts"></div></div>
-      <div class="form-row"><div class="form-label">Strengths</div><div class="form-input"><textarea id="aud-strengths" placeholder="What works, with an example post"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Weaknesses</div><div class="form-input"><textarea id="aud-weaknesses" placeholder="What fails, with an example post"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Gaps</div><div class="form-input"><textarea id="aud-gaps" placeholder="Underused formats, topics or audiences"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Posts analysed</div><div class="form-input"><input autocomplete="off" type="text" id="aud-scope" placeholder="Channel, period, number of posts"></div></div>
+      <div class="form-row"><div class="form-label">Strengths</div><div class="form-input"><textarea autocomplete="off" id="aud-strengths" placeholder="What works, with an example post"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Weaknesses</div><div class="form-input"><textarea autocomplete="off" id="aud-weaknesses" placeholder="What fails, with an example post"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Gaps</div><div class="form-input"><textarea autocomplete="off" id="aud-gaps" placeholder="Underused formats, topics or audiences"></textarea></div></div>
     </div>
 
     </div>
@@ -1001,11 +1058,11 @@
         <thead><tr><th>Target group</th><th>Who they are (criteria)</th><th>Platforms and role in the feed</th><th>Contact with the organisation</th><th style="width:110px">Source</th><th style="width:30px"></th></tr></thead>
         <tbody id="tg-table">
           <tr>
-            <td><input type="text" placeholder="e.g. Local donors"></td>
-            <td><textarea placeholder="Demographic, geographic, psychographic, behavioural"></textarea></td>
-            <td><textarea placeholder="e.g. Facebook, reactor"></textarea></td>
-            <td><textarea placeholder="Where and how they meet the organisation"></textarea></td>
-            <td><input type="text" placeholder="Data or assumption"></td>
+            <td><input autocomplete="off" type="text" placeholder="e.g. Local donors"></td>
+            <td><textarea autocomplete="off" placeholder="Demographic, geographic, psychographic, behavioural"></textarea></td>
+            <td><textarea autocomplete="off" placeholder="e.g. Facebook, reactor"></textarea></td>
+            <td><textarea autocomplete="off" placeholder="Where and how they meet the organisation"></textarea></td>
+            <td><input autocomplete="off" type="text" placeholder="Data or assumption"></td>
             <td><button class="del-btn" onclick="delRow(this)">✕</button></td>
           </tr>
         </tbody>
@@ -1014,21 +1071,21 @@
       <div class="persona-card" style="margin-top:14px">
         <div class="persona-card-header">Persona sketch 1</div>
         <div style="padding:12px;">
-          <div class="form-row"><div class="form-label">Target group</div><div class="form-input"><input type="text" id="ps1-tg" placeholder="e.g. Local donors"></div></div>
-          <div class="form-row"><div class="form-label">Name / Archetype</div><div class="form-input"><input type="text" id="ps1-name" placeholder="e.g. Regular donor Renate, 64"></div></div>
-          <div class="form-row"><div class="form-label">Motives</div><div class="form-input"><textarea id="ps1-motives" placeholder="Why does this person support the cause?"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Barriers and doubts</div><div class="form-input"><textarea id="ps1-barriers" placeholder="What keeps this person from giving or sharing?"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Data source</div><div class="form-input"><input type="text" id="ps1-source" placeholder="Data, interview or assumption"></div></div>
+          <div class="form-row"><div class="form-label">Target group</div><div class="form-input"><input autocomplete="off" type="text" id="ps1-tg" placeholder="e.g. Local donors"></div></div>
+          <div class="form-row"><div class="form-label">Name / Archetype</div><div class="form-input"><input autocomplete="off" type="text" id="ps1-name" placeholder="e.g. Regular donor Renate, 64"></div></div>
+          <div class="form-row"><div class="form-label">Motives</div><div class="form-input"><textarea autocomplete="off" id="ps1-motives" placeholder="Why does this person support the cause?"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Barriers and doubts</div><div class="form-input"><textarea autocomplete="off" id="ps1-barriers" placeholder="What keeps this person from giving or sharing?"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Data source</div><div class="form-input"><input autocomplete="off" type="text" id="ps1-source" placeholder="Data, interview or assumption"></div></div>
         </div>
       </div>
       <div class="persona-card">
         <div class="persona-card-header secondary">Persona sketch 2</div>
         <div style="padding:12px;">
-          <div class="form-row"><div class="form-label">Target group</div><div class="form-input"><input type="text" id="ps2-tg" placeholder="e.g. Young followers"></div></div>
-          <div class="form-row"><div class="form-label">Name / Archetype</div><div class="form-input"><input type="text" id="ps2-name"></div></div>
-          <div class="form-row"><div class="form-label">Motives</div><div class="form-input"><textarea id="ps2-motives"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Barriers and doubts</div><div class="form-input"><textarea id="ps2-barriers"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Data source</div><div class="form-input"><input type="text" id="ps2-source"></div></div>
+          <div class="form-row"><div class="form-label">Target group</div><div class="form-input"><input autocomplete="off" type="text" id="ps2-tg" placeholder="e.g. Young followers"></div></div>
+          <div class="form-row"><div class="form-label">Name / Archetype</div><div class="form-input"><input autocomplete="off" type="text" id="ps2-name"></div></div>
+          <div class="form-row"><div class="form-label">Motives</div><div class="form-input"><textarea autocomplete="off" id="ps2-motives"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Barriers and doubts</div><div class="form-input"><textarea autocomplete="off" id="ps2-barriers"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Data source</div><div class="form-input"><input autocomplete="off" type="text" id="ps2-source"></div></div>
         </div>
       </div>
     </div>
@@ -1036,22 +1093,22 @@
     <div class="subsection">
       <h3>Social Media Experience</h3>
       <p class="hint">Choose one persona sketch. Go the way to a donation on your phone. Write down for each phase what the person sees, does and thinks.</p>
-      <div class="form-row"><div class="form-label">Persona</div><div class="form-input"><input type="text" id="exp-persona" placeholder="Name of the persona sketch"></div></div>
+      <div class="form-row"><div class="form-label">Persona</div><div class="form-input"><input autocomplete="off" type="text" id="exp-persona" placeholder="Name of the persona sketch"></div></div>
       <table class="fixed-tbl">
         <thead><tr><th style="width:150px">Phase</th><th>Touchpoint</th><th>What the supporter does and thinks</th><th>Pain point</th></tr></thead>
         <tbody>
-          <tr><td class="row-head">Awareness</td><td><textarea id="exp-aw-touch" placeholder="e.g. Reel in the feed"></textarea></td><td><textarea id="exp-aw-do"></textarea></td><td><textarea id="exp-aw-pain"></textarea></td></tr>
-          <tr><td class="row-head">Interest</td><td><textarea id="exp-in-touch"></textarea></td><td><textarea id="exp-in-do"></textarea></td><td><textarea id="exp-in-pain"></textarea></td></tr>
-          <tr><td class="row-head">Consideration</td><td><textarea id="exp-co-touch"></textarea></td><td><textarea id="exp-co-do"></textarea></td><td><textarea id="exp-co-pain"></textarea></td></tr>
-          <tr><td class="row-head">Donation</td><td><textarea id="exp-do-touch"></textarea></td><td><textarea id="exp-do-do"></textarea></td><td><textarea id="exp-do-pain"></textarea></td></tr>
-          <tr><td class="row-head">Retention</td><td><textarea id="exp-re-touch"></textarea></td><td><textarea id="exp-re-do"></textarea></td><td><textarea id="exp-re-pain"></textarea></td></tr>
-          <tr><td class="row-head">Advocacy</td><td><textarea id="exp-ad-touch"></textarea></td><td><textarea id="exp-ad-do"></textarea></td><td><textarea id="exp-ad-pain"></textarea></td></tr>
+          <tr><td class="row-head">Awareness</td><td><textarea autocomplete="off" id="exp-aw-touch" placeholder="e.g. Reel in the feed"></textarea></td><td><textarea autocomplete="off" id="exp-aw-do"></textarea></td><td><textarea autocomplete="off" id="exp-aw-pain"></textarea></td></tr>
+          <tr><td class="row-head">Interest</td><td><textarea autocomplete="off" id="exp-in-touch"></textarea></td><td><textarea autocomplete="off" id="exp-in-do"></textarea></td><td><textarea autocomplete="off" id="exp-in-pain"></textarea></td></tr>
+          <tr><td class="row-head">Consideration</td><td><textarea autocomplete="off" id="exp-co-touch"></textarea></td><td><textarea autocomplete="off" id="exp-co-do"></textarea></td><td><textarea autocomplete="off" id="exp-co-pain"></textarea></td></tr>
+          <tr><td class="row-head">Donation</td><td><textarea autocomplete="off" id="exp-do-touch"></textarea></td><td><textarea autocomplete="off" id="exp-do-do"></textarea></td><td><textarea autocomplete="off" id="exp-do-pain"></textarea></td></tr>
+          <tr><td class="row-head">Retention</td><td><textarea autocomplete="off" id="exp-re-touch"></textarea></td><td><textarea autocomplete="off" id="exp-re-do"></textarea></td><td><textarea autocomplete="off" id="exp-re-pain"></textarea></td></tr>
+          <tr><td class="row-head">Advocacy</td><td><textarea autocomplete="off" id="exp-ad-touch"></textarea></td><td><textarea autocomplete="off" id="exp-ad-do"></textarea></td><td><textarea autocomplete="off" id="exp-ad-pain"></textarea></td></tr>
         </tbody>
       </table>
       <div class="persona-divider" style="margin-top:14px">Moment of truth: from a post to the donation form</div>
-      <div class="form-row"><div class="form-label">Clicks to the donation form</div><div class="form-input"><input type="text" id="mot-clicks" placeholder="e.g. 4 clicks from an Instagram post"></div></div>
-      <div class="form-row"><div class="form-label">Trust signals present</div><div class="form-input"><textarea id="mot-trust" placeholder="Photos, updates, progress, organisation details"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Last update on the donation page</div><div class="form-input"><input type="text" id="mot-update" placeholder="Date"></div></div>
+      <div class="form-row"><div class="form-label">Clicks to the donation form</div><div class="form-input"><input autocomplete="off" type="text" id="mot-clicks" placeholder="e.g. 4 clicks from an Instagram post"></div></div>
+      <div class="form-row"><div class="form-label">Trust signals present</div><div class="form-input"><textarea autocomplete="off" id="mot-trust" placeholder="Photos, updates, progress, organisation details"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Last update on the donation page</div><div class="form-input"><input autocomplete="off" type="text" id="mot-update" placeholder="Date"></div></div>
     </div>
 
     </div>
@@ -1065,12 +1122,12 @@
       <table class="fixed-tbl">
         <thead><tr><th style="width:150px">Field</th><th>Finding with link</th><th>What we learn for our charity project</th></tr></thead>
         <tbody>
-          <tr><td class="row-head">Other projects</td><td><textarea id="lis-projects-find" placeholder="e.g. Two youth-centre projects in our city ask for music equipment (link)"></textarea></td><td><textarea id="lis-projects-learn" placeholder="What follows for your project?"></textarea></td></tr>
-          <tr><td class="row-head">Partner organisations</td><td><textarea id="lis-partners-find"></textarea></td><td><textarea id="lis-partners-learn"></textarea></td></tr>
-          <tr><td class="row-head">“Competitors”</td><td><textarea id="lis-competitors-find"></textarea></td><td><textarea id="lis-competitors-learn"></textarea></td></tr>
-          <tr><td class="row-head">Other stakeholders</td><td><textarea id="lis-stakeholders-find"></textarea></td><td><textarea id="lis-stakeholders-learn"></textarea></td></tr>
-          <tr><td class="row-head">Topics and trends</td><td><textarea id="lis-topics-find"></textarea></td><td><textarea id="lis-topics-learn"></textarea></td></tr>
-          <tr><td class="row-head">Challenges</td><td><textarea id="lis-challenges-find"></textarea></td><td><textarea id="lis-challenges-learn"></textarea></td></tr>
+          <tr><td class="row-head">Other projects</td><td><textarea autocomplete="off" id="lis-projects-find" placeholder="e.g. Two youth-centre projects in our city ask for music equipment (link)"></textarea></td><td><textarea autocomplete="off" id="lis-projects-learn" placeholder="What follows for your project?"></textarea></td></tr>
+          <tr><td class="row-head">Partner organisations</td><td><textarea autocomplete="off" id="lis-partners-find"></textarea></td><td><textarea autocomplete="off" id="lis-partners-learn"></textarea></td></tr>
+          <tr><td class="row-head">“Competitors”</td><td><textarea autocomplete="off" id="lis-competitors-find"></textarea></td><td><textarea autocomplete="off" id="lis-competitors-learn"></textarea></td></tr>
+          <tr><td class="row-head">Other stakeholders</td><td><textarea autocomplete="off" id="lis-stakeholders-find"></textarea></td><td><textarea autocomplete="off" id="lis-stakeholders-learn"></textarea></td></tr>
+          <tr><td class="row-head">Topics and trends</td><td><textarea autocomplete="off" id="lis-topics-find"></textarea></td><td><textarea autocomplete="off" id="lis-topics-learn"></textarea></td></tr>
+          <tr><td class="row-head">Challenges</td><td><textarea autocomplete="off" id="lis-challenges-find"></textarea></td><td><textarea autocomplete="off" id="lis-challenges-learn"></textarea></td></tr>
         </tbody>
       </table>
     </div>
@@ -1082,13 +1139,13 @@
         <thead><tr><th>Competitor</th><th>Main Platform</th><th>Followers</th><th>Content Style</th><th>Strength vs the Organisation</th><th>Interactions per Post per 1,000 Followers</th><th>Response</th><th style="width:30px"></th></tr></thead>
         <tbody id="competitor-table">
           <tr>
-            <td><input type="text" placeholder="Competitor A"></td>
-            <td><input type="text" placeholder="Instagram"></td>
-            <td><input type="text" placeholder="45k"></td>
-            <td><textarea placeholder="Short-form video, humour-led"></textarea></td>
-            <td><textarea placeholder="More consistent posting"></textarea></td>
-            <td><input type="text" placeholder="e.g. 12"></td>
-            <td><textarea placeholder="adopt, avoid or occupy"></textarea></td>
+            <td><input autocomplete="off" type="text" placeholder="Competitor A"></td>
+            <td><input autocomplete="off" type="text" placeholder="Instagram"></td>
+            <td><input autocomplete="off" type="text" placeholder="45k"></td>
+            <td><textarea autocomplete="off" placeholder="Short-form video, humour-led"></textarea></td>
+            <td><textarea autocomplete="off" placeholder="More consistent posting"></textarea></td>
+            <td><input autocomplete="off" type="text" placeholder="e.g. 12"></td>
+            <td><textarea autocomplete="off" placeholder="adopt, avoid or occupy"></textarea></td>
             <td><button class="del-btn" onclick="delRow(this)">✕</button></td>
           </tr>
         </tbody>
@@ -1104,8 +1161,8 @@
     <div class="subsection">
       <h3>Our Approach</h3>
       <p class="hint">Each area writes one sentence. The sentence names the AI route or tool, the prompt or search terms, the time period, the number of sources and the limits.</p>
-      <div class="form-row"><div class="form-label">Our approach (one sentence per area)</div><div class="form-input"><textarea id="lis-approach" placeholder="Organisation: …&#10;Audience: …&#10;Environment: …&#10;(AI route or tool, prompt or search terms, time period, number of sources, limits)"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Links to your AI reports (optional)</div><div class="form-input"><input type="text" id="lis-log" placeholder="Link to each AI chat or report"></div></div>
+      <div class="form-row"><div class="form-label">Our approach (one sentence per area)</div><div class="form-input"><textarea autocomplete="off" id="lis-approach" placeholder="Organisation: …&#10;Audience: …&#10;Environment: …&#10;(AI route or tool, prompt or search terms, time period, number of sources, limits)"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Links to your AI reports (optional)</div><div class="form-input"><input autocomplete="off" type="text" id="lis-log" placeholder="Link to each AI chat or report"></div></div>
     </div>
 
     <div class="subsection">
@@ -1114,27 +1171,27 @@
       <div class="swot-grid">
         <div class="swot-cell swot-s">
           <div class="swot-cell-header">STRENGTHS — Internal positives</div>
-          <textarea id="swot-s" placeholder="• Strong visual brand identity&#10;• Established community of 12k followers&#10;• Skilled in-house content team"></textarea>
+          <textarea autocomplete="off" id="swot-s" placeholder="• Strong visual brand identity&#10;• Established community of 12k followers&#10;• Skilled in-house content team"></textarea>
         </div>
         <div class="swot-cell swot-w">
           <div class="swot-cell-header">WEAKNESSES — Internal negatives</div>
-          <textarea id="swot-w" placeholder="• Low posting frequency&#10;• No paid media budget currently&#10;• Limited video production capability"></textarea>
+          <textarea autocomplete="off" id="swot-w" placeholder="• Low posting frequency&#10;• No paid media budget currently&#10;• Limited video production capability"></textarea>
         </div>
         <div class="swot-cell swot-o">
           <div class="swot-cell-header">OPPORTUNITIES — External positives</div>
-          <textarea id="swot-o" placeholder="• Rising TikTok usage in target demographic&#10;• Competitor gaps in educational content&#10;• Influencer partnership possibilities"></textarea>
+          <textarea autocomplete="off" id="swot-o" placeholder="• Rising TikTok usage in target demographic&#10;• Competitor gaps in educational content&#10;• Influencer partnership possibilities"></textarea>
         </div>
         <div class="swot-cell swot-t">
           <div class="swot-cell-header">THREATS — External negatives</div>
-          <textarea id="swot-t" placeholder="• Algorithm changes reducing organic reach&#10;• Increasing ad costs&#10;• Active competitors with higher budgets"></textarea>
+          <textarea autocomplete="off" id="swot-t" placeholder="• Algorithm changes reducing organic reach&#10;• Increasing ad costs&#10;• Active competitors with higher budgets"></textarea>
         </div>
       </div>
     </div>
 
     <div class="subsection">
       <h3>Key Findings Summary</h3>
-      <div class="form-row"><div class="form-label">Biggest Opportunity</div><div class="form-input"><textarea id="sit-opportunity" placeholder="What is the single biggest opportunity identified?"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Biggest Challenge</div><div class="form-input"><textarea id="sit-challenge" placeholder="What is the main obstacle to overcome?"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Biggest Opportunity</div><div class="form-input"><textarea autocomplete="off" id="sit-opportunity" placeholder="What is the single biggest opportunity identified?"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Biggest Challenge</div><div class="form-input"><textarea autocomplete="off" id="sit-challenge" placeholder="What is the main obstacle to overcome?"></textarea></div></div>
     </div>
     </div>
 
@@ -1159,8 +1216,8 @@
     <div class="subsection">
       <h3>Business Objective (from brand brief)</h3>
       <p class="hint">Builds on Situation: The Organisation Today. Here you state what your campaign wants to reach.</p>
-      <div class="form-row"><div class="form-label">Goal of your business or fundraising project</div><div class="form-input"><textarea id="obj-business" placeholder="e.g. Raise €25,000 for winter shelter beds, or increase online sales by 20%"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Role of Social Media</div><div class="form-input"><textarea id="obj-role" placeholder="How does social media contribute to the business goal?"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Goal of your business or fundraising project</div><div class="form-input"><textarea autocomplete="off" id="obj-business" placeholder="e.g. Raise €25,000 for winter shelter beds, or increase online sales by 20%"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Role of Social Media</div><div class="form-input"><textarea autocomplete="off" id="obj-role" placeholder="How does social media contribute to the business goal?"></textarea></div></div>
     </div>
 
     <div class="subsection">
@@ -1180,18 +1237,18 @@
         <tbody id="smart-tbody">
           <tr>
             <td class="smart-num">1</td>
-            <td><textarea placeholder="Grow Instagram followers by 25%"></textarea></td>
-            <td><input type="text" placeholder="Follower count"></td>
-            <td><input type="text" placeholder="15,000"></td>
-            <td><input type="text" placeholder="31 Aug 2025"></td>
+            <td><textarea autocomplete="off" placeholder="Grow Instagram followers by 25%"></textarea></td>
+            <td><input autocomplete="off" type="text" placeholder="Follower count"></td>
+            <td><input autocomplete="off" type="text" placeholder="15,000"></td>
+            <td><input autocomplete="off" type="text" placeholder="31 Aug 2025"></td>
             <td><button class="del-btn" onclick="delRow(this)">✕</button></td>
           </tr>
           <tr>
             <td class="smart-num">2</td>
-            <td><textarea placeholder="Increase avg. engagement rate to 5%"></textarea></td>
-            <td><input type="text" placeholder="Engagement rate"></td>
-            <td><input type="text" placeholder="5%"></td>
-            <td><input type="text" placeholder="31 Aug 2025"></td>
+            <td><textarea autocomplete="off" placeholder="Increase avg. engagement rate to 5%"></textarea></td>
+            <td><input autocomplete="off" type="text" placeholder="Engagement rate"></td>
+            <td><input autocomplete="off" type="text" placeholder="5%"></td>
+            <td><input autocomplete="off" type="text" placeholder="31 Aug 2025"></td>
             <td><button class="del-btn" onclick="delRow(this)">✕</button></td>
           </tr>
         </tbody>
@@ -1226,47 +1283,47 @@
       <div class="persona-card">
         <div class="persona-card-header">Persona 1 — Primary Audience</div>
         <div style="padding:12px;">
-          <div class="form-row"><div class="form-label">Name / Archetype</div><div class="form-input"><input type="text" id="p1-name" placeholder="e.g. Digital Dana, 28, Marketing Manager"></div></div>
-          <div class="form-row"><div class="form-label">Demographics</div><div class="form-input"><input type="text" id="p1-demo" placeholder="Age, gender, location, income, education"></div></div>
-          <div class="form-row"><div class="form-label">Goals &amp; Motivations</div><div class="form-input"><textarea id="p1-goals" placeholder="What does this person want to achieve?"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Pain Points</div><div class="form-input"><textarea id="p1-pain" placeholder="What problems or frustrations do they face?"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Name / Archetype</div><div class="form-input"><input autocomplete="off" type="text" id="p1-name" placeholder="e.g. Digital Dana, 28, Marketing Manager"></div></div>
+          <div class="form-row"><div class="form-label">Demographics</div><div class="form-input"><input autocomplete="off" type="text" id="p1-demo" placeholder="Age, gender, location, income, education"></div></div>
+          <div class="form-row"><div class="form-label">Goals &amp; Motivations</div><div class="form-input"><textarea autocomplete="off" id="p1-goals" placeholder="What does this person want to achieve?"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Pain Points</div><div class="form-input"><textarea autocomplete="off" id="p1-pain" placeholder="What problems or frustrations do they face?"></textarea></div></div>
 
           <div class="persona-divider">Social media usage behaviour</div>
-          <div class="form-row"><div class="form-label">Preferred Platforms</div><div class="form-input"><input type="text" id="p1-platforms" placeholder="e.g. Instagram, TikTok"></div></div>
-          <div class="form-row"><div class="form-label">When &amp; how they use social</div><div class="form-input"><textarea id="p1-usage" placeholder="Morning commute and late evening, phone only, 15–20 short sessions a day, sound off by default"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Role in the feed</div><div class="form-input"><select id="p1-role"><option value="">— select —</option><option>Lurker — watches, rarely reacts</option><option>Reactor — likes and saves</option><option>Commenter — joins conversations</option><option>Sharer — forwards to others</option><option>Creator — posts own content</option></select></div></div>
-          <div class="form-row"><div class="form-label">Accounts &amp; communities they trust</div><div class="form-input"><textarea id="p1-trust" placeholder="Creators, hashtags, communities and local accounts they already follow"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Content Preferences</div><div class="form-input"><input type="text" id="p1-content" placeholder="e.g. Reels, behind-the-scenes, how-to carousels"></div></div>
+          <div class="form-row"><div class="form-label">Preferred Platforms</div><div class="form-input"><input autocomplete="off" type="text" id="p1-platforms" placeholder="e.g. Instagram, TikTok"></div></div>
+          <div class="form-row"><div class="form-label">When &amp; how they use social</div><div class="form-input"><textarea autocomplete="off" id="p1-usage" placeholder="Morning commute and late evening, phone only, 15–20 short sessions a day, sound off by default"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Role in the feed</div><div class="form-input"><select autocomplete="off" id="p1-role"><option value="">— select —</option><option>Lurker — watches, rarely reacts</option><option>Reactor — likes and saves</option><option>Commenter — joins conversations</option><option>Sharer — forwards to others</option><option>Creator — posts own content</option></select></div></div>
+          <div class="form-row"><div class="form-label">Accounts &amp; communities they trust</div><div class="form-input"><textarea autocomplete="off" id="p1-trust" placeholder="Creators, hashtags, communities and local accounts they already follow"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Content Preferences</div><div class="form-input"><input autocomplete="off" type="text" id="p1-content" placeholder="e.g. Reels, behind-the-scenes, how-to carousels"></div></div>
 
           <div class="persona-divider">Emotional drivers</div>
-          <div class="form-row"><div class="form-label">What stops the scroll</div><div class="form-input"><textarea id="p1-hook" placeholder="A face, a number that surprises, a first line that names their problem"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Feeling we want to create</div><div class="form-input"><input type="text" id="p1-emotion" placeholder="e.g. hope, belonging, quiet pride"></div></div>
-          <div class="form-row"><div class="form-label">Emotional barriers &amp; distrust</div><div class="form-input"><textarea id="p1-barrier" placeholder="Where does the scepticism start? e.g. 'where does my money actually go?'"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Trigger to act</div><div class="form-input"><textarea id="p1-trigger" placeholder="What turns a viewer into a donor / customer / follower — and what has to be true first?"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Tone that works / tone that fails</div><div class="form-input"><textarea id="p1-tone" placeholder="Works: plain, personal, specific. Fails: corporate, pleading, overclaiming."></textarea></div></div>
+          <div class="form-row"><div class="form-label">What stops the scroll</div><div class="form-input"><textarea autocomplete="off" id="p1-hook" placeholder="A face, a number that surprises, a first line that names their problem"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Feeling we want to create</div><div class="form-input"><input autocomplete="off" type="text" id="p1-emotion" placeholder="e.g. hope, belonging, quiet pride"></div></div>
+          <div class="form-row"><div class="form-label">Emotional barriers &amp; distrust</div><div class="form-input"><textarea autocomplete="off" id="p1-barrier" placeholder="Where does the scepticism start? e.g. 'where does my money actually go?'"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Trigger to act</div><div class="form-input"><textarea autocomplete="off" id="p1-trigger" placeholder="What turns a viewer into a donor / customer / follower — and what has to be true first?"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Tone that works / tone that fails</div><div class="form-input"><textarea autocomplete="off" id="p1-tone" placeholder="Works: plain, personal, specific. Fails: corporate, pleading, overclaiming."></textarea></div></div>
         </div>
       </div>
       <div class="persona-card">
         <div class="persona-card-header secondary">Persona 2 — Secondary Audience</div>
         <div style="padding:12px;">
-          <div class="form-row"><div class="form-label">Name / Archetype</div><div class="form-input"><input type="text" id="p2-name" placeholder="e.g. Business Ben, 42, SME Owner"></div></div>
-          <div class="form-row"><div class="form-label">Demographics</div><div class="form-input"><input type="text" id="p2-demo" placeholder="Age, gender, location, income, education"></div></div>
-          <div class="form-row"><div class="form-label">Goals &amp; Motivations</div><div class="form-input"><textarea id="p2-goals" placeholder="What does this person want to achieve?"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Pain Points</div><div class="form-input"><textarea id="p2-pain" placeholder="What problems or frustrations do they face?"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Name / Archetype</div><div class="form-input"><input autocomplete="off" type="text" id="p2-name" placeholder="e.g. Business Ben, 42, SME Owner"></div></div>
+          <div class="form-row"><div class="form-label">Demographics</div><div class="form-input"><input autocomplete="off" type="text" id="p2-demo" placeholder="Age, gender, location, income, education"></div></div>
+          <div class="form-row"><div class="form-label">Goals &amp; Motivations</div><div class="form-input"><textarea autocomplete="off" id="p2-goals" placeholder="What does this person want to achieve?"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Pain Points</div><div class="form-input"><textarea autocomplete="off" id="p2-pain" placeholder="What problems or frustrations do they face?"></textarea></div></div>
 
           <div class="persona-divider">Social media usage behaviour</div>
-          <div class="form-row"><div class="form-label">Preferred Platforms</div><div class="form-input"><input type="text" id="p2-platforms" placeholder="e.g. LinkedIn, YouTube"></div></div>
-          <div class="form-row"><div class="form-label">When &amp; how they use social</div><div class="form-input"><textarea id="p2-usage" placeholder="Weekday mornings on desktop, few but longer sessions, reads before reacting"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Role in the feed</div><div class="form-input"><select id="p2-role"><option value="">— select —</option><option>Lurker — watches, rarely reacts</option><option>Reactor — likes and saves</option><option>Commenter — joins conversations</option><option>Sharer — forwards to others</option><option>Creator — posts own content</option></select></div></div>
-          <div class="form-row"><div class="form-label">Accounts &amp; communities they trust</div><div class="form-input"><textarea id="p2-trust" placeholder="Industry voices, peers, professional communities"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Content Preferences</div><div class="form-input"><input type="text" id="p2-content" placeholder="e.g. Long-form posts, case studies, data visuals"></div></div>
+          <div class="form-row"><div class="form-label">Preferred Platforms</div><div class="form-input"><input autocomplete="off" type="text" id="p2-platforms" placeholder="e.g. LinkedIn, YouTube"></div></div>
+          <div class="form-row"><div class="form-label">When &amp; how they use social</div><div class="form-input"><textarea autocomplete="off" id="p2-usage" placeholder="Weekday mornings on desktop, few but longer sessions, reads before reacting"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Role in the feed</div><div class="form-input"><select autocomplete="off" id="p2-role"><option value="">— select —</option><option>Lurker — watches, rarely reacts</option><option>Reactor — likes and saves</option><option>Commenter — joins conversations</option><option>Sharer — forwards to others</option><option>Creator — posts own content</option></select></div></div>
+          <div class="form-row"><div class="form-label">Accounts &amp; communities they trust</div><div class="form-input"><textarea autocomplete="off" id="p2-trust" placeholder="Industry voices, peers, professional communities"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Content Preferences</div><div class="form-input"><input autocomplete="off" type="text" id="p2-content" placeholder="e.g. Long-form posts, case studies, data visuals"></div></div>
 
           <div class="persona-divider">Emotional drivers</div>
-          <div class="form-row"><div class="form-label">What stops the scroll</div><div class="form-input"><textarea id="p2-hook" placeholder="A concrete result, a credible name, a claim they can check"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Feeling we want to create</div><div class="form-input"><input type="text" id="p2-emotion" placeholder="e.g. confidence, professional relevance"></div></div>
-          <div class="form-row"><div class="form-label">Emotional barriers &amp; distrust</div><div class="form-input"><textarea id="p2-barrier" placeholder="What makes them doubt or scroll past? e.g. no evidence, obvious marketing"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Trigger to act</div><div class="form-input"><textarea id="p2-trigger" placeholder="What makes them share internally, reply, or commit budget?"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Tone that works / tone that fails</div><div class="form-input"><textarea id="p2-tone" placeholder="Works: evidence-led, concise. Fails: hype, emoji-heavy, vague."></textarea></div></div>
+          <div class="form-row"><div class="form-label">What stops the scroll</div><div class="form-input"><textarea autocomplete="off" id="p2-hook" placeholder="A concrete result, a credible name, a claim they can check"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Feeling we want to create</div><div class="form-input"><input autocomplete="off" type="text" id="p2-emotion" placeholder="e.g. confidence, professional relevance"></div></div>
+          <div class="form-row"><div class="form-label">Emotional barriers &amp; distrust</div><div class="form-input"><textarea autocomplete="off" id="p2-barrier" placeholder="What makes them doubt or scroll past? e.g. no evidence, obvious marketing"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Trigger to act</div><div class="form-input"><textarea autocomplete="off" id="p2-trigger" placeholder="What makes them share internally, reply, or commit budget?"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Tone that works / tone that fails</div><div class="form-input"><textarea autocomplete="off" id="p2-tone" placeholder="Works: evidence-led, concise. Fails: hype, emoji-heavy, vague."></textarea></div></div>
         </div>
       </div>
     </div>
@@ -1276,19 +1333,19 @@
       <p class="hint">Positioning is not one statement for everyone. Write it per persona, and name the content
       pillars that carry it. The pillars come from the table below — define them first, then tick them here.</p>
 
-      <div class="form-row"><div class="form-label">Brand Voice (overall)</div><div class="form-input"><input type="text" id="str-voice" placeholder="e.g. Inspiring, Expert, Friendly, Bold"></div></div>
+      <div class="form-row"><div class="form-label">Brand Voice (overall)</div><div class="form-input"><input autocomplete="off" type="text" id="str-voice" placeholder="e.g. Inspiring, Expert, Friendly, Bold"></div></div>
 
       <div class="pos-block">
         <div class="pos-head">Persona 1 — <span class="pos-name" id="pos-name-1">Primary Audience</span></div>
         <div style="padding:10px 12px;">
-          <div class="form-row"><div class="form-label">Core Message</div><div class="form-input"><textarea id="pos1-message" placeholder="The one thing this persona should take away"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Value Proposition</div><div class="form-input"><textarea id="pos1-value" placeholder="Why should THIS persona follow, engage, donate or buy?"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Proof / Reason to believe</div><div class="form-input"><textarea id="pos1-proof" placeholder="What makes the claim credible for this persona?"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Differentiator vs. Competitors</div><div class="form-input"><textarea id="pos1-diff" placeholder="What do we offer this persona that others do not?"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Tone for this persona</div><div class="form-input"><input type="text" id="pos1-tone" placeholder="e.g. warm, first-person, no jargon"></div></div>
+          <div class="form-row"><div class="form-label">Core Message</div><div class="form-input"><textarea autocomplete="off" id="pos1-message" placeholder="The one thing this persona should take away"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Value Proposition</div><div class="form-input"><textarea autocomplete="off" id="pos1-value" placeholder="Why should THIS persona follow, engage, donate or buy?"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Proof / Reason to believe</div><div class="form-input"><textarea autocomplete="off" id="pos1-proof" placeholder="What makes the claim credible for this persona?"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Differentiator vs. Competitors</div><div class="form-input"><textarea autocomplete="off" id="pos1-diff" placeholder="What do we offer this persona that others do not?"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Tone for this persona</div><div class="form-input"><input autocomplete="off" type="text" id="pos1-tone" placeholder="e.g. warm, first-person, no jargon"></div></div>
           <div class="form-row"><div class="form-label">Content Pillars used</div><div class="form-input">
             <div class="pillar-picker" id="pp-1"></div>
-            <input type="hidden" id="pos1-pillars">
+            <input autocomplete="off" type="hidden" id="pos1-pillars">
           </div></div>
         </div>
       </div>
@@ -1296,14 +1353,14 @@
       <div class="pos-block">
         <div class="pos-head secondary">Persona 2 — <span class="pos-name" id="pos-name-2">Secondary Audience</span></div>
         <div style="padding:10px 12px;">
-          <div class="form-row"><div class="form-label">Core Message</div><div class="form-input"><textarea id="pos2-message" placeholder="The one thing this persona should take away"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Value Proposition</div><div class="form-input"><textarea id="pos2-value" placeholder="Why should THIS persona follow, engage, donate or buy?"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Proof / Reason to believe</div><div class="form-input"><textarea id="pos2-proof" placeholder="What makes the claim credible for this persona?"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Differentiator vs. Competitors</div><div class="form-input"><textarea id="pos2-diff" placeholder="What do we offer this persona that others do not?"></textarea></div></div>
-          <div class="form-row"><div class="form-label">Tone for this persona</div><div class="form-input"><input type="text" id="pos2-tone" placeholder="e.g. evidence-led, concise"></div></div>
+          <div class="form-row"><div class="form-label">Core Message</div><div class="form-input"><textarea autocomplete="off" id="pos2-message" placeholder="The one thing this persona should take away"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Value Proposition</div><div class="form-input"><textarea autocomplete="off" id="pos2-value" placeholder="Why should THIS persona follow, engage, donate or buy?"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Proof / Reason to believe</div><div class="form-input"><textarea autocomplete="off" id="pos2-proof" placeholder="What makes the claim credible for this persona?"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Differentiator vs. Competitors</div><div class="form-input"><textarea autocomplete="off" id="pos2-diff" placeholder="What do we offer this persona that others do not?"></textarea></div></div>
+          <div class="form-row"><div class="form-label">Tone for this persona</div><div class="form-input"><input autocomplete="off" type="text" id="pos2-tone" placeholder="e.g. evidence-led, concise"></div></div>
           <div class="form-row"><div class="form-label">Content Pillars used</div><div class="form-input">
             <div class="pillar-picker" id="pp-2"></div>
-            <input type="hidden" id="pos2-pillars">
+            <input autocomplete="off" type="hidden" id="pos2-pillars">
           </div></div>
         </div>
       </div>
@@ -1315,9 +1372,9 @@
       <table>
         <thead><tr><th>#</th><th>Pillar Name</th><th>Description</th><th>Example Post Types</th><th>% of Mix</th><th style="width:30px"></th></tr></thead>
         <tbody id="pillars-table">
-          <tr><td>1</td><td><input type="text" placeholder="Education"></td><td><textarea placeholder="Tips, how-tos, industry insights"></textarea></td><td><input type="text" placeholder="Carousels, infographics"></td><td><input type="text" placeholder="30%"></td><td><button class="del-btn" onclick="delRow(this)">✕</button></td></tr>
-          <tr><td>2</td><td><input type="text" placeholder="Inspiration"></td><td><textarea placeholder="Motivational quotes, success stories"></textarea></td><td><input type="text" placeholder="Quotes, short video"></td><td><input type="text" placeholder="25%"></td><td><button class="del-btn" onclick="delRow(this)">✕</button></td></tr>
-          <tr><td>3</td><td><input type="text" placeholder="Product / Service"></td><td><textarea placeholder="Features, benefits, offers"></textarea></td><td><input type="text" placeholder="Product shots, demos"></td><td><input type="text" placeholder="20%"></td><td><button class="del-btn" onclick="delRow(this)">✕</button></td></tr>
+          <tr><td>1</td><td><input autocomplete="off" type="text" placeholder="Education"></td><td><textarea autocomplete="off" placeholder="Tips, how-tos, industry insights"></textarea></td><td><input autocomplete="off" type="text" placeholder="Carousels, infographics"></td><td><input autocomplete="off" type="text" placeholder="30%"></td><td><button class="del-btn" onclick="delRow(this)">✕</button></td></tr>
+          <tr><td>2</td><td><input autocomplete="off" type="text" placeholder="Inspiration"></td><td><textarea autocomplete="off" placeholder="Motivational quotes, success stories"></textarea></td><td><input autocomplete="off" type="text" placeholder="Quotes, short video"></td><td><input autocomplete="off" type="text" placeholder="25%"></td><td><button class="del-btn" onclick="delRow(this)">✕</button></td></tr>
+          <tr><td>3</td><td><input autocomplete="off" type="text" placeholder="Product / Service"></td><td><textarea autocomplete="off" placeholder="Features, benefits, offers"></textarea></td><td><input autocomplete="off" type="text" placeholder="Product shots, demos"></td><td><input autocomplete="off" type="text" placeholder="20%"></td><td><button class="del-btn" onclick="delRow(this)">✕</button></td></tr>
         </tbody>
       </table>
       <button class="add-row-btn" onclick="addPillarRow()">+ Add Pillar</button>
@@ -1357,9 +1414,9 @@
 
       <div class="model-switch">
         <span class="model-label">Customer journey model</span>
-        <label><input type="radio" name="funnelModel" value="AIDA" onchange="setFunnelModel('AIDA')"> AIDA <em>(4 phases)</em></label>
-        <label><input type="radio" name="funnelModel" value="AICPURA" checked onchange="setFunnelModel('AICPURA')"> AICPURA <em>(6 phases)</em></label>
-        <input type="hidden" id="funnel-model" value="AICPURA">
+        <label><input autocomplete="off" type="radio" name="funnelModel" value="AIDA" onchange="setFunnelModel('AIDA')"> AIDA <em>(4 phases)</em></label>
+        <label><input autocomplete="off" type="radio" name="funnelModel" value="AICPURA" checked onchange="setFunnelModel('AICPURA')"> AICPURA <em>(6 phases)</em></label>
+        <input autocomplete="off" type="hidden" id="funnel-model" value="AICPURA">
       </div>
       <div class="model-legend" id="model-legend"></div>
 
@@ -1374,7 +1431,7 @@
       still enter the posts here, or state in the note field where the SocialHub plan can be found.</p>
       <div class="form-row">
         <div class="form-label">SocialHub / external plan</div>
-        <div class="form-input"><input type="text" id="cal-external" placeholder="e.g. SocialHub calendar 'Winter Shelter 2026', shared with the lecturer on 3 May"></div>
+        <div class="form-input"><input autocomplete="off" type="text" id="cal-external" placeholder="e.g. SocialHub calendar 'Winter Shelter 2026', shared with the lecturer on 3 May"></div>
       </div>
       <div class="post-counter" id="post-counter"></div>
       <table class="cal-tbl">
@@ -1427,8 +1484,8 @@
           <table>
             <thead><tr><th>Tool</th><th>Purpose</th></tr></thead>
             <tbody id="tools-create">
-              <tr><td><input type="text" placeholder="Canva"></td><td><input type="text" placeholder="Graphics & templates"></td></tr>
-              <tr><td><input type="text" placeholder="CapCut"></td><td><input type="text" placeholder="Short video editing"></td></tr>
+              <tr><td><input autocomplete="off" type="text" placeholder="Canva"></td><td><input autocomplete="off" type="text" placeholder="Graphics & templates"></td></tr>
+              <tr><td><input autocomplete="off" type="text" placeholder="CapCut"></td><td><input autocomplete="off" type="text" placeholder="Short video editing"></td></tr>
             </tbody>
           </table>
         </div>
@@ -1437,8 +1494,8 @@
           <table>
             <thead><tr><th>Tool</th><th>Purpose</th></tr></thead>
             <tbody id="tools-schedule">
-              <tr><td><input type="text" placeholder="Buffer"></td><td><input type="text" placeholder="Multi-platform scheduling"></td></tr>
-              <tr><td><input type="text" placeholder="Later"></td><td><input type="text" placeholder="Instagram-focused planning"></td></tr>
+              <tr><td><input autocomplete="off" type="text" placeholder="Buffer"></td><td><input autocomplete="off" type="text" placeholder="Multi-platform scheduling"></td></tr>
+              <tr><td><input autocomplete="off" type="text" placeholder="Later"></td><td><input autocomplete="off" type="text" placeholder="Instagram-focused planning"></td></tr>
             </tbody>
           </table>
         </div>
@@ -1447,8 +1504,8 @@
           <table>
             <thead><tr><th>Tool</th><th>Purpose</th></tr></thead>
             <tbody id="tools-analytics">
-              <tr><td><input type="text" placeholder="Meta Business Suite"></td><td><input type="text" placeholder="Facebook & Instagram stats"></td></tr>
-              <tr><td><input type="text" placeholder="Google Analytics 4"></td><td><input type="text" placeholder="Website traffic from social"></td></tr>
+              <tr><td><input autocomplete="off" type="text" placeholder="Meta Business Suite"></td><td><input autocomplete="off" type="text" placeholder="Facebook & Instagram stats"></td></tr>
+              <tr><td><input autocomplete="off" type="text" placeholder="Google Analytics 4"></td><td><input autocomplete="off" type="text" placeholder="Website traffic from social"></td></tr>
             </tbody>
           </table>
         </div>
@@ -1457,8 +1514,8 @@
           <table>
             <thead><tr><th>Tool</th><th>Purpose</th></tr></thead>
             <tbody id="tools-community">
-              <tr><td><input type="text" placeholder="Sprout Social"></td><td><input type="text" placeholder="Unified inbox & monitoring"></td></tr>
-              <tr><td><input type="text" placeholder="Mention.com"></td><td><input type="text" placeholder="Brand mention tracking"></td></tr>
+              <tr><td><input autocomplete="off" type="text" placeholder="Sprout Social"></td><td><input autocomplete="off" type="text" placeholder="Unified inbox & monitoring"></td></tr>
+              <tr><td><input autocomplete="off" type="text" placeholder="Mention.com"></td><td><input autocomplete="off" type="text" placeholder="Brand mention tracking"></td></tr>
             </tbody>
           </table>
         </div>
@@ -1494,7 +1551,7 @@
           <span class="pres-tag">mandatory</span>
         </div>
         <div class="pres-meta">
-          <label>Date <input type="text" id="pres1-date" placeholder="e.g. 12 May 2026"></label>
+          <label>Date <input autocomplete="off" type="text" id="pres1-date" placeholder="e.g. 12 May 2026"></label>
         </div>
         <table>
           <thead><tr>
@@ -1514,7 +1571,7 @@
           <span class="pres-tag">mandatory</span>
         </div>
         <div class="pres-meta">
-          <label>Date <input type="text" id="pres2-date" placeholder="e.g. 7 July 2026"></label>
+          <label>Date <input autocomplete="off" type="text" id="pres2-date" placeholder="e.g. 7 July 2026"></label>
         </div>
         <table>
           <thead><tr>
@@ -1537,24 +1594,24 @@
         <thead><tr><th>Role</th><th>Name / Person</th><th>Responsibilities</th><th>Platforms Owned</th><th style="width:30px"></th></tr></thead>
         <tbody id="team-table">
           <tr>
-            <td><input type="text" placeholder="Social Media Manager"></td>
-            <td><input type="text" placeholder="Name"></td>
-            <td><textarea placeholder="Overall strategy, approvals, reporting"></textarea></td>
-            <td><input type="text" placeholder="All platforms"></td>
+            <td><input autocomplete="off" type="text" placeholder="Social Media Manager"></td>
+            <td><input autocomplete="off" type="text" placeholder="Name"></td>
+            <td><textarea autocomplete="off" placeholder="Overall strategy, approvals, reporting"></textarea></td>
+            <td><input autocomplete="off" type="text" placeholder="All platforms"></td>
             <td><button class="del-btn" onclick="delRow(this)">✕</button></td>
           </tr>
           <tr>
-            <td><input type="text" placeholder="Content Creator"></td>
-            <td><input type="text" placeholder="Name"></td>
-            <td><textarea placeholder="Photography, video, copywriting"></textarea></td>
-            <td><input type="text" placeholder="Instagram, TikTok"></td>
+            <td><input autocomplete="off" type="text" placeholder="Content Creator"></td>
+            <td><input autocomplete="off" type="text" placeholder="Name"></td>
+            <td><textarea autocomplete="off" placeholder="Photography, video, copywriting"></textarea></td>
+            <td><input autocomplete="off" type="text" placeholder="Instagram, TikTok"></td>
             <td><button class="del-btn" onclick="delRow(this)">✕</button></td>
           </tr>
           <tr>
-            <td><input type="text" placeholder="Community Manager"></td>
-            <td><input type="text" placeholder="Name"></td>
-            <td><textarea placeholder="Comment responses, DMs, community engagement"></textarea></td>
-            <td><input type="text" placeholder="All platforms"></td>
+            <td><input autocomplete="off" type="text" placeholder="Community Manager"></td>
+            <td><input autocomplete="off" type="text" placeholder="Name"></td>
+            <td><textarea autocomplete="off" placeholder="Comment responses, DMs, community engagement"></textarea></td>
+            <td><input autocomplete="off" type="text" placeholder="All platforms"></td>
             <td><button class="del-btn" onclick="delRow(this)">✕</button></td>
           </tr>
         </tbody>
@@ -1571,52 +1628,52 @@
         <tbody id="timeline-table">
           <tr class="phase-row-header" data-phase="1"><td colspan="7">Phase 1 — Pre-launch: theme, page and posts ready; first donors lined up</td></tr>
           <tr>
-            <td><select class="tl-phase" onchange="placeMilestone(this)"><option value="">— phase —</option><option value="1">1 Pre-launch</option><option value="2">2 Launch</option><option value="3">3 Momentum</option><option value="4">4 Final push</option><option value="5">5 Thank you</option></select></td>
-            <td><textarea placeholder="Set up betterplace page and content bank"></textarea></td>
-            <td><input type="text" placeholder="Week 1"></td>
-            <td><input type="text" placeholder="Week 2"></td>
-            <td><input type="text" placeholder="Content lead"></td>
-            <td><select><option>Not Started</option><option>In Progress</option><option>Done</option></select></td>
+            <td><select autocomplete="off" class="tl-phase" onchange="placeMilestone(this)"><option value="">— phase —</option><option value="1">1 Pre-launch</option><option value="2">2 Launch</option><option value="3">3 Momentum</option><option value="4">4 Final push</option><option value="5">5 Thank you</option></select></td>
+            <td><textarea autocomplete="off" placeholder="Set up betterplace page and content bank"></textarea></td>
+            <td><input autocomplete="off" type="text" placeholder="Week 1"></td>
+            <td><input autocomplete="off" type="text" placeholder="Week 2"></td>
+            <td><input autocomplete="off" type="text" placeholder="Content lead"></td>
+            <td><select autocomplete="off"><option>Not Started</option><option>In Progress</option><option>Done</option></select></td>
             <td><button class="del-btn" onclick="delRow(this)">✕</button></td>
           </tr>
           <tr class="phase-row-header" data-phase="2"><td colspan="7">Phase 2 — Launch: ask your own network first</td></tr>
           <tr>
-            <td><select class="tl-phase" onchange="placeMilestone(this)"><option value="">— phase —</option><option value="1">1 Pre-launch</option><option value="2">2 Launch</option><option value="3">3 Momentum</option><option value="4">4 Final push</option><option value="5">5 Thank you</option></select></td>
-            <td><textarea placeholder="Campaign go-live, first ask to own network"></textarea></td>
-            <td><input type="text" placeholder="Week 3"></td>
-            <td><input type="text" placeholder="Week 3"></td>
-            <td><input type="text" placeholder="Team lead"></td>
-            <td><select><option>Not Started</option><option>In Progress</option><option>Done</option></select></td>
+            <td><select autocomplete="off" class="tl-phase" onchange="placeMilestone(this)"><option value="">— phase —</option><option value="1">1 Pre-launch</option><option value="2">2 Launch</option><option value="3">3 Momentum</option><option value="4">4 Final push</option><option value="5">5 Thank you</option></select></td>
+            <td><textarea autocomplete="off" placeholder="Campaign go-live, first ask to own network"></textarea></td>
+            <td><input autocomplete="off" type="text" placeholder="Week 3"></td>
+            <td><input autocomplete="off" type="text" placeholder="Week 3"></td>
+            <td><input autocomplete="off" type="text" placeholder="Team lead"></td>
+            <td><select autocomplete="off"><option>Not Started</option><option>In Progress</option><option>Done</option></select></td>
             <td><button class="del-btn" onclick="delRow(this)">✕</button></td>
           </tr>
           <tr class="phase-row-header" data-phase="3"><td colspan="7">Phase 3 — Momentum: updates and progress against the mid-campaign dip</td></tr>
           <tr>
-            <td><select class="tl-phase" onchange="placeMilestone(this)"><option value="">— phase —</option><option value="1">1 Pre-launch</option><option value="2">2 Launch</option><option value="3">3 Momentum</option><option value="4">4 Final push</option><option value="5">5 Thank you</option></select></td>
-            <td><textarea placeholder="Weekly progress update post"></textarea></td>
-            <td><input type="text" placeholder="Week 4"></td>
-            <td><input type="text" placeholder="Week 6"></td>
-            <td><input type="text" placeholder="SM manager"></td>
-            <td><select><option>Not Started</option><option>In Progress</option><option>Done</option></select></td>
+            <td><select autocomplete="off" class="tl-phase" onchange="placeMilestone(this)"><option value="">— phase —</option><option value="1">1 Pre-launch</option><option value="2">2 Launch</option><option value="3">3 Momentum</option><option value="4">4 Final push</option><option value="5">5 Thank you</option></select></td>
+            <td><textarea autocomplete="off" placeholder="Weekly progress update post"></textarea></td>
+            <td><input autocomplete="off" type="text" placeholder="Week 4"></td>
+            <td><input autocomplete="off" type="text" placeholder="Week 6"></td>
+            <td><input autocomplete="off" type="text" placeholder="SM manager"></td>
+            <td><select autocomplete="off"><option>Not Started</option><option>In Progress</option><option>Done</option></select></td>
             <td><button class="del-btn" onclick="delRow(this)">✕</button></td>
           </tr>
           <tr class="phase-row-header" data-phase="4"><td colspan="7">Phase 4 — Final push: countdown to the deadline</td></tr>
           <tr>
-            <td><select class="tl-phase" onchange="placeMilestone(this)"><option value="">— phase —</option><option value="1">1 Pre-launch</option><option value="2">2 Launch</option><option value="3">3 Momentum</option><option value="4">4 Final push</option><option value="5">5 Thank you</option></select></td>
-            <td><textarea placeholder="Countdown posts, final call"></textarea></td>
-            <td><input type="text" placeholder="Week 7"></td>
-            <td><input type="text" placeholder="Week 7"></td>
-            <td><input type="text" placeholder="Content lead"></td>
-            <td><select><option>Not Started</option><option>In Progress</option><option>Done</option></select></td>
+            <td><select autocomplete="off" class="tl-phase" onchange="placeMilestone(this)"><option value="">— phase —</option><option value="1">1 Pre-launch</option><option value="2">2 Launch</option><option value="3">3 Momentum</option><option value="4">4 Final push</option><option value="5">5 Thank you</option></select></td>
+            <td><textarea autocomplete="off" placeholder="Countdown posts, final call"></textarea></td>
+            <td><input autocomplete="off" type="text" placeholder="Week 7"></td>
+            <td><input autocomplete="off" type="text" placeholder="Week 7"></td>
+            <td><input autocomplete="off" type="text" placeholder="Content lead"></td>
+            <td><select autocomplete="off"><option>Not Started</option><option>In Progress</option><option>Done</option></select></td>
             <td><button class="del-btn" onclick="delRow(this)">✕</button></td>
           </tr>
           <tr class="phase-row-header" data-phase="5"><td colspan="7">Phase 5 — Thank you: report the result, thank donors in public</td></tr>
           <tr>
-            <td><select class="tl-phase" onchange="placeMilestone(this)"><option value="">— phase —</option><option value="1">1 Pre-launch</option><option value="2">2 Launch</option><option value="3">3 Momentum</option><option value="4">4 Final push</option><option value="5">5 Thank you</option></select></td>
-            <td><textarea placeholder="Thank-you post with result"></textarea></td>
-            <td><input type="text" placeholder="Week 8"></td>
-            <td><input type="text" placeholder="Week 8"></td>
-            <td><input type="text" placeholder="Team lead"></td>
-            <td><select><option>Not Started</option><option>In Progress</option><option>Done</option></select></td>
+            <td><select autocomplete="off" class="tl-phase" onchange="placeMilestone(this)"><option value="">— phase —</option><option value="1">1 Pre-launch</option><option value="2">2 Launch</option><option value="3">3 Momentum</option><option value="4">4 Final push</option><option value="5">5 Thank you</option></select></td>
+            <td><textarea autocomplete="off" placeholder="Thank-you post with result"></textarea></td>
+            <td><input autocomplete="off" type="text" placeholder="Week 8"></td>
+            <td><input autocomplete="off" type="text" placeholder="Week 8"></td>
+            <td><input autocomplete="off" type="text" placeholder="Team lead"></td>
+            <td><select autocomplete="off"><option>Not Started</option><option>In Progress</option><option>Done</option></select></td>
             <td><button class="del-btn" onclick="delRow(this)">✕</button></td>
           </tr>
         </tbody>
@@ -1626,10 +1683,10 @@
 
     <div class="subsection">
       <h3>Workflow & Approval Process</h3>
-      <div class="form-row"><div class="form-label">Content Creation Lead Time</div><div class="form-input"><input type="text" id="act-leadtime" placeholder="e.g. Posts created 5 days before publish"></div></div>
-      <div class="form-row"><div class="form-label">Approval Chain</div><div class="form-input"><textarea id="act-approval" placeholder="e.g. Creator → SM Manager → Brand Director → Publish"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Crisis Protocol</div><div class="form-input"><textarea id="act-crisis" placeholder="What happens if a post receives negative attention? Who is alerted?"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Response Time SLA</div><div class="form-input"><input type="text" id="act-sla" placeholder="e.g. Respond to all comments within 2 hours (weekdays)"></div></div>
+      <div class="form-row"><div class="form-label">Content Creation Lead Time</div><div class="form-input"><input autocomplete="off" type="text" id="act-leadtime" placeholder="e.g. Posts created 5 days before publish"></div></div>
+      <div class="form-row"><div class="form-label">Approval Chain</div><div class="form-input"><textarea autocomplete="off" id="act-approval" placeholder="e.g. Creator → SM Manager → Brand Director → Publish"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Crisis Protocol</div><div class="form-input"><textarea autocomplete="off" id="act-crisis" placeholder="What happens if a post receives negative attention? Who is alerted?"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Response Time SLA</div><div class="form-input"><input autocomplete="off" type="text" id="act-sla" placeholder="e.g. Respond to all comments within 2 hours (weekdays)"></div></div>
     </div>
   </div>
   <div class="bottom-nav">
@@ -1698,15 +1755,15 @@
       <button class="add-row-btn" onclick="addReviewRow()">+ Add Row</button>
       <div class="form-row" style="margin-top:10px">
         <div class="form-label">Overall conclusion at mid-project</div>
-        <div class="form-input"><textarea id="ctrl-midconclusion" placeholder="Where does the campaign stand overall, and what is the single most important change for the second half?"></textarea></div>
+        <div class="form-input"><textarea autocomplete="off" id="ctrl-midconclusion" placeholder="Where does the campaign stand overall, and what is the single most important change for the second half?"></textarea></div>
       </div>
     </div>
 
     <div class="subsection">
       <h3>Reporting Cadence</h3>
-      <div class="form-row"><div class="form-label">Weekly Check-in</div><div class="form-input"><textarea id="ctrl-weekly" placeholder="What is reviewed weekly? Who attends? Format?"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Monthly Report</div><div class="form-input"><textarea id="ctrl-monthly" placeholder="What does the monthly report include? Who receives it?"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Reporting Dashboard</div><div class="form-input"><input type="text" id="ctrl-dashboard" placeholder="e.g. Google Looker Studio, Sprout Social Dashboard, Excel"></div></div>
+      <div class="form-row"><div class="form-label">Weekly Check-in</div><div class="form-input"><textarea autocomplete="off" id="ctrl-weekly" placeholder="What is reviewed weekly? Who attends? Format?"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Monthly Report</div><div class="form-input"><textarea autocomplete="off" id="ctrl-monthly" placeholder="What does the monthly report include? Who receives it?"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Reporting Dashboard</div><div class="form-input"><input autocomplete="off" type="text" id="ctrl-dashboard" placeholder="e.g. Google Looker Studio, Sprout Social Dashboard, Excel"></div></div>
 
       <div class="coach-block">
         <div class="coach-head">Coaching sessions with Prof. Dr. Kern</div>
@@ -1729,14 +1786,14 @@
 
     <div class="subsection">
       <h3>Optimisation Framework</h3>
-      <div class="form-row"><div class="form-label">A/B Testing Plan</div><div class="form-input"><textarea id="ctrl-ab" placeholder="Which elements will be A/B tested? (headlines, visuals, CTAs, posting times)"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Underperformance Triggers</div><div class="form-input"><textarea id="ctrl-triggers" placeholder="At what point do you pause / change a tactic? (e.g. &lt;1% engagement for 2 weeks)"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Strategy Review Dates</div><div class="form-input"><input type="text" id="ctrl-review" placeholder="e.g. End of Month 1, Month 3, End of Campaign"></div></div>
+      <div class="form-row"><div class="form-label">A/B Testing Plan</div><div class="form-input"><textarea autocomplete="off" id="ctrl-ab" placeholder="Which elements will be A/B tested? (headlines, visuals, CTAs, posting times)"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Underperformance Triggers</div><div class="form-input"><textarea autocomplete="off" id="ctrl-triggers" placeholder="At what point do you pause / change a tactic? (e.g. &lt;1% engagement for 2 weeks)"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Strategy Review Dates</div><div class="form-input"><input autocomplete="off" type="text" id="ctrl-review" placeholder="e.g. End of Month 1, Month 3, End of Campaign"></div></div>
     </div>
 
     <div class="subsection">
       <h3>Success Definition</h3>
-      <div class="form-row"><div class="form-label">Campaign is successful if...</div><div class="form-input"><textarea id="ctrl-success" placeholder="Write a 2–3 sentence definition of what success looks like at the end of the campaign period."></textarea></div></div>
+      <div class="form-row"><div class="form-label">Campaign is successful if...</div><div class="form-input"><textarea autocomplete="off" id="ctrl-success" placeholder="Write a 2–3 sentence definition of what success looks like at the end of the campaign period."></textarea></div></div>
     </div>
   </div>
   <div class="bottom-nav">
@@ -1758,28 +1815,28 @@
     <p class="hint" style="margin-bottom:14px">This overview helps you hold on to your strategy across all target groups, channels and levels. Fill in each cell based on your work in the previous phases.</p>
 
     <div class="arch-box">OBJECTIVES / VISION<br>
-      <textarea id="arch-vision" style="width:100%;border:none;background:transparent;text-align:center;font-size:12px;font-family:Arial,sans-serif;font-weight:400;margin-top:4px;resize:none;min-height:40px" placeholder="State your overarching campaign vision and main goal here..."></textarea>
+      <textarea autocomplete="off" id="arch-vision" style="width:100%;border:none;background:transparent;text-align:center;font-size:12px;font-family:Arial,sans-serif;font-weight:400;margin-top:4px;resize:none;min-height:40px" placeholder="State your overarching campaign vision and main goal here..."></textarea>
     </div>
 
     <div class="arch-level-label">Level 1 — Target Groups</div>
     <div class="arch-grid">
-      <div class="arch-tg"><div class="arch-tg-header">TARGET GROUP 1</div><textarea placeholder="Name & describe TG1&#10;• Goal 1&#10;• Goal 2"></textarea></div>
-      <div class="arch-tg"><div class="arch-tg-header">TARGET GROUP 2</div><textarea placeholder="Name & describe TG2&#10;• Goal 1&#10;• Goal 2"></textarea></div>
-      <div class="arch-tg"><div class="arch-tg-header">TARGET GROUP 3</div><textarea placeholder="Name & describe TG3&#10;• Goal 1&#10;• Goal 2"></textarea></div>
+      <div class="arch-tg"><div class="arch-tg-header">TARGET GROUP 1</div><textarea autocomplete="off" id="arch-tg1" placeholder="Name & describe TG1&#10;• Goal 1&#10;• Goal 2"></textarea></div>
+      <div class="arch-tg"><div class="arch-tg-header">TARGET GROUP 2</div><textarea autocomplete="off" id="arch-tg2" placeholder="Name & describe TG2&#10;• Goal 1&#10;• Goal 2"></textarea></div>
+      <div class="arch-tg"><div class="arch-tg-header">TARGET GROUP 3</div><textarea autocomplete="off" id="arch-tg3" placeholder="Name & describe TG3&#10;• Goal 1&#10;• Goal 2"></textarea></div>
     </div>
 
     <div class="arch-level-label">Level 2 — Selection of Channels</div>
     <div class="arch-grid">
-      <div class="arch-tg"><div class="arch-tg-header" style="background:#3D5BB3">CHANNELS for TG1</div><textarea placeholder="Channel 1:&#10;Channel 2:&#10;Rationale:"></textarea></div>
-      <div class="arch-tg"><div class="arch-tg-header" style="background:#3D5BB3">CHANNELS for TG2</div><textarea placeholder="Channel 1:&#10;Channel 2:&#10;Rationale:"></textarea></div>
-      <div class="arch-tg"><div class="arch-tg-header" style="background:#3D5BB3">CHANNELS for TG3</div><textarea placeholder="Channel 1:&#10;Channel 2:&#10;Rationale:"></textarea></div>
+      <div class="arch-tg"><div class="arch-tg-header" style="background:#3D5BB3">CHANNELS for TG1</div><textarea autocomplete="off" id="arch-ch1" placeholder="Channel 1:&#10;Channel 2:&#10;Rationale:"></textarea></div>
+      <div class="arch-tg"><div class="arch-tg-header" style="background:#3D5BB3">CHANNELS for TG2</div><textarea autocomplete="off" id="arch-ch2" placeholder="Channel 1:&#10;Channel 2:&#10;Rationale:"></textarea></div>
+      <div class="arch-tg"><div class="arch-tg-header" style="background:#3D5BB3">CHANNELS for TG3</div><textarea autocomplete="off" id="arch-ch3" placeholder="Channel 1:&#10;Channel 2:&#10;Rationale:"></textarea></div>
     </div>
 
     <div class="arch-level-label">Level 3 — Operationalisation per Channel</div>
     <div class="arch-grid">
-      <div class="arch-tg"><div class="arch-tg-header" style="background:#7080C5">DETAILS TG1</div><textarea placeholder="• Targets per channel&#10;• Content per channel&#10;• Organisational anchoring&#10;• Resources&#10;• Links with other TGs"></textarea></div>
-      <div class="arch-tg"><div class="arch-tg-header" style="background:#7080C5">DETAILS TG2</div><textarea placeholder="• Targets per channel&#10;• Content per channel&#10;• Organisational anchoring&#10;• Resources&#10;• Links with other TGs"></textarea></div>
-      <div class="arch-tg"><div class="arch-tg-header" style="background:#7080C5">DETAILS TG3</div><textarea placeholder="• Targets per channel&#10;• Content per channel&#10;• Organisational anchoring&#10;• Resources&#10;• Links with other TGs"></textarea></div>
+      <div class="arch-tg"><div class="arch-tg-header" style="background:#7080C5">DETAILS TG1</div><textarea autocomplete="off" id="arch-op1" placeholder="• Targets per channel&#10;• Content per channel&#10;• Organisational anchoring&#10;• Resources&#10;• Links with other TGs"></textarea></div>
+      <div class="arch-tg"><div class="arch-tg-header" style="background:#7080C5">DETAILS TG2</div><textarea autocomplete="off" id="arch-op2" placeholder="• Targets per channel&#10;• Content per channel&#10;• Organisational anchoring&#10;• Resources&#10;• Links with other TGs"></textarea></div>
+      <div class="arch-tg"><div class="arch-tg-header" style="background:#7080C5">DETAILS TG3</div><textarea autocomplete="off" id="arch-op3" placeholder="• Targets per channel&#10;• Content per channel&#10;• Organisational anchoring&#10;• Resources&#10;• Links with other TGs"></textarea></div>
     </div>
 
     <div class="done-box">
@@ -1810,28 +1867,28 @@
     <strong>Limit: 1,500 characters per section.</strong></p>
 
     <div class="note-block">
-      <input type="text" class="note-title" id="note1-title" placeholder="1. Section title — choose your own" aria-label="Title of section 1">
-      <textarea id="note1-text" data-max="1500" placeholder="e.g. Key concepts &amp; definitions"></textarea>
+      <input autocomplete="off" type="text" class="note-title" id="note1-title" placeholder="1. Section title — choose your own" aria-label="Title of section 1">
+      <textarea autocomplete="off" id="note1-text" data-max="1500" placeholder="e.g. Key concepts &amp; definitions"></textarea>
       <div class="char-count" id="cc-note1-text"></div>
     </div>
     <div class="note-block">
-      <input type="text" class="note-title" id="note2-title" placeholder="2. Section title — choose your own" aria-label="Title of section 2">
-      <textarea id="note2-text" data-max="1500" placeholder="e.g. Platform &amp; algorithm learnings"></textarea>
+      <input autocomplete="off" type="text" class="note-title" id="note2-title" placeholder="2. Section title — choose your own" aria-label="Title of section 2">
+      <textarea autocomplete="off" id="note2-text" data-max="1500" placeholder="e.g. Platform &amp; algorithm learnings"></textarea>
       <div class="char-count" id="cc-note2-text"></div>
     </div>
     <div class="note-block">
-      <input type="text" class="note-title" id="note3-title" placeholder="3. Section title — choose your own" aria-label="Title of section 3">
-      <textarea id="note3-text" data-max="1500" placeholder="e.g. Models and frameworks"></textarea>
+      <input autocomplete="off" type="text" class="note-title" id="note3-title" placeholder="3. Section title — choose your own" aria-label="Title of section 3">
+      <textarea autocomplete="off" id="note3-text" data-max="1500" placeholder="e.g. Models and frameworks"></textarea>
       <div class="char-count" id="cc-note3-text"></div>
     </div>
     <div class="note-block">
-      <input type="text" class="note-title" id="note4-title" placeholder="4. Section title — choose your own" aria-label="Title of section 4">
-      <textarea id="note4-text" data-max="1500" placeholder="e.g. Lessons learned from our project"></textarea>
+      <input autocomplete="off" type="text" class="note-title" id="note4-title" placeholder="4. Section title — choose your own" aria-label="Title of section 4">
+      <textarea autocomplete="off" id="note4-text" data-max="1500" placeholder="e.g. Lessons learned from our project"></textarea>
       <div class="char-count" id="cc-note4-text"></div>
     </div>
     <div class="note-block">
-      <input type="text" class="note-title" id="note5-title" placeholder="5. Section title — choose your own" aria-label="Title of section 5">
-      <textarea id="note5-text" data-max="1500" placeholder="e.g. Open questions &amp; risks"></textarea>
+      <input autocomplete="off" type="text" class="note-title" id="note5-title" placeholder="5. Section title — choose your own" aria-label="Title of section 5">
+      <textarea autocomplete="off" id="note5-text" data-max="1500" placeholder="e.g. Open questions &amp; risks"></textarea>
       <div class="char-count" id="cc-note5-text"></div>
     </div>
   </div>
@@ -1850,6 +1907,33 @@
 </td></tr></tbody></table>
 
 <div class="toast" id="toast"></div>
+
+<!-- ===== CLAUDE COACH ===== -->
+<button id="claudeBtn" type="button" onclick="openClaudeCoach()" aria-haspopup="dialog">
+  <span aria-hidden="true">💬</span> Discuss with Claude
+</button>
+<div id="claudeModal" role="dialog" aria-modal="true" aria-labelledby="claudeModalTitle">
+  <div class="diag-box">
+    <h3 id="claudeModalTitle">Discuss this section with Claude</h3>
+    <p>Claude opens in a new tab with your own Claude account. It reads your plan through the
+    <strong>SOSTAC Coach</strong> connector and coaches you: it asks questions and checks your entries,
+    it does not change your plan.</p>
+    <p><strong>Once only:</strong> add the connector in Claude.</p>
+    <ol>
+      <li>claude.ai › Settings › Connectors › <em>Add custom connector</em></li>
+      <li>Name: <code>SOSTAC Coach</code> · URL: <code id="claudeConnUrl">https://earwxoxayapshwgnuxds.supabase.co/functions/v1/sostac-coach</code></li>
+      <li>In the chat, make sure the connector is switched on.</li>
+    </ol>
+    <p id="claudeSection" style="color:var(--grey)"></p>
+    <p style="color:var(--grey);font-size:12px">Label AI support in Situation › Our Approach.</p>
+    <div class="cm-actions">
+      <button type="button" onclick="copyClaudeText(document.getElementById('claudeConnUrl').textContent, 'Connector URL copied')">Copy connector URL</button>
+      <button type="button" onclick="closeClaudeCoach()">Cancel</button>
+      <button type="button" class="cm-go" onclick="launchClaudeCoach()">Open Claude →</button>
+    </div>
+  </div>
+</div>
+
 
 <script>
 // ─── TAB NAVIGATION ───────────────────────────────────────────
@@ -1893,6 +1977,7 @@ function showTab(n) {
   // Opening Control brings the SMART goals across, so the two never drift apart
   if (n === 6) syncSmartToKpis(false);
   if (n === 3 || n === 4) { refreshPersonaSelects(); refreshCampaignSelects(); renderPillarPickers(); }
+  if (n === 0) estimatePages();
   updateProgress();
   revealNavButton(tabs[n]);
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1920,9 +2005,20 @@ document.addEventListener('input', updateProgress);
 // ─── SAVE / LOAD ──────────────────────────────────────────────
 const STORAGE_PREFIX = 'sostac_smm_hhn_v2';
 /** Local cache is per group, so two codes on one browser never mix. */
-function storageKey() {
-  return currentGroupId ? STORAGE_PREFIX + '::' + currentGroupId : STORAGE_PREFIX;
+function storageKey(code) {
+  const c = code === undefined ? currentGroupId : code;
+  return c ? STORAGE_PREFIX + '::' + c : STORAGE_PREFIX;
 }
+
+/**
+ * Every table and card list whose rows are stored as markup. One list for
+ * saving, loading and export: a table missing here is never saved.
+ */
+const SAVED_TABLES = ['member-table', 'pres1-table', 'pres2-table',
+  'presence-table', 'competitor-table', 'tg-table', 'smart-tbody', 'pillars-table', 'platform-list',
+  'campaign-list', 'calendar-table', 'influencer-table', 'team-table', 'timeline-table',
+  'kpi-table', 'review-table', 'coaching-table',
+  'tools-create', 'tools-schedule', 'tools-analytics', 'tools-community'];
 
 // localStorage throws outright in private mode, with site data blocked, or
 // when the file is opened from certain sandboxes. Never let that break init.
@@ -1952,59 +2048,74 @@ function syncFieldAttributes(root) {
   });
 }
 
+/** The plan without its save stamp: equal prints mean nothing changed. */
+function fingerprint(data) {
+  const copy = Object.assign({}, data);
+  delete copy.__meta__;
+  return JSON.stringify(copy);
+}
+
+/** Sync state of the local copy: which server version it builds on, and
+ *  whether it holds edits the server does not have yet. */
+function readSyncMeta(code) {
+  try { return JSON.parse(storageGet(storageKey(code) + '::sync') || 'null'); }
+  catch (e) { return null; }
+}
+function writeSyncMeta(pending) {
+  storageSet(storageKey() + '::sync',
+    JSON.stringify({ base: knownSaved, pending: !!pending, at: new Date().toISOString() }));
+}
+/** Keep the previous local copy before anything replaces it. */
+function backupLocal(code) {
+  const raw = storageGet(storageKey(code));
+  if (raw) storageSet(storageKey(code) + '::backup', raw);
+}
+
 function saveAll() {
-  if (PRINTING) return;   // print scaffolding must never reach storage
-  const data = {};
-  document.querySelectorAll('[id]').forEach(el => {
-    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT') {
-      data[el.id] = el.value;
-    }
-  });
-  // Save dynamic table contents by serializing innerHTML
-  const dynamicTables = ['member-table','pres1-table','pres2-table',
-    'presence-table','competitor-table','tg-table','smart-tbody','pillars-table','platform-list',
-    'campaign-list','calendar-table','influencer-table','team-table','timeline-table',
-    'kpi-table','review-table','coaching-table'];
-  dynamicTables.forEach(id => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    syncFieldAttributes(el);
-    data['__table__' + id] = el.innerHTML;
-  });
+  if (PRINTING) {
+    // print scaffolding must never reach storage — but when the print
+    // dialog is long gone and afterprint never came, restore and go on
+    if (window.matchMedia && window.matchMedia('print').matches) return;
+    unprepPrint();
+  }
+  clearTimeout(saveTimer);
+  const data = collectData();
+  const changed = fingerprint(data) !== lastSyncedPrint;
   if (!storageSet(storageKey(), JSON.stringify(data))) {
     warnNoStorage();
-    updateProgress();
-    return;
+  } else {
+    stampSaved();
   }
-  stampSaved();
-  scheduleCloudSave();
+  if (!applyingCloud && currentGroupId) {
+    writeSyncMeta(changed);
+    if (changed) scheduleCloudSave();
+    else if (!pushing) { dirty = false; }
+  }
   updateProgress();
 }
 
+/** Something was added, removed or moved: save soon (a click fires no input event). */
+function planChanged() {
+  if (!currentGroupId || applyingCloud || booting) return;
+  dirty = true;
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveAll, 400);
+}
+
+/** The local copy for a group code: { data, sync } or null. */
+function readLocal(code) {
+  const raw = storageGet(storageKey(code));
+  if (!raw) return null;
+  try { return { data: JSON.parse(raw), sync: readSyncMeta(code) }; }
+  catch (e) { return null; }
+}
+
 function loadAll() {
-  const raw = storageGet(storageKey());
-  if (!raw) return;
-  let data;
-  try { data = JSON.parse(raw); }
-  catch (e) { return; }
-  const dynamicTables = ['member-table','pres1-table','pres2-table',
-    'presence-table','competitor-table','tg-table','smart-tbody','pillars-table','platform-list',
-    'campaign-list','calendar-table','influencer-table','team-table','timeline-table',
-    'kpi-table','review-table','coaching-table'];
-  dynamicTables.forEach(id => {
-    const key = '__table__' + id;
-    if (data[key]) {
-      const el = document.getElementById(id);
-      if (el) el.innerHTML = data[key];
-    }
-  });
-  migrateSituationTables();
-  Object.entries(data).forEach(([id, val]) => {
-    if (id.startsWith('__table__')) return;
-    const el = document.getElementById(id);
-    if (el) el.value = val;
-  });
+  const local = readLocal();
+  if (!local) return null;
+  applyPlanData(local.data);
   updateProgress();
+  return local.data;
 }
 
 // ─── TOAST ────────────────────────────────────────────────────
@@ -2021,35 +2132,37 @@ function delRow(btn) {
   renumberMembers();
   updateProgress();
   refresh();
+  planChanged();
 }
 
 // ─── ADD ROW HELPERS ──────────────────────────────────────────
 function addRow(tbodyId, html) {
   document.getElementById(tbodyId).insertAdjacentHTML('beforeend', html);
   updateProgress();
+  planChanged();
 }
 
 function addPresenceRow() {
   addRow('presence-table', `<tr>
-    <td><input type="text" placeholder="Platform"></td>
-    <td><input type="text" placeholder="@handle"></td>
-    <td><input type="text" placeholder="Followers"></td>
-    <td><input type="text" placeholder="Eng. Rate %"></td>
-    <td><input type="text" placeholder="Last Post"></td>
-    <td><input type="text" placeholder="Posts / week"></td>
-    <td><input type="text" placeholder="Function"></td>
-    <td><textarea placeholder="Verdict and reason"></textarea></td>
+    <td><input autocomplete="off" type="text" placeholder="Platform"></td>
+    <td><input autocomplete="off" type="text" placeholder="@handle"></td>
+    <td><input autocomplete="off" type="text" placeholder="Followers"></td>
+    <td><input autocomplete="off" type="text" placeholder="Eng. Rate %"></td>
+    <td><input autocomplete="off" type="text" placeholder="Last Post"></td>
+    <td><input autocomplete="off" type="text" placeholder="Posts / week"></td>
+    <td><input autocomplete="off" type="text" placeholder="Function"></td>
+    <td><textarea autocomplete="off" placeholder="Verdict and reason"></textarea></td>
     <td><button class="del-btn" onclick="delRow(this)">✕</button></td>
   </tr>`);
 }
 
 function addTargetGroupRow() {
   addRow('tg-table', `<tr>
-    <td><input type="text" placeholder="Target group"></td>
-    <td><textarea placeholder="Who they are"></textarea></td>
-    <td><textarea placeholder="Platforms and role in the feed"></textarea></td>
-    <td><textarea placeholder="Contact with the organisation"></textarea></td>
-    <td><input type="text" placeholder="Source"></td>
+    <td><input autocomplete="off" type="text" placeholder="Target group"></td>
+    <td><textarea autocomplete="off" placeholder="Who they are"></textarea></td>
+    <td><textarea autocomplete="off" placeholder="Platforms and role in the feed"></textarea></td>
+    <td><textarea autocomplete="off" placeholder="Contact with the organisation"></textarea></td>
+    <td><input autocomplete="off" type="text" placeholder="Source"></td>
     <td><button class="del-btn" onclick="delRow(this)">✕</button></td>
   </tr>`);
 }
@@ -2057,11 +2170,11 @@ function addTargetGroupRow() {
 /** Plans saved before October 2026 have fewer columns in these two tables:
  *  add the new cells in front of the delete button so every row lines up. */
 const SIT_EXTRA = {
-  'presence-table': ['<input type="text" placeholder="Posts / week">',
-                     '<input type="text" placeholder="Function">',
-                     '<textarea placeholder="Verdict and reason"></textarea>'],
-  'competitor-table': ['<input type="text" placeholder="e.g. 12">',
-                       '<textarea placeholder="Response"></textarea>'],
+  'presence-table': ['<input autocomplete="off" type="text" placeholder="Posts / week">',
+                     '<input autocomplete="off" type="text" placeholder="Function">',
+                     '<textarea autocomplete="off" placeholder="Verdict and reason"></textarea>'],
+  'competitor-table': ['<input autocomplete="off" type="text" placeholder="e.g. 12">',
+                       '<textarea autocomplete="off" placeholder="Response"></textarea>'],
 };
 function migrateSituationTables() {
   migrateTimeline();
@@ -2083,13 +2196,13 @@ function migrateSituationTables() {
 
 function addCompetitorRow() {
   addRow('competitor-table', `<tr>
-    <td><input type="text" placeholder="Competitor"></td>
-    <td><input type="text" placeholder="Platform"></td>
-    <td><input type="text" placeholder="Followers"></td>
-    <td><textarea placeholder="Content style"></textarea></td>
-    <td><textarea placeholder="Strength vs the organisation"></textarea></td>
-    <td><input type="text" placeholder="e.g. 12"></td>
-    <td><textarea placeholder="Response"></textarea></td>
+    <td><input autocomplete="off" type="text" placeholder="Competitor"></td>
+    <td><input autocomplete="off" type="text" placeholder="Platform"></td>
+    <td><input autocomplete="off" type="text" placeholder="Followers"></td>
+    <td><textarea autocomplete="off" placeholder="Content style"></textarea></td>
+    <td><textarea autocomplete="off" placeholder="Strength vs the organisation"></textarea></td>
+    <td><input autocomplete="off" type="text" placeholder="e.g. 12"></td>
+    <td><textarea autocomplete="off" placeholder="Response"></textarea></td>
     <td><button class="del-btn" onclick="delRow(this)">✕</button></td>
   </tr>`);
 }
@@ -2098,10 +2211,10 @@ function addSmartRow() {
   const n = document.querySelectorAll('#smart-tbody tr').length + 1;
   addRow('smart-tbody', `<tr>
     <td class="smart-num">${n}</td>
-    <td><textarea placeholder="Goal statement"></textarea></td>
-    <td><input type="text" placeholder="Metric / KPI"></td>
-    <td><input type="text" placeholder="Target"></td>
-    <td><input type="text" placeholder="Deadline"></td>
+    <td><textarea autocomplete="off" placeholder="Goal statement"></textarea></td>
+    <td><input autocomplete="off" type="text" placeholder="Metric / KPI"></td>
+    <td><input autocomplete="off" type="text" placeholder="Target"></td>
+    <td><input autocomplete="off" type="text" placeholder="Deadline"></td>
     <td><button class="del-btn" onclick="delRow(this)">✕</button></td>
   </tr>`);
 }
@@ -2110,20 +2223,20 @@ function addPillarRow() {
   const n = document.querySelectorAll('#pillars-table tr').length + 1;
   addRow('pillars-table', `<tr>
     <td>${n}</td>
-    <td><input type="text" placeholder="Pillar name"></td>
-    <td><textarea placeholder="Description"></textarea></td>
-    <td><input type="text" placeholder="Post types"></td>
-    <td><input type="text" placeholder="% of mix"></td>
+    <td><input autocomplete="off" type="text" placeholder="Pillar name"></td>
+    <td><textarea autocomplete="off" placeholder="Description"></textarea></td>
+    <td><input autocomplete="off" type="text" placeholder="Post types"></td>
+    <td><input autocomplete="off" type="text" placeholder="% of mix"></td>
     <td><button class="del-btn" onclick="delRow(this)">✕</button></td>
   </tr>`);
 }
 
 function addTeamRow() {
   addRow('team-table', `<tr>
-    <td><input type="text" placeholder="Role"></td>
-    <td><input type="text" placeholder="Name"></td>
-    <td><textarea placeholder="Responsibilities"></textarea></td>
-    <td><input type="text" placeholder="Platforms"></td>
+    <td><input autocomplete="off" type="text" placeholder="Role"></td>
+    <td><input autocomplete="off" type="text" placeholder="Name"></td>
+    <td><textarea autocomplete="off" placeholder="Responsibilities"></textarea></td>
+    <td><input autocomplete="off" type="text" placeholder="Platforms"></td>
     <td><button class="del-btn" onclick="delRow(this)">✕</button></td>
   </tr>`);
 }
@@ -2137,7 +2250,7 @@ const TL_HEADERS = [
   'Phase 5 — Thank you: report the result, thank donors in public'];
 
 function tlPhaseSelectHTML(val) {
-  return '<select class="tl-phase" onchange="placeMilestone(this)"><option value="">— phase —</option>' +
+  return '<select autocomplete="off" class="tl-phase" onchange="placeMilestone(this)"><option value="">— phase —</option>' +
     TL_PHASES.map((l, i) => `<option value="${i + 1}"${String(i + 1) === String(val) ? ' selected' : ''}>${l}</option>`).join('') +
     '</select>';
 }
@@ -2145,11 +2258,11 @@ function tlPhaseSelectHTML(val) {
 function addTimelineRow() {
   addRow('timeline-table', `<tr>
     <td>${tlPhaseSelectHTML('')}</td>
-    <td><textarea placeholder="Milestone"></textarea></td>
-    <td><input type="text" placeholder="Start"></td>
-    <td><input type="text" placeholder="Deadline"></td>
-    <td><input type="text" placeholder="Owner"></td>
-    <td><select><option>Not Started</option><option>In Progress</option><option>Done</option></select></td>
+    <td><textarea autocomplete="off" placeholder="Milestone"></textarea></td>
+    <td><input autocomplete="off" type="text" placeholder="Start"></td>
+    <td><input autocomplete="off" type="text" placeholder="Deadline"></td>
+    <td><input autocomplete="off" type="text" placeholder="Owner"></td>
+    <td><select autocomplete="off"><option>Not Started</option><option>In Progress</option><option>Done</option></select></td>
     <td><button class="del-btn" onclick="delRow(this)">✕</button></td>
   </tr>`);
 }
@@ -2241,8 +2354,8 @@ function exportPDF() {
 function memberRowHTML() {
   return `<tr>
     <td class="reg-num"></td>
-    <td><input type="text" placeholder="First name Last name"></td>
-    <td><input type="text" placeholder="Matrikelnr."></td>
+    <td><input autocomplete="off" type="text" placeholder="First name Last name"></td>
+    <td><input autocomplete="off" type="text" placeholder="Matrikelnr."></td>
     <td><button class="del-btn" onclick="delRow(this)" title="Remove member">&#10005;</button></td>
   </tr>`;
 }
@@ -2251,6 +2364,7 @@ function addMemberRow() {
   document.getElementById('member-table').insertAdjacentHTML('beforeend', memberRowHTML());
   renumberMembers();
   refresh();
+  planChanged();
 }
 
 function renumberMembers() {
@@ -2273,9 +2387,9 @@ function getMembers() {
 // ══════════════════════════════════════════════════════════════════════════
 function presenterRowHTML() {
   return `<tr>
-    <td><input type="text" placeholder="Name"></td>
-    <td><input type="text" placeholder="e.g. Situation &amp; Objectives"></td>
-    <td><input type="text" placeholder="5"></td>
+    <td><input autocomplete="off" type="text" placeholder="Name"></td>
+    <td><input autocomplete="off" type="text" placeholder="e.g. Situation &amp; Objectives"></td>
+    <td><input autocomplete="off" type="text" placeholder="5"></td>
     <td><button class="del-btn" onclick="delRow(this)" title="Remove presenter">&#10005;</button></td>
   </tr>`;
 }
@@ -2283,6 +2397,7 @@ function presenterRowHTML() {
 function addPresenterRow(tbodyId) {
   document.getElementById(tbodyId).insertAdjacentHTML('beforeend', presenterRowHTML());
   refresh();
+  planChanged();
 }
 
 /** Presenter names entered for one presentation table. */
@@ -2315,7 +2430,7 @@ function currentModel() {
 function phaseSelectHTML(selected) {
   const opts = FUNNEL_MODELS[currentModel()]
     .map(p => `<option${p === selected ? ' selected' : ''}>${p}</option>`).join('');
-  return `<select class="phase-select"><option value="">— phase —</option>${opts}</select>`;
+  return `<select autocomplete="off" class="phase-select"><option value="">— phase —</option>${opts}</select>`;
 }
 
 /** Switch model and rebuild every phase dropdown, keeping the choice where the label still exists. */
@@ -2353,7 +2468,7 @@ function campaignOptions(selected) {
   const names = campaignNames();
   let html = '<option value="">—</option>';
   html += names.map(nm =>
-    `<option${nm === selected ? ' selected' : ''}>${escHtml(nm)}</option>`).join('');
+    `<option value="${escHtml(nm)}"${nm === selected ? ' selected' : ''}>${escHtml(nm)}</option>`).join('');
   // A campaign that was renamed or deleted must not silently drop the link —
   // keep the old value visible so the post does not lose its assignment.
   if (selected && !names.includes(selected)) {
@@ -2379,7 +2494,7 @@ function migrateCalendarRows() {
     const dateCell = tr.children[1];
     if (!dateCell) return;
     dateCell.insertAdjacentHTML('afterend',
-      `<td><select class="campaign-select">${campaignOptions('')}</select></td>`);
+      `<td><select autocomplete="off" class="campaign-select">${campaignOptions('')}</select></td>`);
   });
 }
 
@@ -2427,8 +2542,8 @@ function renderPillarPickers() {
     box.innerHTML = pillars.length
       ? pillars.map(p => {
           const on = chosen.includes(p) ? ' checked' : '';
-          const esc = p.replace(/"/g, '&quot;');
-          return `<label><input type="checkbox" value="${esc}"${on}
+          const esc = escHtml(p);
+          return `<label><input autocomplete="off" type="checkbox" value="${esc}"${on}
                     onchange="storePillars(${i})">${esc}</label>`;
         }).join('')
       : '<span class="none">Define your content pillars below — they appear here as options.</span>';
@@ -2436,7 +2551,7 @@ function renderPillarPickers() {
     const orphan = chosen.filter(c => !pillars.includes(c));
     if (orphan.length) {
       box.insertAdjacentHTML('beforeend',
-        `<span class="none">no longer in the pillar table: ${orphan.join(', ')}</span>`);
+        `<span class="none">no longer in the pillar table: ${orphan.map(escHtml).join(', ')}</span>`);
     }
   });
 }
@@ -2456,25 +2571,26 @@ function addPlatformCard() {
   document.getElementById('platform-list').insertAdjacentHTML('beforeend', platformCardHTML());
   refreshPersonaSelects();
   refresh();
+  planChanged();
 }
 
 function platformCardHTML(name) {
   return `<div class="plat-card">
     <div class="plat-head">
-      <input type="text" placeholder="Platform (e.g. Instagram)" value="${name || ''}">
+      <input autocomplete="off" type="text" placeholder="Platform (e.g. Instagram)" value="${escHtml(name || '')}">
       <button class="del-btn" onclick="delPlatform(this)" title="Remove platform">&#10005;</button>
     </div>
     <div class="plat-body">
-      <div class="form-row"><div class="form-label">Role in the mix</div><div class="form-input"><textarea placeholder="Why this platform exists in the plan — reach, trust, conversion, community?"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Target persona</div><div class="form-input"><select class="persona-select">${personaOptions('')}</select></div></div>
-      <div class="form-row"><div class="form-label">Content formats</div><div class="form-input"><input type="text" placeholder="e.g. Reels, Stories, Carousels"></div></div>
-      <div class="form-row"><div class="form-label">Posting frequency</div><div class="form-input"><input type="text" placeholder="e.g. 5x per week"></div></div>
-      <div class="form-row"><div class="form-label">Best posting times</div><div class="form-input"><input type="text" placeholder="e.g. Tue–Thu 18:00–20:00"></div></div>
-      <div class="form-row"><div class="form-label">Algorithm signals to optimise</div><div class="form-input"><textarea placeholder="What does this algorithm reward? e.g. watch time and completion, sends and saves"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Primary KPI</div><div class="form-input"><input type="text" placeholder="The one number this platform is judged on"></div></div>
-      <div class="form-row"><div class="form-label">Community management</div><div class="form-input"><textarea placeholder="Who replies, how fast, in what tone?"></textarea></div></div>
-      <div class="form-row"><div class="form-label">Hashtags / social SEO</div><div class="form-input"><input type="text" placeholder="Keywords and hashtags people actually search"></div></div>
-      <div class="form-row"><div class="form-label">Paid support</div><div class="form-input"><input type="text" placeholder="Boosted content or ads on this platform, if any"></div></div>
+      <div class="form-row"><div class="form-label">Role in the mix</div><div class="form-input"><textarea autocomplete="off" placeholder="Why this platform exists in the plan — reach, trust, conversion, community?"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Target persona</div><div class="form-input"><select autocomplete="off" class="persona-select">${personaOptions('')}</select></div></div>
+      <div class="form-row"><div class="form-label">Content formats</div><div class="form-input"><input autocomplete="off" type="text" placeholder="e.g. Reels, Stories, Carousels"></div></div>
+      <div class="form-row"><div class="form-label">Posting frequency</div><div class="form-input"><input autocomplete="off" type="text" placeholder="e.g. 5x per week"></div></div>
+      <div class="form-row"><div class="form-label">Best posting times</div><div class="form-input"><input autocomplete="off" type="text" placeholder="e.g. Tue–Thu 18:00–20:00"></div></div>
+      <div class="form-row"><div class="form-label">Algorithm signals to optimise</div><div class="form-input"><textarea autocomplete="off" placeholder="What does this algorithm reward? e.g. watch time and completion, sends and saves"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Primary KPI</div><div class="form-input"><input autocomplete="off" type="text" placeholder="The one number this platform is judged on"></div></div>
+      <div class="form-row"><div class="form-label">Community management</div><div class="form-input"><textarea autocomplete="off" placeholder="Who replies, how fast, in what tone?"></textarea></div></div>
+      <div class="form-row"><div class="form-label">Hashtags / social SEO</div><div class="form-input"><input autocomplete="off" type="text" placeholder="Keywords and hashtags people actually search"></div></div>
+      <div class="form-row"><div class="form-label">Paid support</div><div class="form-input"><input autocomplete="off" type="text" placeholder="Boosted content or ads on this platform, if any"></div></div>
     </div>
   </div>`;
 }
@@ -2482,18 +2598,19 @@ function platformCardHTML(name) {
 function delPlatform(btn) {
   btn.closest('.plat-card').remove();
   refresh();
+  planChanged();
 }
 
 function campaignCardHTML() {
   return `<div class="camp-card">
     <div class="camp-head">
       <span class="camp-label">Campaign</span>
-      <input type="text" placeholder="Campaign name — e.g. Who sleeps outside in Heilbronn?">
+      <input autocomplete="off" type="text" placeholder="Campaign name — e.g. Who sleeps outside in Heilbronn?">
       <button class="del-btn" onclick="delCampaign(this)" title="Remove campaign">&#10005;</button>
     </div>
     <div class="camp-meta">
-      <label>Runs <input type="text" placeholder="2–15 Nov"></label>
-      <label class="grow">Overall objective <input type="text" placeholder="What must this campaign achieve as a whole?"></label>
+      <label>Runs <input autocomplete="off" type="text" placeholder="2–15 Nov"></label>
+      <label class="grow">Overall objective <input autocomplete="off" type="text" placeholder="What must this campaign achieve as a whole?"></label>
     </div>
     <table>
       <thead><tr>
@@ -2513,10 +2630,10 @@ function campaignCardHTML() {
 function phaseRowHTML() {
   return `<tr>
     <td>${phaseSelectHTML('')}</td>
-    <td><select class="persona-select">${personaOptions('')}</select></td>
-    <td><textarea placeholder="Which content carries this phase?"></textarea></td>
-    <td><input type="text" placeholder="6"></td>
-    <td><textarea placeholder="What must this phase achieve?"></textarea></td>
+    <td><select autocomplete="off" class="persona-select">${personaOptions('')}</select></td>
+    <td><textarea autocomplete="off" placeholder="Which content carries this phase?"></textarea></td>
+    <td><input autocomplete="off" type="text" placeholder="6"></td>
+    <td><textarea autocomplete="off" placeholder="What must this phase achieve?"></textarea></td>
     <td><button class="del-btn" onclick="delRow(this)">&#10005;</button></td>
   </tr>`;
 }
@@ -2526,17 +2643,20 @@ function addCampaignCard() {
   list.insertAdjacentHTML('beforeend', campaignCardHTML());
   list.lastElementChild.querySelector('tbody').insertAdjacentHTML('beforeend', phaseRowHTML());
   refresh();
+  planChanged();
 }
 
 /** Called from the "+ Add Phase" button inside a campaign card. */
 function addPhaseRow(btn) {
   btn.closest('.camp-card').querySelector('tbody').insertAdjacentHTML('beforeend', phaseRowHTML());
   refresh();
+  planChanged();
 }
 
 function delCampaign(btn) {
   btn.closest('.camp-card').remove();
   refresh();
+  planChanged();
 }
 
 function addCalendarRow(count) {
@@ -2544,19 +2664,20 @@ function addCalendarRow(count) {
   for (let k = 0; k < (count || 1); k++) {
     tbody.insertAdjacentHTML('beforeend', `<tr>
       <td class="cal-num"></td>
-      <td><input type="text" placeholder="dd.mm."></td>
-      <td><select class="campaign-select">${campaignOptions('')}</select></td>
-      <td><input type="text" placeholder="Instagram"></td>
-      <td><input type="text" placeholder="Reel"></td>
-      <td><input type="text" placeholder="Pillar"></td>
-      <td><select class="persona-select">${personaOptions('')}</select></td>
-      <td><textarea placeholder="First line that stops the scroll"></textarea></td>
-      <td><textarea placeholder="Visual / asset"></textarea></td>
+      <td><input autocomplete="off" type="text" placeholder="dd.mm."></td>
+      <td><select autocomplete="off" class="campaign-select">${campaignOptions('')}</select></td>
+      <td><input autocomplete="off" type="text" placeholder="Instagram"></td>
+      <td><input autocomplete="off" type="text" placeholder="Reel"></td>
+      <td><input autocomplete="off" type="text" placeholder="Pillar"></td>
+      <td><select autocomplete="off" class="persona-select">${personaOptions('')}</select></td>
+      <td><textarea autocomplete="off" placeholder="First line that stops the scroll"></textarea></td>
+      <td><textarea autocomplete="off" placeholder="Visual / asset"></textarea></td>
       <td><button class="del-btn" onclick="delRow(this)">&#10005;</button></td>
     </tr>`);
   }
   renumberCalendar();
   refresh();
+  planChanged();
 }
 
 function renumberCalendar() {
@@ -2608,11 +2729,11 @@ function updatePostCounter() {
 
 function addInfluencerRow() {
   addRow('influencer-table', `<tr>
-    <td><input type="text" placeholder="@creator"></td>
-    <td><input type="text" placeholder="Instagram"></td>
-    <td><input type="text" placeholder="50k"></td>
-    <td><input type="text" placeholder="Reel + Stories"></td>
-    <td><select>
+    <td><input autocomplete="off" type="text" placeholder="@creator"></td>
+    <td><input autocomplete="off" type="text" placeholder="Instagram"></td>
+    <td><input autocomplete="off" type="text" placeholder="50k"></td>
+    <td><input autocomplete="off" type="text" placeholder="Reel + Stories"></td>
+    <td><select autocomplete="off">
       <option value="">— rate —</option>
       <option>5 — perfect fit</option>
       <option>4 — strong fit</option>
@@ -2620,15 +2741,15 @@ function addInfluencerRow() {
       <option>2 — weak fit</option>
       <option>1 — wrong audience</option>
     </select></td>
-    <td><textarea placeholder="Audience overlap, credibility, tone, past cooperations, risks"></textarea></td>
-    <td><select>
+    <td><textarea autocomplete="off" placeholder="Audience overlap, credibility, tone, past cooperations, risks"></textarea></td>
+    <td><select autocomplete="off">
       <option>Not contacted</option>
       <option>Contacted — waiting</option>
       <option>In negotiation</option>
       <option>Accepted</option>
       <option>Declined</option>
     </select></td>
-    <td><textarea placeholder="What should this cooperation deliver?"></textarea></td>
+    <td><textarea autocomplete="off" placeholder="What should this cooperation deliver?"></textarea></td>
     <td><button class="del-btn" onclick="delRow(this)">&#10005;</button></td>
   </tr>`);
 }
@@ -2640,12 +2761,12 @@ function kpiRowHTML(o) {
   const v = x => (x || '').replace(/"/g, '&quot;');
   return `<tr${locked}>
     <td class="kpi-lock">${mark}</td>
-    <td><input type="text" placeholder="Follower growth rate" value="${v(o.kpi)}"></td>
-    <td><input type="text" placeholder="Instagram"></td>
-    <td><input type="text" placeholder="12,000"></td>
-    <td><input type="text" placeholder="15,000" value="${v(o.target)}"></td>
-    <td><input type="text" placeholder="Meta Business Suite"></td>
-    <td><select><option>Weekly</option><option>Bi-weekly</option><option>Monthly</option></select></td>
+    <td><input autocomplete="off" type="text" placeholder="Follower growth rate" value="${v(o.kpi)}"></td>
+    <td><input autocomplete="off" type="text" placeholder="Instagram"></td>
+    <td><input autocomplete="off" type="text" placeholder="12,000"></td>
+    <td><input autocomplete="off" type="text" placeholder="15,000" value="${v(o.target)}"></td>
+    <td><input autocomplete="off" type="text" placeholder="Meta Business Suite"></td>
+    <td><select autocomplete="off"><option>Weekly</option><option>Bi-weekly</option><option>Monthly</option></select></td>
     <td><button class="del-btn" onclick="delRow(this)">&#10005;</button></td>
   </tr>`;
 }
@@ -2656,10 +2777,10 @@ function addReviewRow(o) {
   o = o || {};
   const v = x => (x || '').replace(/"/g, '&quot;');
   addRow('review-table', `<tr>
-    <td><input type="text" placeholder="KPI" value="${v(o.kpi)}"></td>
-    <td><input type="text" placeholder="Target" value="${v(o.target)}"></td>
-    <td><input type="text" placeholder="Value now"></td>
-    <td><select>
+    <td><input autocomplete="off" type="text" placeholder="KPI" value="${v(o.kpi)}"></td>
+    <td><input autocomplete="off" type="text" placeholder="Target" value="${v(o.target)}"></td>
+    <td><input autocomplete="off" type="text" placeholder="Value now"></td>
+    <td><select autocomplete="off">
       <option value="">— status —</option>
       <option>Ahead of target</option>
       <option>On track</option>
@@ -2667,26 +2788,26 @@ function addReviewRow(o) {
       <option>Clearly behind</option>
       <option>Not measurable yet</option>
     </select></td>
-    <td><textarea placeholder="What explains this result? Name the cause, not the number again."></textarea></td>
-    <td><textarea placeholder="One concrete action — what changes, on which platform, from when?"></textarea></td>
-    <td><input type="text" placeholder="Name"></td>
-    <td><input type="text" placeholder="dd.mm."></td>
+    <td><textarea autocomplete="off" placeholder="What explains this result? Name the cause, not the number again."></textarea></td>
+    <td><textarea autocomplete="off" placeholder="One concrete action — what changes, on which platform, from when?"></textarea></td>
+    <td><input autocomplete="off" type="text" placeholder="Name"></td>
+    <td><input autocomplete="off" type="text" placeholder="dd.mm."></td>
     <td><button class="del-btn" onclick="delRow(this)">&#10005;</button></td>
   </tr>`);
 }
 
 function addCoachingRow() {
   addRow('coaching-table', `<tr>
-    <td><input type="text" placeholder="dd.mm.yyyy"></td>
-    <td><select>
+    <td><input autocomplete="off" type="text" placeholder="dd.mm.yyyy"></td>
+    <td><select autocomplete="off">
       <option>Office hour</option>
       <option>Online call</option>
       <option>After lecture</option>
       <option>E-mail exchange</option>
     </select></td>
-    <td><textarea placeholder="The decision we need help with — bring a question, not a status update"></textarea></td>
-    <td><input type="text" placeholder="Names"></td>
-    <td><textarea placeholder="What was decided, and who does what next?"></textarea></td>
+    <td><textarea autocomplete="off" placeholder="The decision we need help with — bring a question, not a status update"></textarea></td>
+    <td><input autocomplete="off" type="text" placeholder="Names"></td>
+    <td><textarea autocomplete="off" placeholder="What was decided, and who does what next?"></textarea></td>
     <td><button class="del-btn" onclick="delRow(this)">&#10005;</button></td>
   </tr>`);
 }
@@ -2834,7 +2955,7 @@ function runChecks() {
   const cross = document.getElementById('pres-crosscheck');
   if (cross) {
     cross.innerHTML = unassigned.length
-      ? `<span class="dot">i</span><span>Not yet assigned to either presentation: <strong>${unassigned.join(', ')}</strong>. The team may split up — this is a reminder, not an error.</span>`
+      ? `<span class="dot">i</span><span>Not yet assigned to either presentation: <strong>${unassigned.map(escHtml).join(', ')}</strong>. The team may split up — this is a reminder, not an error.</span>`
       : (complete.length ? '<span class="dot">&#10003;</span><span>Every registered member appears in at least one presentation.</span>' : '');
     cross.className = unassigned.length ? 'status-row st-info' : 'status-row st-ok';
   }
@@ -2871,7 +2992,7 @@ function runChecks() {
   if (list) {
     list.innerHTML = out.map(([kind, text]) => {
       const dot = kind === 'ok' ? '&#10003;' : kind === 'bad' ? '&#10007;' : 'i';
-      return `<div class="status-row st-${kind}"><span class="dot">${dot}</span><span>${text}</span></div>`;
+      return `<div class="status-row st-${kind}"><span class="dot">${dot}</span><span>${escHtml(text)}</span></div>`;
     }).join('');
   }
   return out.filter(o => o[0] === 'bad').length;
@@ -2993,7 +3114,7 @@ function buildPrintHeader() {
   const names = getMembers().map(m => m.id ? `${m.name} (${m.id})` : m.name).join(' · ');
   const left  = [group, brand || camp].filter(Boolean).join(' — ') || 'SOSTAC® Social Media Strategy';
   const el = document.getElementById('printHeader');
-  if (el) el.innerHTML = `<span class="ph-left">${left}</span><span class="ph-right">${names}</span>`;
+  if (el) el.innerHTML = `<span class="ph-left">${escHtml(left)}</span><span class="ph-right">${escHtml(names)}</span>`;
 }
 
 // ══════════════════════════════════════════════════════════════════════════
@@ -3009,7 +3130,10 @@ function estimatePages() {
   // Measuring collapses the page; remember where the user actually is.
   const sx = window.scrollX, sy = window.scrollY;
   const focused = document.activeElement;
-  const caret = (focused && 'selectionStart' in focused) ? focused.selectionStart : null;
+  let caret = null, caretEnd = null;
+  try {
+    if (focused && 'selectionStart' in focused) { caret = focused.selectionStart; caretEnd = focused.selectionEnd; }
+  } catch (e) { /* selects and checkboxes have no selection */ }
 
   if (wasPrinting) unprepPrint();
   document.body.classList.add('sim-print');
@@ -3033,7 +3157,7 @@ function estimatePages() {
   if (focused && focused !== document.body && document.contains(focused)) {
     try {
       focused.focus({ preventScroll: true });
-      if (caret !== null && 'setSelectionRange' in focused) focused.setSelectionRange(caret, caret);
+      if (caret !== null && 'setSelectionRange' in focused) focused.setSelectionRange(caret, caretEnd);
     } catch (e) { /* element no longer focusable */ }
     window.scrollTo(sx, sy);
   }
@@ -3049,18 +3173,25 @@ function estimatePages() {
 // ══════════════════════════════════════════════════════════════════════════
 function collectData() {
   if (PRINTING) unprepPrint();
-  const data = { __meta__: { app: 'sostac-smm-hhn', version: 2, saved: new Date().toISOString() } };
+  const data = {};
+  // Keys this version does not know (written by a newer version or another
+  // tool) travel along unchanged, so saving here never deletes them.
+  Object.keys(lastServerData || {}).forEach(k => {
+    if (k === '__meta__') return;
+    const id = k.startsWith('__table__') ? k.slice(9) : k;
+    if (!document.getElementById(id)) data[k] = lastServerData[k];
+  });
   document.querySelectorAll('[id]').forEach(el => {
     if (['INPUT', 'TEXTAREA', 'SELECT'].includes(el.tagName)) data[el.id] = el.value;
   });
-  ['member-table','pres1-table','pres2-table','presence-table','competitor-table','tg-table','smart-tbody',
-   'pillars-table','platform-list','campaign-list','calendar-table','influencer-table','team-table',
-   'timeline-table','kpi-table','review-table','coaching-table'].forEach(id => {
+  SAVED_TABLES.forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
     syncFieldAttributes(el);
     data['__table__' + id] = el.innerHTML;
   });
+  data.__meta__ = Object.assign({}, (lastServerData && lastServerData.__meta__) || {},
+    { app: 'sostac-smm-hhn', version: 3, tool: 'v8', saved: new Date().toISOString(), group: currentGroupId || '' });
   return data;
 }
 
@@ -3089,14 +3220,20 @@ function importJSON(input) {
     if (!data || typeof data !== 'object' || !data.__meta__ || data.__meta__.app !== 'sostac-smm-hhn') {
       showToast('Not a SOSTAC file from this tool'); input.value = ''; return;
     }
-    if (!confirm('Import will replace everything currently in this browser. Continue?')) {
+    const from = data.__meta__.group;
+    if (from && currentGroupId && from !== currentGroupId &&
+        !confirm(`This file was exported from the plan "${from}", but you are working in "${currentGroupId}". Import it anyway?`)) {
       input.value = ''; return;
     }
+    if (!confirm(`Import replaces the shared plan "${currentGroupId}" — for everyone in your group, not only in this browser. Continue?`)) {
+      input.value = ''; return;
+    }
+    backupLocal();
+    dirty = true;
     applyPlanData(data);
     input.value = '';
-    renumberMembers();
+    refreshAfterLoad();
     saveAll();
-    refresh();
     showToast('Imported ✓');
   };
   reader.readAsText(file);
@@ -3151,7 +3288,7 @@ function refresh() {
     updateReviewStatus();
     runChecks();
     updateCounters();
-    estimatePages();
+    if (document.getElementById('tab-0').classList.contains('active')) estimatePages();
   }, 350);
 }
 
@@ -3168,9 +3305,16 @@ const TABLE = 'sostac_plans';
 let currentGroupId = null;
 let cloudTimer = null;
 let applyingCloud = false;   // suppress saves while data is being written into the form
+let booting = false;         // seeding a freshly opened plan is not an edit
 let legacyLocked = false;    // a previous-version plan sits under this code
 let conflictLocked = false;  // somebody else saved since we loaded — saving is paused
 let dirty = false;           // this tab holds edits that are not on the server yet
+let pushing = false;         // one write at a time: a second one waits for the first
+let pushAgain = false;       // edits arrived while a write was under way
+/** Fingerprint of the plan as the server holds it; equal = nothing to send. */
+let lastSyncedPrint = null;
+/** The plan as last read from or written to the server (for keys this version does not know). */
+let lastServerData = null;
 /**
  * The last_saved value we believe the server row carries, exactly as the server
  * spelled it. null means "no row existed when we looked". Every write is
@@ -3178,7 +3322,11 @@ let dirty = false;           // this tab holds edits that are not on the server 
  */
 let knownSaved = null;
 
-async function sbFetch(method, path, body, prefer) {
+// A request sent while the page closes must be small enough for keepalive (64 KB).
+const KEEPALIVE_MAX = 60000;
+
+async function sbFetch(method, path, body, prefer, keepalive) {
+  const payload = body ? JSON.stringify(body) : undefined;
   const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
     method,
     headers: {
@@ -3187,7 +3335,8 @@ async function sbFetch(method, path, body, prefer) {
       'Content-Type': 'application/json',
       'Prefer': prefer || 'return=representation'
     },
-    body: body ? JSON.stringify(body) : undefined
+    body: payload,
+    keepalive: !!(keepalive && payload && payload.length < KEEPALIVE_MAX)
   });
   if (!res.ok) {
     const e = new Error(await res.text());
@@ -3228,13 +3377,13 @@ function conflictError() {
  * @returns the new last_saved value, to be kept as knownSaved.
  * @throws an error with .conflict = true when the row has moved on.
  */
-async function savePlan(groupId, data, force) {
+async function savePlan(groupId, data, force, keepalive) {
   const body = { group_id: groupId, data: data, last_saved: new Date().toISOString() };
 
   if (knownSaved && !force) {
     const rows = await sbFetch('PATCH',
       `${TABLE}?group_id=eq.${encodeURIComponent(groupId)}` +
-      `&last_saved=eq.${encodeURIComponent(knownSaved)}`, body);
+      `&last_saved=eq.${encodeURIComponent(knownSaved)}`, body, null, keepalive);
     if (!rows || !rows.length) throw conflictError();   // nothing matched: somebody was faster
     return rows[0].last_saved;
   }
@@ -3249,7 +3398,7 @@ async function savePlan(groupId, data, force) {
   // created one in the meantime the duplicate key tells us, instead of us
   // quietly replacing their plan.
   try {
-    const rows = await sbFetch('POST', TABLE, body);
+    const rows = await sbFetch('POST', TABLE, body, null, keepalive);
     return (rows && rows.length) ? rows[0].last_saved : body.last_saved;
   } catch (e) {
     if (e.status === 409) throw conflictError();
@@ -3279,17 +3428,49 @@ function scheduleCloudSave() {
   cloudTimer = setTimeout(pushToCloud, 1200);
 }
 
-async function pushToCloud() {
+/** The server now holds `data`, stamped `stamp`. */
+function markSynced(data, stamp) {
+  knownSaved = stamp;
+  lastServerData = data;
+  lastSyncedPrint = fingerprint(data);
+}
+
+/**
+ * Send the plan. Never two writes at once: a write that starts while another
+ * is on its way would carry an outdated last_saved and report a conflict
+ * with ourselves. Edits made meanwhile go out right after.
+ */
+async function pushToCloud(keepalive) {
   if (!currentGroupId || legacyLocked || conflictLocked) return;
+  if (pushing) { pushAgain = true; return; }
+  clearTimeout(cloudTimer);
+  pushing = true;
+  pushAgain = false;
   try {
-    knownSaved = await savePlan(currentGroupId, collectData());
-    dirty = false;
-    setSyncStatus('ok', 'All changes saved');
+    const data = collectData();
+    const print = fingerprint(data);
+    if (print === lastSyncedPrint) {
+      dirty = false;
+      writeSyncMeta(false);
+      setSyncStatus('ok', 'All changes saved');
+      return;
+    }
+    const stamp = await savePlan(currentGroupId, data, false, keepalive === true);
+    markSynced(data, stamp);
+    // edits typed while the request was on its way are still unsaved
+    const still = fingerprint(collectData()) !== print;
+    dirty = still;
+    writeSyncMeta(still);
+    if (still) pushAgain = true;
+    else setSyncStatus('ok', 'All changes saved');
   } catch (e) {
     if (e.conflict) { enterConflict(); return; }
     const code = e.status ? ` (HTTP ${e.status})` : '';
-    setSyncStatus('error', `Could not save${code} — your work is kept in this browser. Use "Test connection".`);
+    setSyncStatus('error', `Could not save${code} — your work is kept in this browser and sent with the next save. Use "Test connection".`);
     console.error('Cloud save failed:', e);
+  } finally {
+    pushing = false;
+    if (pushAgain && !conflictLocked) { pushAgain = false; scheduleCloudSave(); }
   }
 }
 
@@ -3297,17 +3478,25 @@ async function manualSave() {
   if (legacyLocked || conflictLocked || !currentGroupId) return;
   clearTimeout(cloudTimer);
   saveAll();
+  clearTimeout(cloudTimer);
   await pushToCloud();
 }
 
+/** Leaving the page or switching away: save now instead of after the delay. */
+function flushNow() {
+  if (!currentGroupId || legacyLocked || conflictLocked || PRINTING) return;
+  saveAll();
+  if (dirty) { clearTimeout(cloudTimer); pushToCloud(true); }
+}
+
 // ─── CONCURRENT EDITS ────────────────────────────────────────────────────
-function enterConflict() {
+function enterConflict(msg) {
   if (conflictLocked) return;
   conflictLocked = true;
   clearTimeout(cloudTimer);
   const box = document.getElementById('conflictWarn');
   if (box) box.style.display = 'block';
-  setSyncStatus('error', 'Saving paused — this plan was changed by someone else');
+  setSyncStatus('error', msg || 'Saving paused — this plan was changed by someone else');
 }
 
 function leaveConflict(msg) {
@@ -3317,17 +3506,21 @@ function leaveConflict(msg) {
   setSyncStatus('ok', msg);
 }
 
-/** Take the server's version; whatever this tab changed since is dropped. */
+/** Take the server's version; whatever this tab changed since is dropped (a copy stays in this browser). */
 async function loadNewerVersion() {
-  if (!confirm('Load the version saved by your team-mate?\n\nChanges you made in this tab since then are lost.')) return;
+  if (!confirm('Load the version saved by your team-mate?\n\nChanges you made in this tab since then are replaced. A copy of them stays in this browser.')) return;
   try {
     const row = await loadPlan(currentGroupId);
     if (!row || !isOwnFormat(row.data)) { showToast('No readable plan on the server'); return; }
-    knownSaved = row.last_saved;
+    saveLocalOnly();
+    backupLocal();
     applyPlanData(row.data);
     refreshAfterLoad();
+    markSynced(row.data, row.last_saved);
+    lastSyncedPrint = fingerprint(collectData());
     dirty = false;
     saveLocalOnly();
+    writeSyncMeta(false);
     leaveConflict('Loaded the newer version — saving is on again');
   } catch (e) {
     setSyncStatus('error', 'Could not load the newer version — check your connection');
@@ -3337,10 +3530,13 @@ async function loadNewerVersion() {
 
 /** Keep what is on screen and replace the server's version with it. */
 async function overwriteWithMine() {
-  if (!confirm('Overwrite the saved version with what you see here?\n\nYour team-mate\u2019s changes are lost.')) return;
+  if (!confirm('Overwrite the saved version with what you see here?\n\nYour team-mate’s changes are lost.')) return;
   try {
-    knownSaved = await savePlan(currentGroupId, collectData(), true);
+    const data = collectData();
+    const stamp = await savePlan(currentGroupId, data, true);
+    markSynced(data, stamp);
     dirty = false;
+    writeSyncMeta(false);
     leaveConflict('Your version is now the saved one');
   } catch (e) {
     setSyncStatus('error', 'Could not save — check your connection, then try again');
@@ -3359,26 +3555,35 @@ async function checkForRemoteChanges() {
   try { stamp = await serverStamp(currentGroupId); }
   catch (e) { return; }                       // offline — nothing useful to say
   if (!stamp || stamp === knownSaved) return;
+  if (conflictLocked) return;
 
-  if (dirty) { enterConflict(); return; }     // both sides changed: let the user decide
+  if (dirty || pushing) { enterConflict(); return; }   // both sides changed: let the user decide
 
   // Nothing unsaved here, so quietly catch up with the others.
   try {
     const row = await loadPlan(currentGroupId);
     if (!row || !isOwnFormat(row.data)) return;
-    knownSaved = row.last_saved;
+    if (dirty || pushing || conflictLocked) { if (!conflictLocked) enterConflict(); return; }
     applyPlanData(row.data);
     refreshAfterLoad();
+    markSynced(row.data, row.last_saved);
+    lastSyncedPrint = fingerprint(collectData());
     saveLocalOnly();
+    writeSyncMeta(false);
     setSyncStatus('ok', 'Updated — a team-mate saved a newer version');
   } catch (e) { console.error('Refresh failed:', e); }
 }
 
-document.addEventListener('visibilitychange', checkForRemoteChanges);
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) flushNow();
+  else checkForRemoteChanges();
+});
 window.addEventListener('focus', checkForRemoteChanges);
+window.addEventListener('pagehide', flushNow);
 
 // ─── APPLYING A LOADED PLAN ──────────────────────────────────────────────
 function applyPlanData(data) {
+  const was = applyingCloud;
   applyingCloud = true;
   Object.keys(data).filter(k => k.startsWith('__table__')).forEach(k => {
     const el = document.getElementById(k.replace('__table__', ''));
@@ -3393,7 +3598,7 @@ function applyPlanData(data) {
     if (el.id === 'groupIdInput' || el.type === 'file') return;   // not part of the plan
     el.value = Object.prototype.hasOwnProperty.call(data, el.id) ? data[el.id] : '';
   });
-  applyingCloud = false;
+  applyingCloud = was;
 }
 
 // ─── LOGIN ───────────────────────────────────────────────────────────────
@@ -3401,16 +3606,15 @@ async function initGroup() {
   const input = document.getElementById('groupIdInput');
   const btn   = document.getElementById('loginBtn');
   const err   = document.getElementById('loginError');
+  if (btn.disabled || currentGroupId) return;   // a second Enter while loading
   const raw = input.value.trim().toLowerCase().replace(/\s+/g, '-');
   err.textContent = '';
   if (!raw) { err.textContent = 'Please enter a group code.'; return; }
 
   btn.textContent = 'Loading…'; btn.disabled = true;
-  let row = null, existing = null, offline = false;
+  let row = null, offline = false;
   try {
     row = await loadPlan(raw);
-    existing = row ? row.data : null;
-    knownSaved = row ? row.last_saved : null;
   } catch (e) {
     // No connection: fall back to whatever this browser has for that code.
     // knownSaved stays null, so the first write is an insert — if a row does
@@ -3418,11 +3622,14 @@ async function initGroup() {
     offline = true;
     console.error('Load failed:', e);
   }
+  const existing = row ? row.data : null;
+  const local = readLocal(raw);
 
   currentGroupId = raw;
   document.getElementById('loginOverlay').style.display = 'none';
   document.getElementById('syncBar').style.display = 'flex';
   document.getElementById('syncGroup').textContent = raw;
+  document.body.classList.add('logged-in');
 
   if (existing && !isOwnFormat(existing)) {
     // A plan from the previous version. Do not touch it.
@@ -3433,9 +3640,46 @@ async function initGroup() {
     return;
   }
 
-  if (existing) applyPlanData(existing);
-  bootPlan(existing);
-  // Status last: bootPlan queues a save, which would otherwise overwrite the message.
+  // Edits this browser could not send last time (tab closed too early, no
+  // connection, an error). They are never dropped silently.
+  const pending = !!(local && local.sync && local.sync.pending && isOwnFormat(local.data));
+
+  if (existing && pending && local.sync.base === row.last_saved) {
+    // Nobody saved since: our unsent edits simply go out now.
+    knownSaved = row.last_saved;
+    lastServerData = existing;
+    bootPlan(local.data);
+    lastSyncedPrint = fingerprint(existing);
+    scheduleCloudSave();
+    setSyncStatus('saving', 'Sending changes this browser had not saved yet…');
+    return;
+  }
+  if (existing && pending) {
+    // Both sides moved on: show our version and let the user decide.
+    knownSaved = local.sync.base || null;
+    lastServerData = existing;
+    bootPlan(local.data);
+    lastSyncedPrint = fingerprint(existing);
+    dirty = true;
+    enterConflict('This browser has changes that were never saved, and a team-mate saved in the meantime — choose below');
+    return;
+  }
+
+  if (existing) {
+    if (local && fingerprint(local.data) !== fingerprint(existing)) backupLocal(raw);
+    knownSaved = row.last_saved;
+    lastServerData = existing;
+    bootPlan(existing);
+  } else {
+    knownSaved = null;
+    lastServerData = local ? local.data : null;
+    bootPlan(null);                    // offline or new group: use the local cache
+  }
+  // What is on screen now is what the server has (or nothing, for a new plan).
+  // Not knowing (offline), or holding unsent edits for a code the server does
+  // not have yet: the next save sends everything.
+  lastSyncedPrint = (offline || (!existing && pending)) ? null : fingerprint(collectData());
+  if (!existing && !offline && pending) scheduleCloudSave();
   if (offline) {
     setSyncStatus('error', 'No connection — working offline, your entries stay in this browser');
   } else {
@@ -3505,20 +3749,30 @@ document.getElementById('groupIdInput').addEventListener('keydown', e => {
 });
 
 // ─── AUTO-SAVE ON INPUT ───────────────────────────────────────
+// Typing the group code, or anything in a dialog, is not an edit of the plan.
+function isPlanEdit(e) {
+  if (!currentGroupId || applyingCloud) return false;
+  const t = e.target;
+  return !(t && t.closest && t.closest('#loginOverlay, #diagModal, #claudeModal')) && !(t && t.type === 'file');
+}
 let saveTimer;
-document.addEventListener('input', () => {
+document.addEventListener('input', e => {
+  if (!isPlanEdit(e)) return;
+  dirty = true;
   clearTimeout(saveTimer);
   saveTimer = setTimeout(saveAll, 1500);
   refresh();
 });
-document.addEventListener('change', () => {
+document.addEventListener('change', e => {
+  if (!isPlanEdit(e)) return;
+  dirty = true;
   clearTimeout(saveTimer);
   saveTimer = setTimeout(saveAll, 500);
   refresh();
 });
 
-// Warn before leaving with unsaved keystrokes still in the debounce window
-window.addEventListener('beforeunload', () => { clearTimeout(saveTimer); saveAll(); });
+// Save before the page goes away (flushNow also sends to the server)
+window.addEventListener('beforeunload', () => { if (currentGroupId) flushNow(); });
 
 // Hide empty fields for printing, restore afterwards.
 // Two independent triggers: beforeprint is not fired by every browser, and
@@ -3536,37 +3790,39 @@ if (window.matchMedia) {
 // ══════════════════════════════════════════════════════════════════════════
 //  BOOT — runs once a group code has been entered, not on page load
 // ══════════════════════════════════════════════════════════════════════════
-function seedDefaults() {
-  if (!document.querySelector('#member-table tr')) {
+/**
+ * Default rows for a new plan. A loaded plan only gets them for a table it
+ * has never stored: rows a group deleted on purpose do not come back.
+ */
+function seedDefaults(loaded) {
+  const fresh = id => !loaded || !Object.prototype.hasOwnProperty.call(loaded, '__table__' + id);
+  if (fresh('member-table') && !document.querySelector('#member-table tr')) {
     for (let i = 0; i < 4; i++) {
       document.getElementById('member-table').insertAdjacentHTML('beforeend', memberRowHTML());
     }
   }
   ['pres1-table', 'pres2-table'].forEach(id => {
-    if (!document.querySelector('#' + id + ' tr')) {
+    if (fresh(id) && !document.querySelector('#' + id + ' tr')) {
       for (let i = 0; i < 2; i++) {
         document.getElementById(id).insertAdjacentHTML('beforeend', presenterRowHTML());
       }
     }
   });
-  if (!document.querySelector('#platform-list .plat-card')) {
+  if (fresh('platform-list') && !document.querySelector('#platform-list .plat-card')) {
     ['Instagram', 'TikTok', 'LinkedIn'].forEach(p => {
       document.getElementById('platform-list').insertAdjacentHTML('beforeend', platformCardHTML(p));
     });
   }
-  if (!document.querySelector('#campaign-list .camp-card')) addCampaignCard();
-  if (!document.querySelector('#calendar-table tr')) addCalendarRow(20);
-  if (!document.querySelector('#influencer-table tr')) addInfluencerRow();
-  if (!document.querySelector('#kpi-table tr')) addKpiRow();
-  if (!document.querySelector('#coaching-table tr')) addCoachingRow();
+  if (fresh('campaign-list') && !document.querySelector('#campaign-list .camp-card')) addCampaignCard();
+  if (fresh('calendar-table') && !document.querySelector('#calendar-table tr')) addCalendarRow(20);
+  if (fresh('influencer-table') && !document.querySelector('#influencer-table tr')) addInfluencerRow();
+  if (fresh('kpi-table') && !document.querySelector('#kpi-table tr')) addKpiRow();
+  if (fresh('coaching-table') && !document.querySelector('#coaching-table tr')) addCoachingRow();
 }
 
-/**
- * @param cloudData plan loaded from Supabase, or null to fall back to this
- *                  browser's cache for the same group code.
- */
 /** Rebuild every derived view after form values were replaced wholesale. */
 function refreshAfterLoad() {
+  const was = applyingCloud;
   applyingCloud = true;
   renumberMembers();
   migrateCalendarRows();
@@ -3576,7 +3832,10 @@ function refreshAfterLoad() {
   refreshCampaignSelects();
   renderPillarPickers();
   wrapTables();
-  applyingCloud = false;
+  // rows stored by earlier versions: no autofill by position into them either
+  document.querySelectorAll('.content input, .content textarea, .content select')
+    .forEach(el => el.setAttribute('autocomplete', 'off'));
+  applyingCloud = was;
 
   updatePostCounter();
   updateSyncStatus();
@@ -3595,10 +3854,18 @@ function saveLocalOnly() {
   applyingCloud = was;
 }
 
-function bootPlan(cloudData) {
+/**
+ * @param data plan to show (from Supabase, or this browser's unsent copy), or
+ *             null to fall back to this browser's cache for the same group code.
+ */
+function bootPlan(data) {
   applyingCloud = true;
-  if (!cloudData) loadAll();          // offline or new group: use the local cache
-  seedDefaults();
+  booting = true;
+  let loaded = data;
+  if (data) applyPlanData(data);
+  else loaded = loadAll();          // offline or new group: use the local cache
+  seedDefaults(loaded);
+  booting = false;
   applyingCloud = false;
 
   refreshAfterLoad();
@@ -3608,6 +3875,69 @@ function bootPlan(cloudData) {
   // or everyone else's next edit would be reported as a conflict.
   saveLocalOnly();
 }
+
+// ══════════════════════════════════════════════════════════════════════════
+//  CLAUDE COACH — opens claude.ai with a first message for the SOSTAC Coach
+//  connector. Reads nothing from claude.ai and writes nothing to the plan.
+// ══════════════════════════════════════════════════════════════════════════
+const COACH_SECTIONS = ['overview', 'situation', 'objectives', 'strategy', 'tactics',
+                        'action', 'control', 'architecture', 'notes'];
+
+/** Active tab and the block heading nearest the middle of the screen. */
+function coachContext() {
+  const panel = document.querySelector('.tab-panel.active');
+  const idx = panel ? parseInt(panel.id.replace('tab-', ''), 10) : 0;
+  const titleEl = panel && panel.querySelector('.section-header h2');
+  const mid = window.innerHeight / 2;
+  let block = '';
+  let best = Infinity;
+  (panel ? panel.querySelectorAll('.subsection > h3') : []).forEach(h => {
+    const top = h.getBoundingClientRect().top;
+    if (top <= mid && mid - top < best) { best = mid - top; block = h.childNodes[0].textContent.trim(); }
+  });
+  return { key: COACH_SECTIONS[idx] || 'overview', title: titleEl ? titleEl.textContent.trim() : '', block };
+}
+
+function coachPrompt(ctx) {
+  const where = ctx.block ? `${ctx.title} › ${ctx.block}` : ctx.title;
+  return `Please use the SOSTAC Coach connector to open our SOSTAC plan with the group code "${currentGroupId}". ` +
+    `I am working on the section "${where}" (section key: ${ctx.key}${ctx.block ? `, block: ${ctx.block}` : ''}). ` +
+    `Read this section, its guidance and the earlier sections it builds on, then coach me: ` +
+    `tell me briefly what is good, ask me questions about what is missing or weak, and do not write the section for me.`;
+}
+
+function openClaudeCoach() {
+  const ctx = coachContext();
+  document.getElementById('claudeSection').textContent =
+    'Section: ' + (ctx.block ? `${ctx.title} › ${ctx.block}` : ctx.title);
+  document.getElementById('claudeModal').classList.add('open');
+}
+
+function closeClaudeCoach() {
+  document.getElementById('claudeModal').classList.remove('open');
+}
+
+function copyClaudeText(text, msg) {
+  const done = () => showToast(msg);
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done, () => window.prompt('Copy this text:', text));
+  } else {
+    window.prompt('Copy this text:', text);
+  }
+}
+
+async function launchClaudeCoach() {
+  const prompt = coachPrompt(coachContext());
+  // open the tab first: browsers block pop-ups that come after an await
+  const win = window.open('https://claude.ai/new?q=' + encodeURIComponent(prompt), '_blank', 'noopener');
+  closeClaudeCoach();
+  try { navigator.clipboard && await navigator.clipboard.writeText(prompt); } catch (e) { /* not essential */ }
+  showToast('Saving your plan for Claude…');
+  try { await manualSave(); } catch (e) { console.error('save before coach failed', e); }
+  showToast(win ? 'Claude opened — the message is also on your clipboard' : 'Pop-up blocked — paste the copied message into Claude');
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeClaudeCoach(); });
 
 // Nothing is loaded until a group code is entered — see initGroup().
 document.getElementById('groupIdInput').focus();

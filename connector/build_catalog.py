@@ -164,7 +164,8 @@ def main():
 
     # saved dynamic containers, read from the tool's own saveAll()
     src = SRC.read_text(encoding="utf-8")
-    m = re.search(r"function saveAll\(\)[\s\S]*?const dynamicTables = \[([\s\S]*?)\];", src)
+    m = (re.search(r"const SAVED_TABLES = \[([\s\S]*?)\];", src)                                    # v8 and later
+         or re.search(r"function saveAll\(\)[\s\S]*?const dynamicTables = \[([\s\S]*?)\];", src))  # v7
     saved = re.findall(r"'([^']+)'", m.group(1)) if m else []
 
     sections = []

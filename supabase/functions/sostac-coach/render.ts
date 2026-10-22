@@ -57,7 +57,11 @@ function controlValue(el: HTMLElement): Cell {
 
 function cellValue(td: HTMLElement): Cell {
   const controls = td.querySelectorAll('input, textarea, select');
-  if (!controls.length) return { text: td.text.trim(), isDefault: false };
+  if (!controls.length) {
+    // the delete button (✕) is no content — in rows saved before a column was added it sits under a data column
+    if (td.querySelector('button')) return { text: '', isDefault: false };
+    return { text: td.text.trim(), isDefault: false };
+  }
   const vals = controls.map(controlValue);
   return {
     text: vals.map((v) => v.text).filter(Boolean).join(', '),

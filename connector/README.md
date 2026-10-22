@@ -15,6 +15,7 @@ tool already uses (`sostac_plans`). Table, data format and group codes stay as t
 | `supabase/functions/sostac-coach/guidance.ts` | Coaching rules per section and server instructions |
 | `supabase/functions/sostac-coach/catalog.ts` | **Generated** list of all fields, labels and hints |
 | `connector/build_catalog.py` | Builds `catalog.ts` from `SOSTAC_Strategy_Framework.html` |
+| `connector/add_claude_button.py` | Source of the "Discuss with Claude" button; since tool v8 the button is part of the tool itself (`beta/` is the B0 test copy) |
 
 After every change to the tool's HTML: `python3 connector/build_catalog.py`, then deploy again.
 
