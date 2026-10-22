@@ -14,7 +14,7 @@ import type { PatchPlan } from './write.ts';
 
 export type LoadPlan = (code: string) => Promise<PlanRow | null>;
 
-export const VERSION = '0.2.0';
+export const VERSION = '0.3.0';
 
 const READ_ONLY = { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false };
 const sectionEnum = z.enum(SECTION_KEYS as [string, ...string[]]);
