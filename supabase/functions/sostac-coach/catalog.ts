@@ -64,51 +64,63 @@ export const CATALOG: Catalog = {
       {
        "kind": "field",
        "id": "brief-brand",
-       "label": "Brand / Company Name",
+       "label": "Organisation",
        "type": "text",
-       "placeholder": "e.g. Nike, Startup XY"
+       "placeholder": "e.g. Tafel Heilbronn e.V."
+      },
+      {
+       "kind": "field",
+       "id": "brief-betterplace",
+       "label": "betterplace project (link)",
+       "type": "text",
+       "placeholder": "e.g. https://www.betterplace.org/de/projects/…"
+      },
+      {
+       "kind": "field",
+       "id": "brief-target",
+       "label": "Donation goal",
+       "type": "text",
+       "placeholder": "e.g. 2,500 € or 60 donations by 20 Dec 2026"
       },
       {
        "kind": "field",
        "id": "brief-industry",
-       "label": "Industry / Sector",
-       "type": "text",
-       "placeholder": "e.g. Fashion, SaaS, Food & Beverage"
+       "label": "Industry / Sector (earlier version)",
+       "type": "text"
       },
       {
        "kind": "field",
        "id": "brief-campaign",
        "label": "Campaign Name / Theme",
        "type": "text",
-       "placeholder": "e.g. Summer Launch 2025"
+       "placeholder": "e.g. Warm meals for winter"
       },
       {
        "kind": "field",
        "id": "brief-period",
        "label": "Campaign Period",
        "type": "text",
-       "placeholder": "e.g. June 1 – August 31, 2025"
+       "placeholder": "e.g. 16 Nov – 20 Dec 2026"
       },
       {
        "kind": "field",
        "id": "brief-goal",
        "label": "Overall Goal (1 sentence)",
        "type": "textarea",
-       "placeholder": "What is the one main thing this strategy should achieve?"
+       "placeholder": "One sentence: what the campaign achieves, for whom, by when"
       },
       {
        "kind": "field",
        "id": "brief-platforms",
-       "label": "Primary Platform(s)",
+       "label": "Primary platform(s) — first idea",
        "type": "text",
-       "placeholder": "e.g. Instagram, LinkedIn, TikTok"
+       "placeholder": "e.g. Instagram, WhatsApp channel (decided in Strategy › Platform Strategy)"
       },
       {
        "kind": "field",
        "id": "brief-course",
-       "label": "Course / Semester",
-       "type": "text",
-       "placeholder": "e.g. Social Media Management, SoSe 2026"
+       "label": "Course / Semester (earlier version)",
+       "type": "text"
       }
      ]
     }
@@ -482,7 +494,8 @@ export const CATALOG: Catalog = {
        "kind": "field",
        "id": "lis-competitors-find",
        "label": "“Competitors” · Finding with link",
-       "type": "textarea"
+       "type": "textarea",
+       "placeholder": "Short note with link — the detailed comparison goes into Competitor Benchmarking below"
       },
       {
        "kind": "field",
@@ -580,28 +593,63 @@ export const CATALOG: Catalog = {
        "id": "swot-s",
        "label": "STRENGTHS — Internal positives",
        "type": "textarea",
-       "placeholder": "• Strong visual brand identity • Established community of 12k followers • Skilled in-house content team"
+       "placeholder": "• e.g. 30 years of local trust (source) • e.g. 200 volunteers who could share posts"
       },
       {
        "kind": "field",
        "id": "swot-w",
        "label": "WEAKNESSES — Internal negatives",
        "type": "textarea",
-       "placeholder": "• Low posting frequency • No paid media budget currently • Limited video production capability"
+       "placeholder": "• e.g. last Instagram post three months ago • e.g. nobody makes videos"
       },
       {
        "kind": "field",
        "id": "swot-o",
        "label": "OPPORTUNITIES — External positives",
        "type": "textarea",
-       "placeholder": "• Rising TikTok usage in target demographic • Competitor gaps in educational content • Influencer partnership possibilities"
+       "placeholder": "• e.g. giving peak before Christmas • e.g. local media report on food poverty"
       },
       {
        "kind": "field",
        "id": "swot-t",
        "label": "THREATS — External negatives",
        "type": "textarea",
-       "placeholder": "• Algorithm changes reducing organic reach • Increasing ad costs • Active competitors with higher budgets"
+       "placeholder": "• e.g. many donation appeals at the same time • e.g. distrust: where does the money go?"
+      }
+     ]
+    },
+    {
+     "title": "From SWOT to TOWS",
+     "area": "Together",
+     "hint": "Combine your SWOT points into options for the campaign. Write one or two concrete options per cell. Your key findings and objectives build on them.",
+     "items": [
+      {
+       "kind": "field",
+       "id": "tows-so",
+       "label": "SO — use strengths to seize opportunities",
+       "type": "textarea",
+       "placeholder": "e.g. volunteers share a countdown in the Christmas giving peak"
+      },
+      {
+       "kind": "field",
+       "id": "tows-wo",
+       "label": "WO — overcome weaknesses through opportunities",
+       "type": "textarea",
+       "placeholder": "e.g. local media story replaces our missing video skills"
+      },
+      {
+       "kind": "field",
+       "id": "tows-st",
+       "label": "ST — use strengths against threats",
+       "type": "textarea",
+       "placeholder": "e.g. show where every euro goes, with the trust of 30 years"
+      },
+      {
+       "kind": "field",
+       "id": "tows-wt",
+       "label": "WT — limit weaknesses, avoid threats",
+       "type": "textarea",
+       "placeholder": "e.g. one channel done well instead of three done badly"
       }
      ]
     },
@@ -643,7 +691,7 @@ export const CATALOG: Catalog = {
        "id": "obj-business",
        "label": "Goal of your business or fundraising project",
        "type": "textarea",
-       "placeholder": "e.g. Raise €25,000 for winter shelter beds, or increase online sales by 20%"
+       "placeholder": "e.g. Raise 2,500 € on betterplace by 20 Dec 2026 for 120 food boxes"
       },
       {
        "kind": "field",
@@ -657,7 +705,7 @@ export const CATALOG: Catalog = {
     {
      "title": "SMART Goals",
      "area": "",
-     "hint": "Each goal must pass all 5 SMART criteria. State the goal, then verify each dimension.",
+     "hint": "Write each goal so that it is SMART: the statement says what changes and for whom (specific), the metric and target make it measurable, the deadline makes it time-bound. Check against your Situation baseline that the target is achievable, and that it serves the fundraising goal (relevant).",
      "items": [
       {
        "kind": "table",
@@ -690,7 +738,7 @@ export const CATALOG: Catalog = {
        "id": "p1-name",
        "label": "Persona 1 — Primary Audience › Name / Archetype",
        "type": "text",
-       "placeholder": "e.g. Digital Dana, 28, Marketing Manager"
+       "placeholder": "e.g. Student Sarah, 23, studies in Heilbronn"
       },
       {
        "kind": "field",
@@ -795,7 +843,7 @@ export const CATALOG: Catalog = {
        "id": "p2-name",
        "label": "Persona 2 — Secondary Audience › Name / Archetype",
        "type": "text",
-       "placeholder": "e.g. Business Ben, 42, SME Owner"
+       "placeholder": "e.g. Local business owner Ben, 48"
       },
       {
        "kind": "field",
@@ -823,7 +871,7 @@ export const CATALOG: Catalog = {
        "id": "p2-platforms",
        "label": "Persona 2 — Secondary Audience › Preferred Platforms",
        "type": "text",
-       "placeholder": "e.g. LinkedIn, YouTube"
+       "placeholder": "e.g. Facebook, WhatsApp, local news sites"
       },
       {
        "kind": "field",
@@ -886,7 +934,7 @@ export const CATALOG: Catalog = {
        "id": "p2-trigger",
        "label": "Persona 2 — Secondary Audience › Trigger to act",
        "type": "textarea",
-       "placeholder": "What makes them share internally, reply, or commit budget?"
+       "placeholder": "What makes them donate, share, or ask their company to give?"
       },
       {
        "kind": "field",
@@ -898,9 +946,28 @@ export const CATALOG: Catalog = {
      ]
     },
     {
+     "title": "Content Pillars",
+     "area": "",
+     "hint": "Define 3–5 content themes that guide all social media posts (e.g. behind the scenes, impact stories, call to donate, community).",
+     "items": [
+      {
+       "kind": "table",
+       "id": "pillars-table",
+       "columns": [
+        "#",
+        "Pillar Name",
+        "Description",
+        "Example Post Types",
+        "% of Mix",
+        ""
+       ]
+      }
+     ]
+    },
+    {
      "title": "Positioning & Messaging — per Persona",
      "area": "",
-     "hint": "Positioning is not one statement for everyone. Write it per persona, and name the content pillars that carry it. The pillars come from the table below — define them first, then tick them here.",
+     "hint": "Positioning is not one statement for everyone. Write it per persona, and name the content pillars that carry it. Tick the pillars you defined above.",
      "items": [
       {
        "kind": "field",
@@ -940,7 +1007,7 @@ export const CATALOG: Catalog = {
       {
        "kind": "field",
        "id": "pos1-tone",
-       "label": "Persona 1 — Primary Audience › Tone for this persona",
+       "label": "Persona 1 — Primary Audience › Tone we use for this persona",
        "type": "text",
        "placeholder": "e.g. warm, first-person, no jargon"
       },
@@ -981,7 +1048,7 @@ export const CATALOG: Catalog = {
       {
        "kind": "field",
        "id": "pos2-tone",
-       "label": "Persona 2 — Secondary Audience › Tone for this persona",
+       "label": "Persona 2 — Secondary Audience › Tone we use for this persona",
        "type": "text",
        "placeholder": "e.g. evidence-led, concise"
       },
@@ -990,25 +1057,6 @@ export const CATALOG: Catalog = {
        "id": "pos2-pillars",
        "label": "Persona 2 — Secondary Audience › Content Pillars used",
        "type": "hidden"
-      }
-     ]
-    },
-    {
-     "title": "Content Pillars",
-     "area": "",
-     "hint": "Define 3–5 content themes that guide all social media posts (e.g. Education, Inspiration, Behind the Scenes, Product, Community).",
-     "items": [
-      {
-       "kind": "table",
-       "id": "pillars-table",
-       "columns": [
-        "#",
-        "Pillar Name",
-        "Description",
-        "Example Post Types",
-        "% of Mix",
-        ""
-       ]
       }
      ]
     },
@@ -1057,7 +1105,7 @@ export const CATALOG: Catalog = {
        "id": "cal-external",
        "label": "SocialHub / external plan",
        "type": "text",
-       "placeholder": "e.g. SocialHub calendar 'Winter Shelter 2026', shared with the lecturer on 3 May"
+       "placeholder": "e.g. SocialHub calendar 'Warm meals 2026', shared with the lecturer on 24 Nov"
       },
       {
        "kind": "table",
@@ -1109,7 +1157,8 @@ export const CATALOG: Catalog = {
        "id": "tools-create",
        "columns": [
         "Tool",
-        "Purpose"
+        "Purpose",
+        ""
        ]
       },
       {
@@ -1117,7 +1166,8 @@ export const CATALOG: Catalog = {
        "id": "tools-schedule",
        "columns": [
         "Tool",
-        "Purpose"
+        "Purpose",
+        ""
        ]
       },
       {
@@ -1125,7 +1175,8 @@ export const CATALOG: Catalog = {
        "id": "tools-analytics",
        "columns": [
         "Tool",
-        "Purpose"
+        "Purpose",
+        ""
        ]
       },
       {
@@ -1133,7 +1184,8 @@ export const CATALOG: Catalog = {
        "id": "tools-community",
        "columns": [
         "Tool",
-        "Purpose"
+        "Purpose",
+        ""
        ]
       }
      ]
@@ -1155,7 +1207,7 @@ export const CATALOG: Catalog = {
        "id": "pres1-date",
        "label": "1 — Mid-Project Presentation › Date",
        "type": "text",
-       "placeholder": "e.g. 12 May 2026"
+       "placeholder": "dd.mm.yyyy"
       },
       {
        "kind": "table",
@@ -1172,7 +1224,7 @@ export const CATALOG: Catalog = {
        "id": "pres2-date",
        "label": "2 — Final Presentation › Date",
        "type": "text",
-       "placeholder": "e.g. 7 July 2026"
+       "placeholder": "dd.mm.yyyy"
       },
       {
        "kind": "table",
@@ -1241,7 +1293,7 @@ export const CATALOG: Catalog = {
        "id": "act-approval",
        "label": "Approval Chain",
        "type": "textarea",
-       "placeholder": "e.g. Creator → SM Manager → Brand Director → Publish"
+       "placeholder": "e.g. creator → second team member checks → organisation approves → publish"
       },
       {
        "kind": "field",
@@ -1331,16 +1383,16 @@ export const CATALOG: Catalog = {
       {
        "kind": "field",
        "id": "ctrl-monthly",
-       "label": "Monthly Report",
+       "label": "Phase report",
        "type": "textarea",
-       "placeholder": "What does the monthly report include? Who receives it?"
+       "placeholder": "After each campaign phase: what worked, what changes next? Who receives it (team, organisation, lecturer)?"
       },
       {
        "kind": "field",
        "id": "ctrl-dashboard",
        "label": "Reporting Dashboard",
        "type": "text",
-       "placeholder": "e.g. Google Looker Studio, Sprout Social Dashboard, Excel"
+       "placeholder": "e.g. SocialHub analytics, betterplace statistics, a shared sheet"
       },
       {
        "kind": "table",
@@ -1380,7 +1432,7 @@ export const CATALOG: Catalog = {
        "id": "ctrl-review",
        "label": "Strategy Review Dates",
        "type": "text",
-       "placeholder": "e.g. End of Month 1, Month 3, End of Campaign"
+       "placeholder": "e.g. after launch week, at the mid-project presentation, before the final push"
       }
      ]
     },

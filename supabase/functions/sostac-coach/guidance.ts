@@ -35,6 +35,7 @@ export const GUIDANCE: Record<string, Guidance> = {
       'Persona sketches describe people the organisation reaches today, not the campaign\'s target personas.',
       'Competitor Benchmarking compares three projects that ask the same people for money, same channel, same 90 days, and decides adopt / avoid / occupy a gap.',
       'SWOT: strengths and weaknesses are internal, opportunities and threats external; every point has evidence from the areas above.',
+      'TOWS turns the SWOT into options: SO, WO, ST and WT each name one or two concrete options for the campaign.',
       'Key findings name the single biggest opportunity and the single biggest challenge.',
     ],
     questions: [
@@ -138,8 +139,8 @@ export const GUIDANCE: Record<string, Guidance> = {
 export const SERVER_INSTRUCTIONS = `
 You are a coach for student teams in the course Social Media Management (SMM) at Hochschule Heilbronn.
 Each team plans and runs a donation campaign on betterplace.org with the SOSTAC® framework
-(Situation, Objectives, Strategy, Tactics, Action, Control) in a web tool. This connector lets you READ the
-team's plan. It cannot change the plan: the students enter everything in the tool themselves.
+(Situation, Objectives, Strategy, Tactics, Action, Control) in a web tool. This connector lets you read the
+team's plan and, only when a student asks for it, write text into single fields (update_fields).
 
 How to work:
 1. Ask for the team's group code if you do not have it, then call open_plan to see where the team stands.
@@ -152,6 +153,9 @@ How to work:
 4. Quote the team's own entries when you comment on them, so they know which field you mean.
 5. Answer in the student's language. The tool and its field names are in English.
 6. Remind the team to label AI support: they note it in Situation › Our Approach ("Links to your AI reports").
+7. Writing: only call update_fields when the student explicitly asks you to enter a text. Show the exact text first and
+   wait for a yes. Prefer the student's own words; never fill whole sections on your own initiative. Never overwrite
+   existing text unless the student confirmed it. Tables (calendar, KPIs …) and the cover sheet stay with the students.
 
 Rules: only open the plan of the code the student gives you. Do not ask for or repeat student numbers.
 If a field is empty, say so instead of guessing what the team meant.

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>SOSTAC® Lecturer Overview — SMM, HHN</title>
+<style>
+  :root { --navy: #002896; --blue: #001B66; --mid: #3D5BB3; --light: #EEF0F8; --border: #C9CDD8;
+          --grey: #5E6370; --text: #111; --bg: #F5F6FA; --ok: #1C6B3A; --warn: #A33; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 14px/1.45 Arial, sans-serif; color: var(--text); background: var(--bg); }
+  header { background: var(--navy); color: #fff; padding: 14px 24px; display: flex; justify-content: space-between;
+           align-items: center; gap: 16px; flex-wrap: wrap; border-bottom: 3px solid #A5AED7; }
+  header h1 { font-size: 18px; margin: 0; }
+  header p { margin: 2px 0 0; font-size: 12px; opacity: .75; }
+  main { max-width: 1280px; margin: 0 auto; padding: 18px 16px 48px; }
+  .bar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
+  .bar input[type=search] { flex: 1 1 260px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 4px; font: inherit; }
+  .bar label { font-size: 13px; color: var(--grey); display: inline-flex; gap: 6px; align-items: center; }
+  button { font: 700 13px Arial, sans-serif; background: var(--navy); color: #fff; border: none; border-radius: 4px;
+           padding: 8px 14px; cursor: pointer; }
+  button.secondary { background: #fff; color: var(--blue); border: 1px solid var(--border); }
+  .meta { font-size: 12.5px; color: var(--grey); margin-bottom: 10px; }
+  .wrap { overflow-x: auto; background: #fff; border: 1px solid var(--border); border-radius: 6px; }
+  table { border-collapse: collapse; width: 100%; min-width: 980px; }
+  th, td { padding: 8px 10px; border-bottom: 1px solid #E4E7EF; text-align: left; vertical-align: top; }
+  th { background: var(--navy); color: #fff; font-size: 12px; font-weight: 700; position: sticky; top: 0; cursor: pointer; white-space: nowrap; }
+  th[aria-sort] { text-decoration: underline; }
+  tbody tr:hover { background: #F7F8FC; }
+  tbody tr.sel { background: #EEF2FF; }
+  td.code { font-family: Menlo, Consolas, monospace; font-size: 12.5px; }
+  .phase { display: inline-block; width: 34px; text-align: center; font-size: 11.5px; border-radius: 3px; padding: 1px 0; }
+  .p0 { background: #F3F4F7; color: #8A8F9C; } .p1 { background: #DDE3F6; color: var(--blue); }
+  .p2 { background: #AFBEEB; color: var(--blue); } .p3 { background: var(--navy); color: #fff; }
+  .old { color: var(--warn); font-weight: 700; }
+  .detail { background: #fff; border: 1px solid var(--border); border-left: 4px solid var(--navy); border-radius: 6px;
+            padding: 14px 16px; margin-top: 14px; }
+  .detail h2 { font-size: 16px; margin: 0 0 6px; color: var(--navy); }
+  .detail ul { margin: 6px 0 0 18px; padding: 0; }
+  .detail li { margin-bottom: 3px; }
+  .err { color: var(--warn); font-weight: 700; }
+  .legend { font-size: 12px; color: var(--grey); margin-top: 8px; }
+</style>
+</head>
+<body>
+<header>
+  <div><h1>SOSTAC® — Lecturer overview</h1><p>Social Media Management · all group plans · read only</p></div>
+  <button class="secondary" onclick="load()">Refresh</button>
+</header>
+<main>
+  <div class="bar">
+    <input type="search" id="q" placeholder="Filter by code, team or organisation" oninput="render()" aria-label="Filter">
+    <label><input type="checkbox" id="showTest" onchange="render()"> show test codes (zz-, __)</label>
+  </div>
+  <div class="meta" id="meta">Loading…</div>
+  <div class="wrap"><table>
+    <thead><tr>
+      <th data-k="code">Code</th><th data-k="team">Team</th><th data-k="org">Organisation</th>
+      <th data-k="members">Members</th><th data-k="saved">Last saved</th><th data-k="tool">Tool</th>
+      <th data-k="posts">Posts</th><th data-k="total">Blocks filled</th><th>S · O · S · T · A · C · Arch</th>
+    </tr></thead>
+    <tbody id="rows"></tbody>
+  </table></div>
+  <div class="legend">Phase boxes: share of blocks with an entry — grey none, light up to half, middle more than half, dark all.</div>
+  <div id="detail"></div>
+</main>
+<script src="dozent-catalog.js"></script>
+<script>
+// Read-only: lists the plans in sostac_plans with the tool's public key. Nothing is written.
+const SUPABASE_URL = 'https://earwxoxayapshwgnuxds.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_dVGG0SMGTs08ct5R1jPaPA_bjPMRlin';
+const PHASES = ['situation', 'objectives', 'strategy', 'tactics', 'action', 'control', 'architecture'];
+let plans = [], sortKey = 'saved', sortDir = -1, selected = null;
+
+const esc = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const UNANSWERED = /^—(\s.*\s—)?$/;
+
+/** Does a stored table hold any answer? (defaults and row numbers do not count) */
+function tableHasContent(html) {
+  if (typeof html !== 'string' || !html) return false;
+  const doc = new DOMParser().parseFromString('<table><tbody>' + html + '</tbody></table>', 'text/html');
+  if ([...doc.querySelectorAll('input')].some(i => !['checkbox', 'radio', 'hidden', 'file'].includes((i.getAttribute('type') || 'text')) && (i.getAttribute('value') || '').trim())) return true;
+  if ([...doc.querySelectorAll('textarea')].some(t => t.textContent.trim())) return true;
+  return [...doc.querySelectorAll('select')].some(s => {
+    const opts = [...s.querySelectorAll('option')];
+    const i = opts.findIndex(o => o.hasAttribute('selected'));
+    return i > 0 && !UNANSWERED.test(opts[i].textContent.trim());
+  });
+}
+function itemFilled(d, it) {
+  if (it.kind === 'field') {
+    if (it.id === 'funnel-model') return false;
+    const v = d[it.id] == null ? '' : String(d[it.id]).trim();
+    return !!v && !(it.type === 'select' && UNANSWERED.test(v));
+  }
+  return tableHasContent(d['__table__' + it.id]);
+}
+function analyse(row) {
+  const d = row.data || {};
+  const own = d.__meta__ && d.__meta__.app === 'sostac-smm-hhn';
+  const members = (() => {
+    const h = d['__table__member-table'];
+    if (typeof h !== 'string') return [];
+    const doc = new DOMParser().parseFromString('<table><tbody>' + h + '</tbody></table>', 'text/html');
+    return [...doc.querySelectorAll('tr')].map(tr => { const i = tr.querySelector('input'); return i ? (i.getAttribute('value') || '').trim() : ''; }).filter(Boolean);
+  })();
+  const posts = (() => {
+    const h = d['__table__calendar-table'];
+    if (typeof h !== 'string') return 0;
+    const doc = new DOMParser().parseFromString('<table><tbody>' + h + '</tbody></table>', 'text/html');
+    return [...doc.querySelectorAll('tr')].filter(tr => [...tr.querySelectorAll('input')].some(i => (i.getAttribute('value') || '').trim())
+      || [...tr.querySelectorAll('textarea')].some(t => t.textContent.trim())).length;
+  })();
+  const phases = PHASES.map(key => {
+    const sec = SOSTAC_CATALOG.sections.find(s => s.key === key);
+    const blocks = sec ? sec.blocks : [];
+    const open = blocks.filter(b => !b.items.some(it => itemFilled(d, it))).map(b => b.title);
+    return { key, title: sec ? sec.title : key, total: blocks.length, done: blocks.length - open.length, open };
+  });
+  const done = phases.reduce((a, p) => a + p.done, 0), total = phases.reduce((a, p) => a + p.total, 0);
+  return {
+    code: row.group_id, own, team: d['reg-group'] || '', org: d['brief-brand'] || '', members,
+    saved: row.last_saved, tool: own ? (d.__meta__.tool || 'v7') : 'old format', posts, phases, done, total,
+    editor: (d.__meta__ && d.__meta__.editor) || '',
+  };
+}
+async function load() {
+  document.getElementById('meta').textContent = 'Loading…';
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/sostac_plans?select=group_id,data,last_saved`,
+      { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    plans = (await res.json()).map(analyse);
+    render();
+  } catch (e) {
+    document.getElementById('meta').innerHTML = `<span class="err">Could not load the plans (${esc(e.message)}).</span>`;
+  }
+}
+function fmt(iso) {
+  if (!iso) return '—';
+  return new Intl.DateTimeFormat('de-DE', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Europe/Berlin' }).format(new Date(iso));
+}
+function level(p) { return !p.done ? 0 : p.done === p.total ? 3 : p.done / p.total > .5 ? 2 : 1; }
+function render() {
+  const q = document.getElementById('q').value.trim().toLowerCase();
+  const test = document.getElementById('showTest').checked;
+  const list = plans
+    .filter(p => test || !/^(zz-|__)/.test(p.code))
+    .filter(p => !q || [p.code, p.team, p.org].join(' ').toLowerCase().includes(q))
+    .sort((a, b) => {
+      const va = sortKey === 'members' ? a.members.length : a[sortKey], vb = sortKey === 'members' ? b.members.length : b[sortKey];
+      return (va > vb ? 1 : va < vb ? -1 : 0) * sortDir;
+    });
+  document.querySelectorAll('th[data-k]').forEach(th => th.toggleAttribute('aria-sort', th.dataset.k === sortKey));
+  document.getElementById('rows').innerHTML = list.map(p => `
+    <tr data-code="${esc(p.code)}" class="${p.code === selected ? 'sel' : ''}" tabindex="0">
+      <td class="code">${esc(p.code)}</td><td>${esc(p.team)}</td><td>${esc(p.org)}</td>
+      <td>${p.members.length}</td><td>${fmt(p.saved)}${p.editor ? '<br><small>' + esc(p.editor) + '</small>' : ''}</td>
+      <td class="${p.own ? '' : 'old'}">${esc(p.tool)}</td><td>${p.posts}</td><td>${p.done} / ${p.total}</td>
+      <td>${p.phases.map(ph => `<span class="phase p${level(ph)}" title="${esc(ph.title)}: ${ph.done} of ${ph.total}">${ph.done}/${ph.total}</span>`).join(' ')}</td>
+    </tr>`).join('');
+  document.getElementById('meta').textContent = `${list.length} plan${list.length === 1 ? '' : 's'} shown · loaded ${fmt(new Date().toISOString())}`;
+  showDetail();
+}
+function showDetail() {
+  const p = plans.find(x => x.code === selected);
+  const box = document.getElementById('detail');
+  if (!p) { box.innerHTML = ''; return; }
+  box.innerHTML = `<div class="detail"><h2>${esc(p.team || p.code)}</h2>
+    <div>Code <code>${esc(p.code)}</code> · ${esc(p.org || 'no organisation')} · members: ${esc(p.members.join(', ') || '—')}</div>
+    <p>Still empty:</p><ul>${p.phases.filter(ph => ph.open.length).map(ph => `<li><strong>${esc(ph.title.split('—')[0].trim())}:</strong> ${ph.open.map(esc).join(', ')}</li>`).join('') || '<li>nothing — every block has an entry</li>'}</ul></div>`;
+}
+document.querySelectorAll('th[data-k]').forEach(th => th.addEventListener('click', () => {
+  sortDir = th.dataset.k === sortKey ? -sortDir : (th.dataset.k === 'saved' || th.dataset.k === 'total' ? -1 : 1);
+  sortKey = th.dataset.k; render();
+}));
+document.getElementById('rows').addEventListener('click', e => { const tr = e.target.closest('tr'); if (tr) { selected = tr.dataset.code; render(); } });
+document.getElementById('rows').addEventListener('keydown', e => { if (e.key === 'Enter') { const tr = e.target.closest('tr'); if (tr) { selected = tr.dataset.code; render(); } } });
+load();
+</script>
+</body>
+</html>

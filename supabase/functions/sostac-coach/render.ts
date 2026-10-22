@@ -164,7 +164,7 @@ function renderItem(data: Record<string, unknown>, item: Item): { md: string; fi
     // a setting with a default, not an answer: never counts towards progress
     const counts = item.id !== 'funnel-model';
     const empty = item.placeholder ? `_(empty; placeholder in the tool: "${oneLine(item.placeholder)}")_` : '_(empty)_';
-    return { md: `- **${item.label}:** ${v ? oneLine(v) : empty}`, filled: counts && v ? 1 : 0, total: counts ? 1 : 0 };
+    return { md: `- **${item.label}** \`${item.id}\`: ${v ? oneLine(v) : empty}`, filled: counts && v ? 1 : 0, total: counts ? 1 : 0 };
   }
   const html = data['__table__' + item.id];
   if (typeof html !== 'string' || !html.trim()) {
@@ -197,7 +197,14 @@ export function renderSection(row: PlanRow, key: string, block?: string): string
     if (b.area && b.area !== area) { area = b.area; out.push(`\n## ${area}`); }
     out.push(`\n### ${b.title}`);
     if (b.hint) out.push(`Task in the tool: ${b.hint}`);
-    for (const item of b.items) out.push(renderItem(data, item).md);
+    const rendered = b.items.map((item) => ({ item, r: renderItem(data, item) }));
+    if (rendered.length > 3 && rendered.every(({ r }) => !r.filled)) {
+      // a whole block without entries: one line instead of a list of empty fields
+      out.push(`_(nothing entered yet — fields: ${rendered.map(({ item }) =>
+        item.kind === 'field' ? `${item.label} \`${item.id}\`` : `table ${item.id}`).join('; ')})_`);
+    } else {
+      for (const { r } of rendered) out.push(r.md);
+    }
     if (b.unsaved) {
       out.push(`_Note: ${b.unsaved} field(s) in this block are not stored by the current version of the tool, so they cannot be read here._`);
     }

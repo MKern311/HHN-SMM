@@ -9,10 +9,12 @@ import {
   isToolPlan, normaliseCode, renderOverview, renderSection, SECTION_KEYS, findSection,
 } from './render.ts';
 import type { PlanRow } from './render.ts';
+import { fieldLabel, MAX_LEN, writeFields } from './write.ts';
+import type { PatchPlan } from './write.ts';
 
 export type LoadPlan = (code: string) => Promise<PlanRow | null>;
 
-export const VERSION = '0.1.0';
+export const VERSION = '0.2.0';
 
 const READ_ONLY = { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false };
 const sectionEnum = z.enum(SECTION_KEYS as [string, ...string[]]);
@@ -40,7 +42,7 @@ async function withPlan(loadPlan: LoadPlan, rawCode: string, fn: (code: string, 
   return text(fn(code, row));
 }
 
-export function buildServer(loadPlan: LoadPlan): McpServer {
+export function buildServer(loadPlan: LoadPlan, patchPlan?: PatchPlan): McpServer {
   const server = new McpServer(
     { name: 'sostac-coach', version: VERSION },
     { instructions: SERVER_INSTRUCTIONS },
@@ -86,6 +88,38 @@ export function buildServer(loadPlan: LoadPlan): McpServer {
       `\nCoaching questions:\n${g.questions.map((x) => '- ' + x).join('\n')}`,
     ].filter(Boolean).join('\n'));
   });
+
+  if (patchPlan) {
+    server.registerTool('update_fields', {
+      title: 'Write into the plan (only when the student asks)',
+      description: 'Write text into single fields of the team\'s plan, addressed by the field ids shown by get_section '
+        + '(e.g. "p1-goals"). Use it ONLY after the student explicitly asked you to enter a text and confirmed the exact wording. '
+        + 'Fields that already hold text are kept unless overwrite is true — set it only when the student confirmed replacing their text. '
+        + 'Only free-text fields outside the cover sheet can be written; tables are written by the students in the tool. '
+        + 'Every write is logged in the plan as AI support.',
+      inputSchema: z.object({
+        code: z.string().min(1).max(80).describe('The group code of the plan.'),
+        fields: z.record(z.string(), z.string().max(MAX_LEN)).describe('Field id → new text, e.g. {"p1-goals": "…"}. At most 12 fields per call.'),
+        overwrite: z.boolean().optional().describe('Replace text that is already there. Only after the student confirmed it.'),
+      }),
+      annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
+    }, async ({ code: rawCode, fields, overwrite }) => {
+      const code = normaliseCode(rawCode);
+      if (Object.keys(fields).length > 12) return { ...text('Please write at most 12 fields at a time.'), isError: true };
+      try {
+        const r = await writeFields(loadPlan, patchPlan, code, fields, !!overwrite);
+        const lines: string[] = [];
+        if (r.written.length) lines.push(`Written: ${r.written.map(fieldLabel).join('; ')}. The team sees it in the tool after its next sync (switching back to the tab, or within a minute).`);
+        if (r.kept.length) lines.push(`Not written, because the team already wrote something there (ask before replacing it): ${r.kept.map(fieldLabel).join('; ')}.`);
+        if (r.rejected.length) lines.push(`Unknown or not writable (tables, dropdowns and the cover sheet stay with the students; max ${MAX_LEN} characters): ${r.rejected.join(', ')}.`);
+        if (r.error) lines.push(`Could not write: ${r.error}.`);
+        return { ...text(lines.join('\n') || 'Nothing to write.'), isError: !!r.error && !r.written.length };
+      } catch (e) {
+        console.error('update_fields failed', e);
+        return { ...text('The plan could not be written right now (database not reachable). Nothing was changed.'), isError: true };
+      }
+    });
+  }
 
   return server;
 }
