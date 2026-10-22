@@ -759,6 +759,14 @@
 
   /* ═══ v9 ═══════════════════════════════════════════════════════════ */
   .ai-log-note:empty { display: none; }
+  @media screen {
+    .content ::placeholder { color: #666C80 !important; }
+    .content ::-webkit-input-placeholder { color: #666C80 !important; }
+    .subsection .hint.clamped { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 2px; }
+    .hint-more { background: none; border: none; color: var(--mk-navy); font: 700 12px Arial, sans-serif; padding: 0 0 8px;
+                 cursor: pointer; text-decoration: underline; }
+  }
+  @media print { .hint-more { display: none !important; } }
   .ai-log-note { margin: 10px 0 0; padding: 8px 12px; border: 1px dashed var(--mk-mid); border-radius: 4px;
                  font-size: 12.5px; background: #F7F8FC; }
   .ai-log-note ul { margin: 4px 0 4px 18px; }
@@ -973,7 +981,7 @@
       <li>Several of you can work at the same time: the tool merges your changes field by field.
           Only when two people changed the same field does it ask which version to keep.</li>
       <li>Empty fields are hidden when printing — an unanswered field costs you nothing.</li>
-      <li><em style="color:#7A8099">Grey italic text</em> in a field is an example or a prompt, not an entry — it is never saved or printed.</li>
+      <li><em style="color:#666C80">Grey italic text</em> in a field is an example or a prompt, not an entry — it is never saved or printed.</li>
     </ul>
   </div>
 
@@ -2073,7 +2081,8 @@
       <li>In the chat, make sure the connector is switched on.</li>
     </ol>
     <p id="claudeSection" style="color:var(--grey)"></p>
-    <p style="color:var(--grey);font-size:12px">Label AI support in Situation › Our Approach.</p>
+    <p style="color:var(--grey);font-size:12px">Label AI support in Situation › Our Approach.
+      <a href="coach-guide.html" target="_blank" rel="noopener">Step-by-step guide</a></p>
     <div class="cm-actions">
       <button type="button" onclick="copyClaudeText(document.getElementById('claudeConnUrl').textContent, 'Connector URL copied')">Copy connector URL</button>
       <button type="button" onclick="closeClaudeCoach()">Cancel</button>
@@ -3339,6 +3348,7 @@ function estimatePages() {
 // ══════════════════════════════════════════════════════════════════════════
 function collectData() {
   if (PRINTING) unprepPrint();
+  ensureRowIds();
   const data = {};
   // Keys this version does not know (written by a newer version or another
   // tool) travel along unchanged, so saving here never deletes them.
@@ -4044,6 +4054,7 @@ function refreshDerived() {
   renderAiLog();
   refreshLegacyRows();
   labelTableCells();
+  clampHints();
   applyingCloud = was;
   updateDoneBox(phaseStatus(), runChecks());
 }
@@ -4144,7 +4155,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeClaudeC
 // ══════════════════════════════════════════════════════════════════════════
 //  v9 — WORKING TOGETHER: merge field by field instead of all-or-nothing
 // ══════════════════════════════════════════════════════════════════════════
-const TOOL_VERSION = 'v9';
+const TOOL_VERSION = 'v10';
 
 /** What a stored value means, independent of how the markup was written:
  *  for tables the entered values in order, for fields the text itself. */
@@ -4186,10 +4197,75 @@ function mergePlans(base, mine, theirs) {
     const has = (o) => Object.prototype.hasOwnProperty.call(o, k);
     if (m === t || t === b) { if (has(mine)) merged[k] = mine[k]; else if (has(theirs)) merged[k] = theirs[k]; }
     else if (m === b) { if (has(theirs)) merged[k] = theirs[k]; }
-    else { conflicts.push(k); merged[k] = mine[k]; }
+    else {
+      // both changed the same table: merge row by row before asking
+      const rows = k.startsWith('__table__') ? mergeTableRows(k, (base || {})[k], mine[k], theirs[k]) : null;
+      if (rows !== null) merged[k] = rows;
+      else { conflicts.push(k); merged[k] = mine[k]; }
+    }
   });
   merged.__meta__ = Object.assign({}, theirs.__meta__ || {}, mine.__meta__ || {});
   return { merged, conflicts };
+}
+
+
+// ─── ROW IDS AND ROW-LEVEL MERGE (v10) ───────────────────────────────────
+function newRowId() { return 'r' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+/** Rows of a stored table: table rows, platform cards or campaign cards. */
+function rowNodesOf(container) {
+  return [...container.children].filter(n => n.matches('tr, .plat-card, .camp-card'));
+}
+/** Give every row and card an id once; phase headers get a fixed one. */
+function ensureRowIds() {
+  SAVED_TABLES.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    rowNodesOf(el).forEach(n => {
+      if (n.dataset.rid) return;
+      n.dataset.rid = n.classList.contains('phase-row-header') && n.dataset.phase ? 'phase-' + n.dataset.phase : newRowId();
+    });
+  });
+}
+function parseRows(html) {
+  const t = document.createElement('template');
+  t.innerHTML = typeof html === 'string' ? html : '';
+  return [...t.content.children].filter(n => n.matches('tr, .plat-card, .camp-card'))
+    .map(n => ({ rid: n.dataset.rid || '', html: n.outerHTML, sig: valueSignature('__table__x', n.outerHTML) }));
+}
+/**
+ * Three-way merge of one stored table. Rows changed by only one side take
+ * that side; rows added on either side are kept; a row deleted on one side
+ * stays deleted unless the other side edited it (then it is kept — no data
+ * is lost). Returns null when a row was edited on both sides differently,
+ * or when rows carry no ids yet (tables saved before v10).
+ */
+function mergeTableRows(k, base, mine, theirs) {
+  const B = parseRows(base), M = parseRows(mine), T = parseRows(theirs);
+  if ([B, M, T].some(list => list.some(r => !r.rid))) return null;
+  const bm = new Map(B.map(r => [r.rid, r])), mm = new Map(M.map(r => [r.rid, r])), tm = new Map(T.map(r => [r.rid, r]));
+  const keep = new Map();
+  let conflict = false;
+  new Set([...bm.keys(), ...mm.keys(), ...tm.keys()]).forEach(rid => {
+    const b = bm.get(rid), m = mm.get(rid), t = tm.get(rid);
+    if (m && t) {
+      if (m.sig === t.sig || (b && t.sig === b.sig)) keep.set(rid, m);
+      else if (b && m.sig === b.sig) keep.set(rid, t);
+      else conflict = true;
+    } else if (m) {                       // theirs deleted it, or it is new on my side
+      if (!b || m.sig !== b.sig) keep.set(rid, m);
+    } else if (t) {                       // I deleted it, or it is new on their side
+      if (!b || t.sig !== b.sig) keep.set(rid, t);
+    }
+  });
+  if (conflict) return null;
+  // order: theirs, with my new rows placed after the row they follow in my list
+  const order = T.map(r => r.rid).filter(rid => keep.has(rid));
+  M.forEach((r, i) => {
+    if (!keep.has(r.rid) || order.includes(r.rid)) return;
+    const prev = M.slice(0, i).reverse().find(x => order.includes(x.rid));
+    order.splice(prev ? order.indexOf(prev.rid) + 1 : 0, 0, r.rid);
+  });
+  return order.map(rid => keep.get(rid).html).join('');
 }
 
 /** Human name of a stored key, as the student sees it on the page. */
@@ -4577,6 +4653,24 @@ function refreshLegacyRows() {
   });
 }
 
+/** Long task texts show two lines; "More" opens the rest. The wording stays as it is. */
+function clampHints() {
+  document.querySelectorAll('.subsection > p.hint').forEach(p => {
+    if (p.dataset.clamped || p.textContent.trim().length < 170) return;
+    p.dataset.clamped = '1';
+    p.classList.add('clamped');
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'hint-more'; b.textContent = 'More';
+    b.setAttribute('aria-expanded', 'false');
+    b.onclick = () => {
+      const open = p.classList.toggle('clamped') === false;
+      b.textContent = open ? 'Less' : 'More';
+      b.setAttribute('aria-expanded', String(open));
+    };
+    p.insertAdjacentElement('afterend', b);
+  });
+}
+
 /** Column titles as labels, for the card layout on phones. */
 function labelTableCells() {
   document.querySelectorAll('table.cards-mobile').forEach(t => {
@@ -4619,6 +4713,10 @@ setInterval(checkToolVersion, 600000);
 document.addEventListener('visibilitychange', () => { if (!document.hidden) checkToolVersion(); });
 
 // Nothing is loaded until a group code is entered — see initGroup().
+(function prefillCode() {
+  const m = location.hash.match(/(?:^#|&)code=([^&]+)/);
+  if (m) document.getElementById('groupIdInput').value = decodeURIComponent(m[1]);
+})();
 document.getElementById('groupIdInput').focus();
 </script>
 </body>

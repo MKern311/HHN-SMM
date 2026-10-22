@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SOSTAC® Coach with Claude — Guide</title>
+<style>
+  :root { --navy: #002896; --blue: #001B66; --light: #EEF0F8; --border: #C9CDD8; --grey: #5E6370; --bg: #F5F6FA; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 15px/1.6 Arial, sans-serif; color: #111; background: var(--bg); }
+  header { background: var(--navy); color: #fff; padding: 18px 20px; border-bottom: 3px solid #A5AED7; }
+  header h1 { margin: 0; font-size: 20px; }
+  header p { margin: 4px 0 0; font-size: 13px; opacity: .8; }
+  main { max-width: 760px; margin: 0 auto; padding: 20px 16px 56px; }
+  section { background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 16px 18px; margin-bottom: 16px; }
+  h2 { font-size: 16px; color: var(--navy); margin: 0 0 8px; }
+  ol, ul { margin: 6px 0 0 20px; padding: 0; }
+  li { margin-bottom: 6px; }
+  code { background: var(--light); padding: 2px 6px; border-radius: 3px; font-size: 13px; word-break: break-all; }
+  .url { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 6px 0; }
+  button { font: 700 13px Arial, sans-serif; background: var(--navy); color: #fff; border: none; border-radius: 4px; padding: 7px 12px; cursor: pointer; }
+  .say { background: #F7F8FC; border-left: 3px solid var(--navy); padding: 8px 12px; margin: 8px 0; font-style: italic; }
+  .note { font-size: 13.5px; color: var(--grey); }
+  a { color: var(--navy); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Talk through your SOSTAC® plan with Claude</h1>
+  <p>Social Media Management · Hochschule Heilbronn · works with your own Claude account (Free is enough)</p>
+</header>
+<main>
+  <section>
+    <h2>What the coach does</h2>
+    <ul>
+      <li>Claude reads your plan through the <strong>SOSTAC Coach</strong> connector: your entries, the task of each block and the criteria of the course.</li>
+      <li>It <strong>coaches</strong>: it asks questions, checks your entries against the criteria and points to evidence in your Situation analysis.</li>
+      <li>Only when you ask and confirm the wording, it can write a text into a single field or add posts to your content calendar. Your team stays the author.</li>
+      <li>Everything Claude writes is listed in the tool under <em>Situation › Our Approach</em>, so you can label AI support.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>1 · Add the connector (once)</h2>
+    <ol>
+      <li>Open <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> and sign in with your own account.</li>
+      <li>Go to <strong>Settings › Connectors › Add custom connector</strong>.</li>
+      <li>Name: <code>SOSTAC Coach</code> · URL:
+        <div class="url"><code id="u">https://earwxoxayapshwgnuxds.supabase.co/functions/v1/sostac-coach</code>
+        <button type="button" onclick="navigator.clipboard.writeText(document.getElementById('u').textContent).then(()=>this.textContent='Copied ✓')">Copy</button></div>
+        Leave everything else empty and save.</li>
+      <li>The connector works in the browser and in the Claude apps on your phone and laptop.</li>
+    </ol>
+    <p class="note">The Free plan allows one custom connector. If you already use one, remove it while you work on your plan.</p>
+  </section>
+
+  <section>
+    <h2>2 · Start a conversation</h2>
+    <p><strong>From the tool:</strong> scroll to the block you are working on and click <strong>Discuss with Claude</strong> (bottom right). Claude opens with a first message that names your group code and the block.</p>
+    <p><strong>Directly in Claude:</strong> switch the connector on in the chat (tools icon below the input field) and write, for example:</p>
+    <div class="say">Open our SOSTAC plan with the code group-04 and help me with Persona 1. Ask me questions, do not write it for me.</div>
+    <div class="say">Check our SMART goals against our Situation analysis. Which one is weakest?</div>
+    <div class="say">Here are three post ideas — enter them in our content calendar for 2, 4 and 6 December.</div>
+  </section>
+
+  <section>
+    <h2>3 · Rules for working with the coach</h2>
+    <ul>
+      <li>You write the plan. Use Claude for questions, feedback and checks — not to fill in whole sections.</li>
+      <li>Label AI support in <em>Situation › Our Approach</em> and link your chat there ("Links to your AI reports").</li>
+      <li>Check every fact Claude names. Claude can be wrong, especially about numbers and organisations.</li>
+      <li>Your group code opens your plan. Share it only within your team.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>If something does not work</h2>
+    <ul>
+      <li><strong>"No plan found"</strong> — check the code: it is the code you type into the tool (upper/lower case does not matter, spaces count as dashes).</li>
+      <li><strong>Claude does not use the connector</strong> — switch it on in the chat, or write "use the SOSTAC Coach connector".</li>
+      <li><strong>Claude's text is not in the tool yet</strong> — switch back to the tool tab; it updates within a minute. If you were typing in the same field, the tool asks which version to keep.</li>
+      <li><strong>The first message is empty</strong> — the button also copies it: paste it into Claude.</li>
+    </ul>
+  </section>
+  <p class="note"><a href="SOSTAC_Strategy_Framework.html">← back to the SOSTAC® tool</a></p>
+</main>
+</body>
+</html>

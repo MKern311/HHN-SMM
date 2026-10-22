@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>SOSTAC® tool — tests</title>
+<style>
+  body { font: 14px/1.45 Arial, sans-serif; margin: 20px; color: #111; }
+  h1 { font-size: 18px; color: #002896; }
+  button { font: 700 13px Arial; background: #002896; color: #fff; border: none; border-radius: 4px; padding: 8px 14px; cursor: pointer; }
+  table { border-collapse: collapse; margin: 10px 0; min-width: 520px; }
+  td, th { border-bottom: 1px solid #ddd; padding: 4px 8px; text-align: left; vertical-align: top; }
+  .ok { color: #1C6B3A; font-weight: 700; } .bad { color: #A33; font-weight: 700; }
+  iframe { width: 1200px; height: 700px; border: 1px solid #ccc; margin-top: 16px; }
+  #status { margin: 8px 0; color: #555; }
+</style></head>
+<body>
+<h1>SOSTAC® tool — scenario and round-trip tests</h1>
+<p>Build the test copy first: <code>python3 tests/build_test_copy.py</code>, then serve the repository root
+(<code>python3 -m http.server 8765</code>) and open <code>/tests/runner.html</code>. Nothing here touches the real database.</p>
+<button onclick="runAll()">Run all tests</button> <span id="status">idle</span>
+<div id="out"></div>
+<iframe id="f" title="tool under test"></iframe>
+<script>
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+async function loadFrame(src) {
+  const f = document.getElementById('f');
+  await new Promise(r => { f.onload = r; f.src = src; });
+  await sleep(300);
+  return f.contentWindow;
+}
+/**
+ * What a stored table means: per row the entered values, nothing that the tool
+ * rebuilds on load (option labels such as "P1 — name", empty cells a migration
+ * adds, row numbers). "Purchase" counts as "Donation" (renamed on purpose in v9).
+ */
+function semanticSig(key, v) {
+  if (!key.startsWith('__table__') || typeof v !== 'string') return typeof v === 'object' ? JSON.stringify(v) : String(v ?? '');
+  const t = document.createElement('template');
+  t.innerHTML = v;
+  const rows = [...t.content.children].map(row => {
+    const vals = [];
+    row.querySelectorAll('input, textarea, select').forEach(el => {
+      let x = '';
+      if (el.tagName === 'TEXTAREA') x = el.textContent;
+      else if (el.tagName === 'SELECT') {
+        const o = el.querySelector('option[selected]');
+        x = o ? (o.getAttribute('value') ?? o.textContent) : '';
+        if (/^—/.test(x.trim())) x = '';
+      } else if (el.type === 'checkbox') x = el.hasAttribute('checked') ? 'on' : '';
+      else x = el.getAttribute('value') || '';
+      x = x.trim() === 'Purchase' ? 'Donation' : x.trim();
+      if (x) vals.push(x);
+    });
+    return vals.join('\u241f');
+  }).filter(Boolean);
+  return JSON.stringify(rows);
+}
+/** Load every fixture plan, collect it again, and compare what it means key by key. */
+async function roundtrip() {
+  const plans = await (await fetch('fixtures/plans.json', { cache: 'no-store' })).json();
+  const out = {};
+  for (const p of plans) {
+    localStorage.clear();
+    const w = await loadFrame(PAGE + '?r=' + Date.now());
+    w.__fake.setRow(p.group_id, p.data, Date.parse(p.last_saved));
+    w.__fake.clearLog();
+    w.document.getElementById('groupIdInput').value = p.group_id;
+    await w.initGroup(); await sleep(2500);
+    const writes = w.__fake.log().filter(e => e.m !== 'GET').length;
+    const got = w.collectData();
+    const changed = Object.keys(p.data).filter(k => !['__meta__', 'groupIdInput'].includes(k))
+      .filter(k => !(k in got) || semanticSig(k, p.data[k]) !== semanticSig(k, got[k]));
+    out[p.group_id] = writes === 0 && !changed.length ? true : `writes on login: ${writes}; changed: ${changed.join(', ') || '—'}`;
+  }
+  return out;
+}
+function show(title, res) {
+  const rows = Object.entries(res).map(([k, v]) => `<tr><td>${k}</td><td class="${v === true ? 'ok' : 'bad'}">${v === true ? 'pass' : (v === false ? 'FAIL' : String(v))}</td></tr>`).join('');
+  document.getElementById('out').insertAdjacentHTML('beforeend', `<h2>${title}</h2><table>${rows}</table>`);
+}
+async function runAll() {
+  document.getElementById('out').innerHTML = '';
+  const st = document.getElementById('status');
+  for (const [name, fn] of [['Saving (v8)', runV8Suite], ['Merge, links, content (v9)', runV9Suite],
+                            ['Rows, connector posts, hints (v10)', runV10Suite], ['Round trip of all fixture plans', roundtrip]]) {
+    st.textContent = 'running: ' + name + ' …';
+    try {
+      const r = await fn();
+      if (r.dialog_label) r.dialog_label = !!r.dialog_label;   // a label, not a check
+      if (typeof r.phase_cards === 'string') r.phase_cards = /of \d+ blocks|complete/.test(r.phase_cards);
+      show(name, r);
+    } catch (e) { show(name, { error: String(e && e.stack || e) }); }
+  }
+  const bad = document.querySelectorAll('#out .bad').length;
+  st.textContent = bad ? `${bad} failed` : 'all passed';
+}
+</script>
+<script src="scenarios.js"></script>
+</body></html>

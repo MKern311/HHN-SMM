@@ -1,0 +1,18 @@
+{
+  "name": "hhn-smm-tools",
+  "private": true,
+  "description": "Tests for the SOSTAC® tool and the SOSTAC Coach connector (no build step for the tool itself)",
+  "type": "module",
+  "scripts": {
+    "test:connector": "node --experimental-strip-types --no-warnings tests/connector/connector.test.mts",
+    "typecheck": "tsc -p tests/connector/tsconfig.json",
+    "build:test-copy": "python3 tests/build_test_copy.py",
+    "build:catalog": "python3 connector/build_catalog.py"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/server": "2.3.1",
+    "node-html-parser": "9.0.5",
+    "typescript": "5.9.3",
+    "zod": "4.6.7"
+  }
+}

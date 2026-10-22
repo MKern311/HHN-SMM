@@ -46,7 +46,7 @@
 <body>
 <header>
   <div><h1>SOSTAC® — Lecturer overview</h1><p>Social Media Management · all group plans · read only</p></div>
-  <button class="secondary" onclick="load()">Refresh</button>
+  <span><button class="secondary" onclick="exportCsv()">Export CSV</button> <button class="secondary" onclick="load()">Refresh</button></span>
 </header>
 <main>
   <div class="bar">
@@ -168,8 +168,27 @@ function showDetail() {
   const box = document.getElementById('detail');
   if (!p) { box.innerHTML = ''; return; }
   box.innerHTML = `<div class="detail"><h2>${esc(p.team || p.code)}</h2>
-    <div>Code <code>${esc(p.code)}</code> · ${esc(p.org || 'no organisation')} · members: ${esc(p.members.join(', ') || '—')}</div>
+    <div>Code <code>${esc(p.code)}</code> · ${esc(p.org || 'no organisation')} · members: ${esc(p.members.join(', ') || '—')}
+      · <a href="SOSTAC_Strategy_Framework.html#code=${encodeURIComponent(p.code)}" target="_blank" rel="noopener">open in the tool</a></div>
     <p>Still empty:</p><ul>${p.phases.filter(ph => ph.open.length).map(ph => `<li><strong>${esc(ph.title.split('—')[0].trim())}:</strong> ${ph.open.map(esc).join(', ')}</li>`).join('') || '<li>nothing — every block has an entry</li>'}</ul></div>`;
+}
+/** The table as shown (filter and sort applied), for Excel: semicolons, UTF-8 with BOM. */
+function exportCsv() {
+  const q = document.getElementById('q').value.trim().toLowerCase();
+  const test = document.getElementById('showTest').checked;
+  const list = plans.filter(p => test || !/^(zz-|__)/.test(p.code))
+    .filter(p => !q || [p.code, p.team, p.org].join(' ').toLowerCase().includes(q));
+  const head = ['Code', 'Team', 'Organisation', 'Members', 'Last saved', 'Tool', 'Posts', 'Blocks filled', 'Blocks total']
+    .concat(PHASES.map(k => k[0].toUpperCase() + k.slice(1)));
+  const cell = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+  const lines = [head.map(cell).join(';')].concat(list.map(p => [p.code, p.team, p.org, p.members.length, fmt(p.saved), p.tool,
+    p.posts, p.done, p.total].concat(p.phases.map(ph => `${ph.done}/${ph.total}`)).map(cell).join(';')));
+  const blob = new Blob(['\ufeff' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `sostac-overview_${new Date().toISOString().slice(0, 10)}.csv`;
+  document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
 }
 document.querySelectorAll('th[data-k]').forEach(th => th.addEventListener('click', () => {
   sortDir = th.dataset.k === sortKey ? -sortDir : (th.dataset.k === 'saved' || th.dataset.k === 'total' ? -1 : 1);

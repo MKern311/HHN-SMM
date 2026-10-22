@@ -9,7 +9,7 @@ import {
   isToolPlan, normaliseCode, renderOverview, renderSection, SECTION_KEYS, findSection,
 } from './render.ts';
 import type { PlanRow } from './render.ts';
-import { fieldLabel, MAX_LEN, writeFields } from './write.ts';
+import { fieldLabel, MAX_LEN, writeCalendarPosts, writeFields } from './write.ts';
 import type { PatchPlan } from './write.ts';
 
 export type LoadPlan = (code: string) => Promise<PlanRow | null>;
@@ -117,6 +117,37 @@ export function buildServer(loadPlan: LoadPlan, patchPlan?: PatchPlan): McpServe
       } catch (e) {
         console.error('update_fields failed', e);
         return { ...text('The plan could not be written right now (database not reachable). Nothing was changed.'), isError: true };
+      }
+    });
+
+    server.registerTool('add_calendar_posts', {
+      title: 'Add posts to the content calendar (only when the student asks)',
+      description: 'Enter planned posts into the team\'s content calendar. Use it ONLY after the student asked for it and confirmed the posts. '
+        + 'Posts fill the first empty calendar rows; new rows are added when none are left. Existing posts are never changed. '
+        + 'persona is "Persona 1", "Persona 2" or "Both"; campaign should be the name of a campaign the team defined in Tactics. Logged as AI support.',
+      inputSchema: z.object({
+        code: z.string().min(1).max(80).describe('The group code of the plan.'),
+        posts: z.array(z.object({
+          date: z.string().max(20).describe('Date as the team writes it, e.g. "02.12."'),
+          platform: z.string().max(60),
+          format: z.string().max(60).optional(),
+          pillar: z.string().max(80).optional(),
+          campaign: z.string().max(120).optional(),
+          persona: z.enum(['Persona 1', 'Persona 2', 'Both']).optional(),
+          hook: z.string().max(1000).describe('First line / caption idea'),
+          visual: z.string().max(1000).optional(),
+        })).min(1).max(10),
+      }),
+      annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false },
+    }, async ({ code: rawCode, posts }) => {
+      const code = normaliseCode(rawCode);
+      try {
+        const r = await writeCalendarPosts(loadPlan, patchPlan, code, posts);
+        if (r.error) return { ...text(`Could not add the posts: ${r.error}.`), isError: true };
+        return text(`${r.added} post${r.added === 1 ? '' : 's'} added to the content calendar. The team sees them in the tool after its next sync.`);
+      } catch (e) {
+        console.error('add_calendar_posts failed', e);
+        return { ...text('The calendar could not be written right now (database not reachable). Nothing was changed.'), isError: true };
       }
     });
   }
