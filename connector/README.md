@@ -29,7 +29,7 @@ Claude with unsaved edits in an open tab, older versions would show a conflict.
 | `supabase/functions/sostac-coach/guidance.ts` | Coaching rules per section and server instructions |
 | `supabase/functions/sostac-coach/catalog.ts` | **Generated** list of all fields, labels and hints |
 | `connector/build_catalog.py` | Builds `catalog.ts` and `dozent-catalog.js` from `SOSTAC_Strategy_Framework.html` |
-| `connector/add_claude_button.py` | Source of the B0 test copy in `beta/`; the button is part of the tool since v8 |
+| `connector/add_claude_button.py` | Built the B0 test copy (removed); the button is part of the tool since v8 |
 
 After every change to the tool's HTML: `python3 connector/build_catalog.py`, then deploy again.
 
